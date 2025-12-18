@@ -8,6 +8,9 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 20px;
     gap: 50px;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
 }
 
 .title {

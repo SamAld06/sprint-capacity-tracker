@@ -7,20 +7,30 @@
     font-size: 40px;
     font-weight: bold;
     justify-content: center;
+    padding: 1rem;
+}
+
+.description {
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
 }
 
 .button {
+    display: flex;
     border-radius: 6px;
-    padding: 10px 20px;
+    padding: 0.5rem 1rem;
     border: none;
     color: black;
     background-color: grey;
     cursor: pointer;
+    max-width: 175px;
+    width: 100%;
 }
 
 .button:hover {
     background-color: green;
-    transition-duration: 1s;
+    transition-duration: 0.5s;
 }
 
 .navigation {

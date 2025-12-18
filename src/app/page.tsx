@@ -5,8 +5,9 @@ import styles from './styles.module.css'
 export default function Home() {
   return (
     <main className={styles.root}>
-      <NavBar />
-      <h1 className={styles.header}>Welcome to the sprint capacity tracker</h1>
+      <NavBar/>
+      <h1 className={styles.header}>Welcome to the sprint capacity wizard</h1>
+      <p className={styles.description}>A tool to track sprint capacity as accuratley as possible</p>
       <div className={styles.navigation}>
         <Link href="/groups">
           <button className={styles.button}>Create group</button>
