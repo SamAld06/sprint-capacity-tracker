@@ -1,16 +1,24 @@
 import { NavBar } from "@/components/Navbar/navBar";
 import Link from "next/link";
+import styles from './styles.module.css'
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <NavBar />
-      <h1 className="text-2xl font-bold">Sprint Capacity Tracker</h1>
-      <Link href="/dashboard">
-        <button className="px-4 py-2 bg-blue-500 text-white rounded">
-          Go to Dashboard
-        </button>
-      </Link>
+    <main className={styles.root}>
+      <NavBar/>
+      <h1 className={styles.header}>Welcome to the sprint capacity wizard</h1>
+      <p className={styles.description}>A tool to track sprint capacity as accuratley as possible</p>
+      <div className={styles.navigation}>
+        <Link href="/groups">
+          <button className={styles.button}>Create group</button>
+        </Link>
+        <Link href="/account">
+          <button className={styles.button}>Create account</button>
+        </Link>
+        <Link href="/groups">
+          <button className={styles.button}>Join group</button>
+        </Link>
+      </div>
     </main>
   );
 }
