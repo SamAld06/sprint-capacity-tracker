@@ -2,19 +2,33 @@
     display: flex;
     color: black;
     background-color: grey;
-    justify-content: space-between;
     padding: 1rem;
     align-content: center;
     align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    gap: 50px;
 }
 
 .title {
     display: flex;
     padding: 0.5rem;
+    width: 100%;
+    max-width: 250px;
 }
 
 .tabs {
     display: flex;
     padding: 0.5rem;
-    justify-content: space-between;
+    width: 100%;
+    gap: 50px;
+}
+
+.navigation {
+    padding: 0 0.5rem 0 0.5rem;
+}
+
+.navigation:hover {
+    color: green;
+    transition-duration: 1s;
 }

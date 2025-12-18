@@ -1,3 +1,31 @@
 .root {
     color: black;
 }
+
+.header {
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.button {
+    border-radius: 6px;
+    padding: 10px 20px;
+    border: none;
+    color: black;
+    background-color: grey;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: green;
+    transition-duration: 1s;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}

@@ -6,12 +6,18 @@ export default function Home() {
   return (
     <main className={styles.root}>
       <NavBar />
-      <h1>Sprint Capacity Tracker</h1>
-      <Link href="/dashboard">
-        <button>
-          Go to Dashboard
-        </button>
-      </Link>
+      <h1 className={styles.header}>Welcome to the sprint capacity tracker</h1>
+      <div className={styles.navigation}>
+        <Link href="/dashboard">
+          <button className={styles.button}>Create group</button>
+        </Link>
+        <Link href="/dashboard">
+          <button className={styles.button}>Create account</button>
+        </Link>
+        <Link href="/dashboard">
+          <button className={styles.button}>Join group</button>
+        </Link>
+      </div>
     </main>
   );
 }
