@@ -8,13 +8,13 @@ export default function Home() {
       <NavBar />
       <h1 className={styles.header}>Welcome to the sprint capacity tracker</h1>
       <div className={styles.navigation}>
-        <Link href="/dashboard">
+        <Link href="/groups">
           <button className={styles.button}>Create group</button>
         </Link>
-        <Link href="/dashboard">
+        <Link href="/account">
           <button className={styles.button}>Create account</button>
         </Link>
-        <Link href="/dashboard">
+        <Link href="/groups">
           <button className={styles.button}>Join group</button>
         </Link>
       </div>
