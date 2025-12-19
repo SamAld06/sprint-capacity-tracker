@@ -1,0 +1,33 @@
+.root {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    padding: 1rem;
+    align-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    border-bottom: 2px;
+    width: 100%;
+    border-color: black;
+    border-style: solid;
+}
+
+.infoTabs {
+    display: flex;
+    gap: 3rem;
+}
+
+.settings {
+    display: flex;
+    margin-left: auto;
+    padding: 0 0.5rem;
+}
+.navigation {
+    padding: 0 0.5rem 0 0.5rem;
+}
+
+.navigation:hover {
+    color: green;
+    transition-duration: 1s;
+}
