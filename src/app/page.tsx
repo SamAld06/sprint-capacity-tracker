@@ -1,31 +1,24 @@
 import { NavBar } from "@/components/navbar/navBar";
 import Link from "next/link";
-import styles from './group/dashboard/styles.module.css'
-import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
-import { TabBar } from "@/components/tabbar/tabBar";
+import styles from './styles.module.css'
 
 export default function Home() {
-  const sprintNumber = 'Sprint 42'
-  const groupName = "Example group"
   return (
-    <>
-      <NavBar />
-      <main className={styles.root}>
-        <header className={styles.groupName}>
-          <h1>{groupName}</h1>
-        </header>
-        <section>
-          <TabBar />
-        </section>
-        <section className={styles.info}>
-          <InfoBox title="Sprint Capacity:" data={21} />
-          <div className={styles.sprintNumber}>
-            <p>Current sprint:</p>
-            <p>{sprintNumber}</p>
-          </div>
-          <InfoBox title="Available MDs:" data={52} />
-        </section>
-      </main>
-    </>
+    <main className={styles.root}>
+      <NavBar/>
+      <h1 className={styles.header}>Welcome to the sprint capacity wizard</h1>
+      <p className={styles.description}>A tool to track sprint capacity as accuratley as possible</p>
+      <div className={styles.navigation}>
+        <Link href="/groups">
+          <button className={styles.button}>Create group</button>
+        </Link>
+        <Link href="/account">
+          <button className={styles.button}>Create account</button>
+        </Link>
+        <Link href="/groups">
+          <button className={styles.button}>Join group</button>
+        </Link>
+      </div>
+    </main>
   );
 }
