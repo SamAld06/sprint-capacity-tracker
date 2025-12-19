@@ -9,13 +9,12 @@ export interface InfoBoxProps {
 export const InfoBox = ({ title, data }: InfoBoxProps) => {
   return (
     <div className={styles.root}>
+      <Link href="/">
       <div className={styles.header}>
         <h1 className={styles.title}>{title}</h1>
-        <Link href="/">
-          <button className={styles.redirect}>View more</button>
-        </Link>
       </div>
       <p className={styles.data}>{data}</p>
+      </Link>
     </div>
   );
 };

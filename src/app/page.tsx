@@ -5,7 +5,7 @@ import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
 import { TabBar } from "@/components/tabbar/tabBar";
 
 export default function Home() {
-  const sprintNumber = 42
+  const sprintNumber = 'Sprint 42'
   const groupName = "Example group"
   return (
     <>
