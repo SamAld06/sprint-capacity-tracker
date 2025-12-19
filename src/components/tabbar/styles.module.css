@@ -16,18 +16,24 @@
 .infoTabs {
     display: flex;
     gap: 3rem;
+    cursor: pointer;
+}
+
+.infoTabs button:hover {
+    text-decoration: underline;
+    text-decoration-color: green;
+    cursor: pointer;
 }
 
 .settings {
     display: flex;
     margin-left: auto;
     padding: 0 0.5rem;
-}
-.navigation {
-    padding: 0 0.5rem 0 0.5rem;
+    
 }
 
-.navigation:hover {
-    color: green;
-    transition-duration: 1s;
+.settings:hover{
+    text-decoration: underline;
+    text-decoration-color: green;
+    cursor: pointer;
 }
