@@ -1,16 +1,8 @@
-'use client';
-
 import { NavBar } from "@/components/navbar/navBar";
 import Link from "next/link";
-import styles from './group/capacity/styles.module.css'
-import { TabBar } from "@/components/tabbar/tabBar";
+import styles from './styles.module.css'
 
 export default function Home() {
-  const groupName = 'Example group'
-  const buttonWorks = console.log('This button works')
-    const handleClick = () => {
-    alert('Button clicked!');
-  };
   return (
     <main className={styles.root}>
       <NavBar/>
@@ -25,9 +17,6 @@ export default function Home() {
         </Link>
         <Link href="/groups">
           <button className={styles.button}>Join group</button>
-        </Link>
-        <Link href="/group/dashboard">
-          <button className={styles.button}>View single dashboard</button>
         </Link>
       </div>
     </main>
