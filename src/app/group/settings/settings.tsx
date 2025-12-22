@@ -1,11 +1,14 @@
 import { NavBar } from "@/components/navbar/navBar";
-import styles from './group/dashboard/styles.module.css'
-import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
+import styles from './group/settings/styles.module.css'
 import { TabBar } from "@/components/tabbar/tabBar";
+import { useNumberInputChange } from "@/helpers/numberInput";
+import { useState } from "react";
 
 export default function Home() {
-  const sprintNumber = 'Sprint 42'
+  const [defaultGroupCode, setGroupCode] = useState('Wi4p6Cy1')
+  const [defaultGroupPassword, setGroupPassword] = useState('Password')
   const groupName = "Example group"
+  const sprintDaysInput = useNumberInputChange(14);
   return (
     <>
       <NavBar />
@@ -16,15 +19,20 @@ export default function Home() {
         <section>
           <TabBar />
         </section>
-        <section className={styles.info}>
-          <InfoBox title="Sprint Capacity:" data={21} />
-          <div className={styles.sprintNumber}>
-            <p>Current sprint:</p>
-            <p>{sprintNumber}</p>
-          </div>
-          <InfoBox title="Available MDs:" data={52} />
+        <section className={styles.settings}>
+          <section className={styles.options}>
+            <p>Sprint length</p>
+            <p>Group code</p>
+            <p>Group password</p>
+          </section>
+          <section className={styles.inputFields}>
+            <input type="text" {...sprintDaysInput} className={styles.inputs}/>
+            <input type="text" value={defaultGroupCode} className={styles.inputs} onChange={(e) => setGroupCode(e.target.value)}/>
+            <input type="text" value={defaultGroupPassword} className={styles.inputs} onChange={(e) => setGroupPassword(e.target.value)}/>
+          </section>
         </section>
       </main>
     </>
   );
 }
+

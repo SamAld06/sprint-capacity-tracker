@@ -1,36 +1,24 @@
 import { NavBar } from "@/components/navbar/navBar";
 import Link from "next/link";
-import styles from './group/settings/styles.module.css'
-import { TabBar } from "@/components/tabbar/tabBar";
+import styles from './styles.module.css'
 
 export default function Home() {
-  const sprintDays = 14
-  const groupCode = 'Wi4p6Cy1'
-  const groupPassword = 'Password'
-  const groupName = "Example group"
   return (
-    <>
-      <NavBar />
-      <main className={styles.root}>
-        <header className={styles.groupName}>
-          <h1>{groupName}</h1>
-        </header>
-        <section>
-          <TabBar />
-        </section>
-        <section className={styles.settings}>
-          <section className={styles.options}>
-            <p>Sprint length</p>
-            <p>Group code</p>
-            <p>Group password</p>
-          </section>
-          <section className={styles.inputFields}>
-            <input type="text" value={sprintDays} className={styles.inputs}/>
-            <input type="text" value={groupCode} className={styles.inputs}/>
-            <input type="text" value={groupPassword} className={styles.inputs}/>
-          </section>
-        </section>
-      </main>
-    </>
+    <main className={styles.root}>
+      <NavBar/>
+      <h1 className={styles.header}>Welcome to the sprint capacity wizard</h1>
+      <p className={styles.description}>A tool to track sprint capacity as accuratley as possible</p>
+      <div className={styles.navigation}>
+        <Link href="/groups">
+          <button className={styles.button}>Create group</button>
+        </Link>
+        <Link href="/account">
+          <button className={styles.button}>Create account</button>
+        </Link>
+        <Link href="/groups">
+          <button className={styles.button}>Join group</button>
+        </Link>
+      </div>
+    </main>
   );
 }

@@ -1,13 +1,15 @@
+"use client";
+
 import { useState } from "react";
 
-// export const numberInputChange = (currentValue: number) => {
-//     const [value, setValue] = useState(currentValue);
+export const useNumberInputChange = (currentValue: number | string = "") => {
+    const [value, setValue] = useState<string>(String(currentValue));
 
-//     const onChange = (e) => {
-//         const newValue = e.target.value;
-//         if (/^\d*$/.test(newValue)) {
-//             setValue(newValue);
-//         }
-//     }
-//     return {value, onChange};
-// }
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        if (/^\d*$/.test(newValue)) {
+            setValue(newValue);
+        }
+    }
+    return {value, onChange};
+}
