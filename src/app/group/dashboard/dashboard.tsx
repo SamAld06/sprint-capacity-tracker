@@ -1,5 +1,4 @@
 import { NavBar } from "@/components/navbar/navBar";
-import Link from "next/link";
 import styles from './group/dashboard/styles.module.css'
 import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
 import { TabBar } from "@/components/tabbar/tabBar";

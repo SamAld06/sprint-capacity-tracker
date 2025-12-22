@@ -1,0 +1,50 @@
+.root {
+    display: flex;
+    color: black;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    width: 100%;
+    gap: 50px;
+}
+
+.groupName {
+    display: flex;
+    font-size: 40px;
+    padding: 1rem;
+}
+
+.settings {
+    display: flex;
+    padding: 1rem;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.inputs {
+    display: flex;
+    border: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.inputFields {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.options {
+    display: flex;
+    font-size: 20px;
+    flex-direction: column;
+    padding-right: 1rem;
+    gap: 1rem;
+}
