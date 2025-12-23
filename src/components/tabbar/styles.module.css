@@ -21,7 +21,7 @@
 
 .infoTabs button:hover {
     text-decoration: underline;
-    text-decoration-color: green;
+    text-decoration-color: #15682D;
     cursor: pointer;
 }
 
@@ -34,6 +34,6 @@
 
 .settings:hover{
     text-decoration: underline;
-    text-decoration-color: green;
+    text-decoration-color: #15682D;
     cursor: pointer;
 }

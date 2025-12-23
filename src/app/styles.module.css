@@ -22,14 +22,14 @@
     padding: 0.5rem 1rem;
     border: none;
     color: black;
-    background-color: grey;
+    background-color: #647687;
     cursor: pointer;
     max-width: 175px;
     width: 100%;
 }
 
 .button:hover {
-    background-color: green;
+    background-color: #15682D;
     transition-duration: 0.5s;
 }
 
