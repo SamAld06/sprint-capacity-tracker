@@ -11,6 +11,11 @@
     padding: 1rem;
 }
 
+.capacityNotif {
+    display: flex;
+    font-size: 30px;
+    justify-content: center;
+}
 
 .buttonSection {
     display: flex;
@@ -31,6 +36,11 @@
     max-width: fit-content;
     width: 100%;
     justify-content: center;
+}
+
+.button:hover {
+    background-color: #15682D;
+    transition-duration: 1s;
 }
 
 .tableSection {
