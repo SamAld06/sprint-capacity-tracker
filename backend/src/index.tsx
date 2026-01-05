@@ -11,15 +11,18 @@ const db = new sqlite3.Database("mydatabase.db")
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS capacity (
-    id INTEGER PRIMARY KEY, 
+    id INTEGER PRIMARY KEY,
+    sprintId INTEGER,
     name TEXT,
     workAssigned INTEGER,
     workCompleted INTEGER,
     averagePerMd INTEGER
+    FOREIGN KEY (sprintId) REFERENCES sprint(id)
     )`);
   db.run(`
     CREATE TABLE IF NOT EXISTS availability (
-    id INTEGER PRIMARY KEY ,
+    id INTEGER PRIMARY KEY,
+    sprintId INTEGER,
     name TEXT,
     working-days INTEGER,
     outOfOffice INTEGER,
@@ -27,6 +30,7 @@ db.serialize(() => {
     fridayProjects INTEGER,
     maintenance INTEGER,
     md INTEGER
+    FOREIGN KEY (sprintId) REFERENCES sprint(id)
     )`);
   db.run(`CREATE TABLE IF NOT EXISTS sprint (
     id INTEGER PRIMARY KEY ,
@@ -35,20 +39,34 @@ db.serialize(() => {
     removed INTEGER,
     totalCompleted INTEGER,
     totalMd INTEGER,
-    plannedCompletedDifference
+    plannedCompletedDifference INTEGER
     )`);
 });
 
 app.get("/capacity", (req, res) => {
-    db.all("SELECT * FROM capacity", (err, rows) => {
+    db.all("SELECT capacity.* .* sprint.id AS sprintId", (err, rows) => {
+        if (err) return res.status(500).send(err.message)
+            res.json(rows)
+    })
+})
+
+app.get("/availability", (req, res) => {
+    db.all("SELECT availability.* sprint.id AS sprintId", (err, rows) => {
+        if (err) return res.status(500).send(err.message)
+            res.json(rows)
+    })
+})
+
+app.get("/sprint", (req, res) => {
+    db.all("SELECT * FROM sprint", (err, rows) => {
         if (err) return res.status(500).send(err.message)
             res.json(rows)
     })
 })
 
 app.post("/capacity", (req, res) => {
-    const {name, workAssigned, workCompleted, averagePerMd} = req.body;
-    db.run("INSERT INTO capacity (name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?)" [name, workAssigned, workCompleted, averagePerMd], function(err) {
+    const {id, sprintID, name, workAssigned, workCompleted, averagePerMd} = req.body;
+    db.run("INSERT INTO capacity (id, sprintID, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)", [id, sprintID, name, workAssigned, workCompleted, averagePerMd], function(err) {
         if (err) return res.status(500).send(err.message);
         res.json({ id: this.lastID})
     });
