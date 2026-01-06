@@ -90,12 +90,38 @@ app.get("/sprint", (req, res) => {
   });
 });
 
-app.post("/sprint, (req, res) => {
-  const { id, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference } =
+app.post("/sprint", (req, res) => {
+  const { planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference } =
     req.body;
   db.run(
-    "INSERT INTO capacity (id, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?)",
-    [id, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference],
+    "INSERT INTO sprint (planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?)",
+    [planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference],
+    function (err) {
+      if (err) return res.status(500).send(err.message);
+      res.json({ id: this.lastID });
+    }
+  );
+});
+
+app.post("/capacity", (req, res) => {
+  const { sprintId, name, workAssigned, workCompleted, averagePerMd } =
+    req.body;
+  db.run(
+    "INSERT INTO capacity (sprintId, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)",
+    [sprintId, name, workAssigned, workCompleted, averagePerMd],
+    function (err) {
+      if (err) return res.status(500).send(err.message);
+      res.json({ id: this.lastID });
+    }
+  );
+});
+
+app.post("/availability", (req, res) => {
+  const { id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md } =
+    req.body;
+  db.run(
+    "INSERT INTO availability (id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md],
     function (err) {
       if (err) return res.status(500).send(err.message);
       res.json({ id: this.lastID });
