@@ -1,10 +1,12 @@
+"use client";
+
 import { NavBar } from "@/components/navbar/navBar";
-import styles from './group/settings/styles.module.css'
+import styles from './styles.module.css'
 import { TabBar } from "@/components/tabbar/tabBar";
 import { useNumberInputChange } from "@/helpers/numberInput";
 import { useState } from "react";
 
-export default function Home() {
+export default function Settings() {
   const [defaultGroupCode, setGroupCode] = useState('Wi4p6Cy1')
   const [defaultGroupPassword, setGroupPassword] = useState('Password')
   const groupName = "Example group"
