@@ -7,7 +7,6 @@ import { sprintDetailsService } from "@/services/sprintDetailsService";
 import { sprint } from "@/types/sprint";
 
 export default function Home() {
-  const sprintNumber = 3
   const groupName = "Example group"
     const [sprint, setSprint] = useState<sprint[]>([])
     const [err, setErr] = useState<string | null>(null)
