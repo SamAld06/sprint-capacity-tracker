@@ -2,14 +2,36 @@ import { NavBar } from "@/components/navbar/navBar";
 import styles from './group/dashboard/styles.module.css'
 import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
 import { TabBar } from "@/components/tabbar/tabBar";
+import { useEffect, useState } from "react";
+import { sprintDetailsService } from "@/services/sprintDetailsService";
+import { sprint } from "@/types/sprint";
 
 export default function Home() {
-  const sprintNumber = 'Sprint 42'
   const groupName = "Example group"
+    const [sprint, setSprint] = useState<sprint[]>([])
+    const [err, setErr] = useState<string | null>(null)
+    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+      const fetchSprint = async () => {
+        try {
+          const data = await sprintDetailsService.getAll()
+          setSprint(data)
+        } catch (err) {
+          setErr((err as Error).message)
+        } finally {
+          setLoading(false)
+        }
+      };
+      fetchSprint();
+    }, []);
+    if (loading) return <p>Loading sprints...</p>;
+    if (err) return <p>Error: {err}</p>;
   return (
     <>
       <NavBar />
       <main className={styles.root}>
+        {sprint.filter((sprint) => sprint.id === 3).map((sprint) => (
+          <div>
         <header className={styles.groupName}>
           <h1>{groupName}</h1>
         </header>
@@ -17,13 +39,15 @@ export default function Home() {
           <TabBar />
         </section>
         <section className={styles.info}>
-          <InfoBox title="Sprint Capacity:" data={21} />
+          <InfoBox title="Sprint Capacity:" data={sprint.planned} />
           <div className={styles.sprintNumber}>
             <p>Current sprint:</p>
-            <p>{sprintNumber}</p>
+            <p key={sprint.id}>{sprint.id}</p>
           </div>
-          <InfoBox title="Available MDs:" data={52} />
+          <InfoBox title="Available MDs:" data={sprint.totalMd} />
         </section>
+        </div>
+        ))}
       </main>
     </>
   );

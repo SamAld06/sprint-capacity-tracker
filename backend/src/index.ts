@@ -12,6 +12,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS capacity (
     id INTEGER PRIMARY KEY,
+    groupCode TEXT,
     sprintId INTEGER,
     name TEXT,
     workAssigned INTEGER,
@@ -22,6 +23,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS availability (
     id INTEGER PRIMARY KEY,
+    groupCode TEXT,
     sprintId INTEGER,
     name TEXT,
     workingDays INTEGER,
@@ -34,7 +36,8 @@ db.serialize(() => {
     )`);
   db.run(`CREATE TABLE IF NOT EXISTS sprint (
     id INTEGER PRIMARY KEY,
-    planned TEXT,
+    groupCode TEXT,
+    planned INTEGER,
     added INTEGER,
     removed INTEGER,
     totalCompleted INTEGER,
@@ -91,11 +94,11 @@ app.get("/sprint", (req, res) => {
 });
 
 app.post("/sprint", (req, res) => {
-  const { planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference } =
+  const { groupCode, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference } =
     req.body;
   db.run(
-    "INSERT INTO sprint (planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?)",
-    [planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference],
+    "INSERT INTO sprint (groupCode, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?)",
+    [groupCode, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference],
     function (err) {
       if (err) return res.status(500).send(err.message);
       res.json({ id: this.lastID });
@@ -104,11 +107,11 @@ app.post("/sprint", (req, res) => {
 });
 
 app.post("/capacity", (req, res) => {
-  const { sprintId, name, workAssigned, workCompleted, averagePerMd } =
+  const { groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd } =
     req.body;
   db.run(
-    "INSERT INTO capacity (sprintId, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)",
-    [sprintId, name, workAssigned, workCompleted, averagePerMd],
+    "INSERT INTO capacity (groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)",
+    [groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd],
     function (err) {
       if (err) return res.status(500).send(err.message);
       res.json({ id: this.lastID });
@@ -117,11 +120,11 @@ app.post("/capacity", (req, res) => {
 });
 
 app.post("/availability", (req, res) => {
-  const { id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md } =
+  const { groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md } =
     req.body;
   db.run(
-    "INSERT INTO availability (id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [id, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md],
+    "INSERT INTO availability (groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md],
     function (err) {
       if (err) return res.status(500).send(err.message);
       res.json({ id: this.lastID });
