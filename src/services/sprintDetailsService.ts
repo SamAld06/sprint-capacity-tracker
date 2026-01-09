@@ -1,6 +1,6 @@
 import { sprint } from "@/types/sprint";
 
-const APIURL = "http://http://localhost:3001/sprint"
+const APIURL = "http://localhost:3001/sprint"
 
 export const sprintDetailsService = {
     getAll: async (): Promise<sprint[]> => {

@@ -1,1 +1,0 @@
-import { availability } from "@/types/availability";
