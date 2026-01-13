@@ -1,0 +1,10 @@
+import { availability } from "@/types/availability"
+
+export function getLatestAvaialbilityData(data: availability[]) {
+    if (!data) {
+        return null
+    }
+    return data.reduce((inital, current) => {
+        return current.id > inital.id ? current : inital
+    })
+}

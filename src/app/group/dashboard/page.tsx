@@ -10,24 +10,24 @@ import { sprint } from "@/types/sprint";
 
 export default function Dashboard() {
   const groupName = "Example group"
-    const [sprint, setSprint] = useState<sprint[]>([])
-    const [err, setErr] = useState<string | null>(null)
-    const [loading, setLoading] = useState(true)
-    useEffect(() => {
-      const fetchSprint = async () => {
-        try {
-          const data = await sprintDetailsService.getAll()
-          setSprint(data)
-        } catch (err) {
-          setErr((err as Error).message)
-        } finally {
-          setLoading(false)
-        }
-      };
-      fetchSprint();
-    }, []);
-    if (loading) return <p>Loading sprints...</p>;
-    if (err) return <p>Error: {err}</p>;
+  const [sprint, setSprint] = useState<sprint[]>([])
+  const [err, setErr] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    const fetchSprint = async () => {
+      try {
+        const data = await sprintDetailsService.getAll()
+        setSprint(data)
+      } catch (err) {
+        setErr((err as Error).message)
+      } finally {
+        setLoading(false)
+      }
+    };
+    fetchSprint();
+  }, []);
+  if (loading) return <p>Loading sprints...</p>;
+  if (err) return <p>Error: {err}</p>;
   return (
     <>
       <NavBar />
