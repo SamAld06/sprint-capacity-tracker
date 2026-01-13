@@ -4,29 +4,22 @@ import { NavBar } from "@/components/navbar/navBar";
 import styles from './styles.module.css'
 import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
-import { sprint } from "@/types/sprint";
-import { sprintDetailsService } from "@/services/sprintDetailsService";
-import { getLatestSprintData } from "@/helpers/getLatestSprintData";
 import { CapacityCard } from "@/components/capacity-card/capacity-card";
+import { getLatestAvaialbilityData } from "@/helpers/getLatestAvailabilityData";
+import { availabilityDetailsService } from "@/services/availabilityDetailsService";
 import { capacity } from "@/types/capacity";
-import { getLatestCapacityData } from "@/helpers/getLatestCapacityData";
-import { capacityDetailsService } from "@/services/capacityDetailsService";
 
 export default function Capacity() {
   const groupName = "Example group"
-  const [sprint, setSprint] = useState<sprint | null>(null)
   const [capacity, setCapacity] = useState<capacity | null>(null)
   const [err, setErr] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await sprintDetailsService.getAll()
-        const latestData = getLatestSprintData(data)
-        setSprint(latestData)
-        const data2 = await capacityDetailsService.getAll()
-        const latestData2 = getLatestCapacityData(data2)
-        setCapacity(latestData2)
+        const data = await availabilityDetailsService.getAll()
+        const latestData = getLatestAvaialbilityData(data)
+        setCapacity(latestData)
       } catch (err) {
         setErr((err as Error).message)
       } finally {
@@ -49,9 +42,9 @@ export default function Capacity() {
           <TabBar />
         </section>
         <section>
-          {sprint && <h1 className={styles.sprintHeader}>Current sprint:{capacity?.sprintId}</h1>}
-          {!sprint && <h1>Error loading data</h1>}
-          {capacity && sprint && <CapacityCard capacityData={capacity} sprintData={sprint}/>}
+          {capacity && <h1 className={styles.sprintHeader}>Current sprint:{capacity?.sprintId}</h1>}
+          {!capacity && <h1>Error loading data</h1>}
+          {capacity && <CapacityCard capacityData={capacity} />}
         </section>
       </main>
     </>

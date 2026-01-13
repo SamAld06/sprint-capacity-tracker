@@ -1,4 +1,4 @@
-import { capacity } from "@/types/capacity"
+import { capacity } from "@/types/workProgress"
 
 export function getLatestCapacityData(data: capacity[]) {
     if (!data) {

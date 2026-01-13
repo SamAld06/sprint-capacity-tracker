@@ -1,4 +1,4 @@
-import { availability } from "@/types/availability"
+import { availability } from "@/types/capacity"
 
 export function getLatestAvaialbilityData(data: availability[]) {
     if (!data) {
