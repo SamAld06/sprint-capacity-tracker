@@ -11,9 +11,34 @@
     padding: 1rem;
 }
 
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    justify-items: center;
+}
+
 .sprintHeader {
     display: flex;
     padding: 1rem;
     justify-content: center;
     font-size: clamp(35px, 2vw, 50px);
+}
+
+.selector {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: grey;
+    border-radius: 50%;
+    border: solid;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden {
+    visibility: hidden;
+    pointer-events: none;
 }
