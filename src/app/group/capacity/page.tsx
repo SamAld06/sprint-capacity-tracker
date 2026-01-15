@@ -8,6 +8,7 @@ import { CapacityCard } from "@/components/capacity-card/capacity-card";
 import { getLatestAvaialbilityData } from "@/helpers/getLatestAvailabilityData";
 import { availabilityDetailsService } from "@/services/availabilityDetailsService";
 import { capacity } from "@/types/capacity";
+import { CapacityForm } from "@/components/capacity-form/capacity-form";
 
 export default function Capacity() {
   const groupName = "Example group"
@@ -16,6 +17,7 @@ export default function Capacity() {
   const [currentSprint, setCurrentSprint] = useState<number>(1)
   const [err, setErr] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const getAllCapacity = capacity?.filter(capacity => capacity.sprintId === currentSprint)
   useEffect(() => {
     const fetchSprint = async () => {
@@ -53,11 +55,16 @@ export default function Capacity() {
             {capacity && <h1 className={styles.sprintHeader}>Current sprint:{currentSprint}</h1>}
             <button onClick={() => setCurrentSprint(currentSprint + 1)} className= {currentSprint != latestSprintId ? styles.selector : styles.hidden}>-&gt;</button>
           </header>
-          {!capacity && <h1>Error loading data</h1>}
-          {getAllCapacity.map(capacity => (
-            <CapacityCard capacityData={capacity} />
-          ))}
-          
+          <section>
+            <button onClick={() => setIsOpen(true)}>Edit availability</button>
+          </section>
+          <CapacityForm isOpen={isOpen} data={capacity}/>
+          <section className={styles.cards}>
+            {!capacity && <h1>Error loading data</h1>}
+            {getAllCapacity.map(capacity => (
+              <CapacityCard capacityData={capacity} />
+            ))}
+          </section>
         </section>
       </main>
     </>

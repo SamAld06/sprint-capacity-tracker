@@ -1,6 +1,6 @@
-import { availability } from "@/types/capacity"
+import { capacity } from "@/types/capacity"
 
-export function getLatestAvaialbilityData(data: availability[]) {
+export function getLatestAvaialbilityData(data: capacity[]) {
     if (!data) {
         return null
     }

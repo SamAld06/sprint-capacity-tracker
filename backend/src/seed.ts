@@ -28,8 +28,14 @@ db.serialize(() => {
             md
         ) VALUES
             ('t3stGr0up1', 1, 'tester', 10, 0, 0, 0, 0, 10),
-            ('t3stGr0up1', 2, 'tester', 7, 2, 0, 1, 0, 7),
-            ('t3stGr0up1', 3, 'tester', 6, 3, 0, 0, 1, 6);`);
+            ('t3stGr0up1', 1, 'tester2', 8, 4, 0, 0, 0, 4),
+            ('t3stGr0up1', 1, 'tester3', 10, 1, 0, 0, 0, 9),
+            ('t3stGr0up1', 2, 'tester', 10, 8, 0, 1, 0, 1),
+            ('t3stGr0up1', 2, 'tester2', 8, 3, 0, 1, 0, 6),
+            ('t3stGr0up1', 2, 'tester3', 10, 2, 0, 1, 0, 7),
+            ('t3stGr0up1', 3, 'tester', 10, 1, 2, 0, 1, 6),
+            ('t3stGr0up1', 3, 'tester2', 8, 3, 0, 0, 1, 4),
+            ('t3stGr0up1', 3, 'tester3 ', 10, 3, 0, 1, 1, 5);`);
     db.exec(`INSERT INTO sprint (
             groupCode,
             planned,

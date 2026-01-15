@@ -42,3 +42,11 @@
     visibility: hidden;
     pointer-events: none;
 }
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 0.5rem
+}
