@@ -1,7 +1,7 @@
 "use client";
 
 import { NavBar } from "@/components/navbar/navBar";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
 import { CapacityCard } from "@/components/capacity-card/capacity-card";
@@ -11,34 +11,47 @@ import { capacity } from "@/types/capacity";
 import { CapacityForm } from "@/components/capacity-form/capacity-form";
 
 export default function Capacity() {
-  const groupName = "Example group"
-  const latestSprintId = 3
-  const [capacity, setCapacity] = useState<capacity[] | null>(null)
-  const [currentSprint, setCurrentSprint] = useState<number>(1)
-  const [err, setErr] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const getAllCapacity = capacity?.filter(capacity => capacity.sprintId === currentSprint)
+  const groupName = "Example group";
+  const latestSprintId = 3;
+  const [capacity, setCapacity] = useState<capacity[] | null>(null);
+  const [currentSprint, setCurrentSprint] = useState<number>(1);
+  const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const getAllCapacity = capacity?.filter(
+    (capacity) => capacity.sprintId === currentSprint
+  );
+
+  const handleSubmit = async (data: FormData) => {
+    await fetch("http://localhost:3001/availability", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    setIsOpen(false);
+  };
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await availabilityDetailsService.getAll()
-        console.log('data:', data)
-        const latestData = getLatestAvaialbilityData(data)
-        setCapacity(data)
-        setCurrentSprint(latestData.sprintId)
+        const data = await availabilityDetailsService.getAll();
+        console.log("data:", data);
+        const latestData = getLatestAvaialbilityData(data);
+        setCapacity(data);
+        setCurrentSprint(latestData.sprintId);
       } catch (err) {
-        setErr((err as Error).message)
+        setErr((err as Error).message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     fetchSprint();
   }, []);
+
   if (loading) return <p>Loading sprints...</p>;
   if (err) return <p>Error: {err}</p>;
-  console.log("data2:", capacity)
-  console.log("current:",currentSprint)
+  console.log("data2:", capacity);
+  console.log("current:", currentSprint);
   return (
     <>
       <NavBar />
@@ -51,17 +64,47 @@ export default function Capacity() {
         </section>
         <section>
           <header className={styles.navigation}>
-            <button onClick={() => setCurrentSprint(currentSprint - 1)} className= {currentSprint != 1 ? styles.selector : styles.hidden}>&lt;-</button>
-            {capacity && <h1 className={styles.sprintHeader}>Current sprint:{currentSprint}</h1>}
-            <button onClick={() => setCurrentSprint(currentSprint + 1)} className= {currentSprint != latestSprintId ? styles.selector : styles.hidden}>-&gt;</button>
+            <button
+              onClick={() => setCurrentSprint(currentSprint - 1)}
+              className={currentSprint != 1 ? styles.selector : styles.hidden}
+            >
+              &lt;-
+            </button>
+            {capacity && (
+              <h1 className={styles.sprintHeader}>
+                Current sprint:{currentSprint}
+              </h1>
+            )}
+            <button
+              onClick={() => setCurrentSprint(currentSprint + 1)}
+              className={
+                currentSprint != latestSprintId
+                  ? styles.selector
+                  : styles.hidden
+              }
+            >
+              -&gt;
+            </button>
           </header>
-          <section>
-            <button onClick={() => setIsOpen(true)}>Edit availability</button>
+          <section className={styles.buttonSection}>
+            <button
+              className={styles.dataButton}
+              onClick={() => setIsOpen(true)}
+            >
+              Edit capacity
+            </button>
+            <button className={styles.dataButton}>Add capacity table</button>
           </section>
-          <CapacityForm isOpen={isOpen} data={capacity}/>
+          {isOpen && (
+            <CapacityForm
+              onClose={() => setIsOpen(false)}
+              data={capacity}
+              onSubmit={handleSubmit}
+            />
+          )}
           <section className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}
-            {getAllCapacity.map(capacity => (
+            {getAllCapacity.map((capacity) => (
               <CapacityCard capacityData={capacity} />
             ))}
           </section>

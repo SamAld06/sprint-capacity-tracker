@@ -12,6 +12,7 @@ export const CapacityCard = ({capacityData}: CapacityCardProps) => {
         <h1 className={styles.title}>Team member: {capacityData.name}</h1>
       </div>
       <section className={styles.details}>
+        <p className={styles.data}>Working Days: {capacityData.workingDays}</p>
         <p className={styles.data}>Available md's: {capacityData.md}</p>
         <p className={styles.data}>Out of office: {capacityData.outOfOffice}</p>
         <p className={styles.data}>Releases: {capacityData.releases}</p>

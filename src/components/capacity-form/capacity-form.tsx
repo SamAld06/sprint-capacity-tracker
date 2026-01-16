@@ -1,19 +1,20 @@
 import { capacity } from "@/types/capacity";
 import { useState } from "react";
 import styles from "./styles.module.css";
+import { getMdForUser } from "@/helpers/getMdForUser";
 
 export interface CapacityFormProps {
-  isOpen: boolean;
+  onClose: () => void
   data: capacity[] | null;
-  onSave: (newValue: string) => Promise<void>;
+  onSubmit: (data: capacity) => void
 }
 
-export const CapacityForm = ({ isOpen, data, onSave }: CapacityFormProps) => {
+export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => {
   const [loading, setLoading] = useState(true);
-  const [formIsOpen, setFormIsOpen] = useState<boolean>(isOpen);
+  // const [formIsOpen, setFormIsOpen] = useState<boolean>(isOpen);
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [currentName, setCurrentName] = useState<string | null>(null);
-  const [availableMds, setAvailableMds] = useState<string>("");
+  const [workingDays, setWorkingDays] = useState<string>("");
   const [outOfOffice, setOutOfOffice] = useState<string>("");
   const [releases, setReleases] = useState<string>("");
   const [fridayProject, setFridayProject] = useState<string>("");
@@ -25,97 +26,151 @@ export const CapacityForm = ({ isOpen, data, onSave }: CapacityFormProps) => {
             currentName === data.name && Number(currentSprint) === data.sprintId
         )
       : [];
-  if (!isOpen) {
-    return null;
-  }
+  // if (!isOpen) {
+  //   return null;
+  // }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log("fire away")
+    console.log("name", currentName)
+    const payload = {
+      sprintId: Number(currentSprint),
+      name: currentName,
+      workingDays: Number(workingDays),
+      outOfOffice: Number(outOfOffice),
+      releases: Number(releases),
+      fridayProjects: Number(fridayProject),
+      maintenance: Number(maintenance),
+      md: getMdForUser({
+        workingDays,
+        outOfOffice,
+        fridayProject,
+        releases,
+        maintenance,
+      }),
+    };
     e.preventDefault();
-    setLoading(true);
-    setLoading(false);
+    if (
+      currentSprint == null ||
+      currentName == "" ||
+      workingDays == null ||
+      outOfOffice == null ||
+      releases == null ||
+      fridayProject== null ||
+      maintenance == null
+    ) {
+      console.log(currentSprint)
+      console.log(currentName)
+      console.log(workingDays)
+      console.log(outOfOffice)
+      console.log(releases)
+      console.log(fridayProject)
+      console.log(maintenance)
+      alert("All fields must be filled");
+      return;
+    }
+
+    console.log("Sending to backend:", payload);
+    await onSubmit(payload);
   };
+
+
   console.log("form:", data);
   console.log(currentName);
   console.log(getTeamMemberData);
-  console.log(value);
   console.log(currentSprint);
+  console.log("loading:", loading)
 
   return (
     <div className={styles.root}>
       <div className={styles.modal}>
         <button
-          onClick={() => setFormIsOpen(false)}
+          onClick={onClose}
           className={styles.closeButton}
         >
           X
         </button>
         <form onSubmit={handleSubmit}>
           <div className={styles.inputs}>
-            <label>
-              Sprint to edit:
+            <div className={styles.inputRow}>
+              <label>Sprint to edit:</label>
               <input
+                className={styles.inputBox}
                 type="number"
                 value={currentSprint}
                 onChange={(e) => setCurrentSprint(e.target.value)}
               ></input>
-            </label>
-            <label>
-              Team Member:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Team Member:</label>
               <select
+                className={styles.inputBox}
                 value={currentName ?? ""}
                 onChange={(e) => setCurrentName(e.target.value)}
               >
-                {data && data
-                  .filter((data) => data.sprintId === Number(currentSprint))
-                  .map((data) => (
-                    <option value={data.name}>{data.name}</option>
-                  ))}
+                <option value="">Select a team member</option>
+                {data &&
+                  data
+                    .filter((data) => data.sprintId === Number(currentSprint))
+                    .map((data) => (
+                      <option value={data.name}>{data.name}</option>
+                    ))}
               </select>
-            </label>
-            <label>
-              Available md's:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Working days:</label>
               <input
+                className={styles.inputBox}
                 type="number"
-                value={availableMds}
-                onChange={(e) => setAvailableMds(e.target.value)}
+                value={workingDays}
+                onChange={(e) => setWorkingDays(e.target.value)}
               ></input>
-            </label>
-            <label>
-              Out of office:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Out of office:</label>
               <input
+                className={styles.inputBox}
                 type="number"
                 value={outOfOffice}
                 onChange={(e) => setOutOfOffice(e.target.value)}
               ></input>
-            </label>
-            <label>
-              Releases:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Releases:</label>
               <input
+                className={styles.inputBox}
                 type="number"
                 value={releases}
                 onChange={(e) => setReleases(e.target.value)}
               ></input>
-            </label>
-            <label>
-              Friday project:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Friday project:</label>
               <input
+                className={styles.inputBox}
                 type="number"
                 value={fridayProject}
                 onChange={(e) => setFridayProject(e.target.value)}
               ></input>
-            </label>
-            <label>
-              Maintenance:
+            </div>
+            <div className={styles.inputRow}>
+              <label>Maintenance:</label>
               <input
+                className={styles.inputBox}
                 type="number"
                 value={maintenance}
                 onChange={(e) => setMaintenance(e.target.value)}
               ></input>
-            </label>
-            <button type="submit" disabled={loading}>
-              Save
-            </button>
+            </div>
           </div>
+          <button
+            type="submit"
+            disabled={false}
+            className={styles.saveButton}
+            
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>

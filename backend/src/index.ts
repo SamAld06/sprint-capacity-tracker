@@ -3,10 +3,10 @@ import cors from "cors";
 import sqlite3 from "sqlite3";
 
 const app = express();
+const db = new sqlite3.Database("mydatabase.db");
+
 app.use(cors());
 app.use(express.json());
-
-const db = new sqlite3.Database("mydatabase.db");
 
 db.serialize(() => {
   db.run(`
@@ -120,14 +120,35 @@ app.post("/capacity", (req, res) => {
 });
 
 app.post("/availability", (req, res) => {
-  const { groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md } =
-    req.body;
+  //const groupCode = req.user.groupCode;
+  const {
+    sprintId,
+    name,
+    workingDays,
+    OutOfOffice,
+    releases,
+    fridayProjects,
+    maintenance,
+    md,
+  } = req.body;
   db.run(
-    "INSERT INTO availability (groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [groupCode, sprintId, name, workingDays, OutOfOffice, releases, fridayProjects, maintenance, md],
+    `UPDATE availability
+    SET sprintId=?, workingDays=?, OutOfOffice=?, releases=?, fridayProjects=?, maintenance=?, md=?
+    WHERE groupCode=? name=?`,
+    [
+      sprintId,
+      name,
+      workingDays,
+      OutOfOffice,
+      releases,
+      fridayProjects,
+      maintenance,
+      md,
+    ],
     function (err) {
       if (err) return res.status(500).send(err.message);
-      res.json({ id: this.lastID });
+      if (this.changes === 0 ) return res.status(404).send("Could not find a row for the given details")
+      res.json({ success: true });
     }
   );
 });
