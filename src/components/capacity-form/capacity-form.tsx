@@ -10,6 +10,7 @@ export interface CapacityFormProps {
 }
 
 export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => {
+  const currentGroup = "t3stGr0up1"
   const [loading, setLoading] = useState(true);
   // const [formIsOpen, setFormIsOpen] = useState<boolean>(isOpen);
   const [currentSprint, setCurrentSprint] = useState<string>("");
@@ -34,8 +35,9 @@ export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => 
     console.log("fire away")
     console.log("name", currentName)
     const payload = {
+      groupCode: String(currentGroup),
       sprintId: Number(currentSprint),
-      name: currentName,
+      name: currentName || "",
       workingDays: Number(workingDays),
       outOfOffice: Number(outOfOffice),
       releases: Number(releases),
@@ -59,18 +61,10 @@ export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => 
       fridayProject== null ||
       maintenance == null
     ) {
-      console.log(currentSprint)
-      console.log(currentName)
-      console.log(workingDays)
-      console.log(outOfOffice)
-      console.log(releases)
-      console.log(fridayProject)
-      console.log(maintenance)
       alert("All fields must be filled");
       return;
     }
-
-    console.log("Sending to backend:", payload);
+    console.log(payload)
     await onSubmit(payload);
   };
 

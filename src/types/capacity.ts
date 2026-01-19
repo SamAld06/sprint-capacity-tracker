@@ -1,5 +1,4 @@
 export type capacity = {
-    id: number;
     groupCode: string;
     sprintId: number;
     name: string;

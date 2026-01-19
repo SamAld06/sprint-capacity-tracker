@@ -13,7 +13,7 @@ import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
 
 export default function Capacity() {
   const groupName = "Example group";
-  const latestSprintId = 3;
+  const [latestSprint, setLatestSprint] = useState<number>(1);
   const [capacity, setCapacity] = useState<capacity[] | null>(null);
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
@@ -23,13 +23,13 @@ export default function Capacity() {
     (capacity) => capacity.sprintId === currentSprint
   );
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (data: capacity) => {
     await fetch("http://localhost:3001/availability", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-
+    console.log("databug:",data)
     setIsOpen(false);
   };
 
@@ -38,10 +38,19 @@ export default function Capacity() {
     const fetchSprint = async () => {
       try {
         const data = await availabilityDetailsService.getAll();
-        console.log("data:", data);
         const latestData = getLatestAvaialbilityData(data);
-        setCapacity(data);
+        if(data) {
+          setCapacity(data);
+        } else {
+          setCapacity(null)
+        }
+        if (latestData) {
+        setLatestSprint(latestData?.sprintId)
         setCurrentSprint(latestData.sprintId);
+        } else {
+        setLatestSprint(0)
+        setCurrentSprint(0);
+        }
       } catch (err) {
         setErr((err as Error).message);
       } finally {
@@ -53,8 +62,6 @@ export default function Capacity() {
 
   if (loading) return <p>Loading sprints...</p>;
   if (err) return <p>Error: {err}</p>;
-  console.log("data2:", capacity);
-  console.log("current:", currentSprint);
   return (
     <>
       <NavBar />
@@ -75,13 +82,13 @@ export default function Capacity() {
             </button>
             {capacity && (
               <h1 className={styles.sprintHeader}>
-                Current sprint:{currentSprint}
+                Current sprint: {currentSprint}
               </h1>
             )}
             <button
               onClick={() => setCurrentSprint(currentSprint + 1)}
               className={
-                currentSprint != latestSprintId
+                currentSprint != latestSprint
                   ? styles.selector
                   : styles.hidden
               }
@@ -107,7 +114,7 @@ export default function Capacity() {
           )}
           <section className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}
-            {getAllCapacity.map((capacity) => (
+            {getAllCapacity && getAllCapacity.map((capacity) => (
               <CapacityCard capacityData={capacity} />
             ))}
           </section>

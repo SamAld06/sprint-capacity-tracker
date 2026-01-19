@@ -9,6 +9,8 @@ export const availabilityDetailsService = {
             const err = await res.text();
             throw new Error(`Api fetch for capacity details failed with error:): ${err}`)
         }
-        return res.json()
+        const data = await res.json()
+        console.log("res", data)
+        return data
     }
 }
