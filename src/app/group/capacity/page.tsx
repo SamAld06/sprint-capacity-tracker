@@ -9,6 +9,7 @@ import { getLatestAvaialbilityData } from "@/helpers/getLatestAvailabilityData";
 import { availabilityDetailsService } from "@/services/availabilityDetailsService";
 import { capacity } from "@/types/capacity";
 import { CapacityForm } from "@/components/capacity-form/capacity-form";
+import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
 
 export default function Capacity() {
   const groupName = "Example group";
@@ -31,6 +32,8 @@ export default function Capacity() {
 
     setIsOpen(false);
   };
+
+
   useEffect(() => {
     const fetchSprint = async () => {
       try {
@@ -93,7 +96,7 @@ export default function Capacity() {
             >
               Edit capacity
             </button>
-            <button className={styles.dataButton}>Add capacity table</button>
+            <NewSprintButton/>
           </section>
           {isOpen && (
             <CapacityForm
