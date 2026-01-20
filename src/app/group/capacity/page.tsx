@@ -10,6 +10,7 @@ import { availabilityDetailsService } from "@/services/availabilityDetailsServic
 import { capacity } from "@/types/capacity";
 import { CapacityForm } from "@/components/capacity-form/capacity-form";
 import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
+import { CapacitySummaryCard } from "@/components/capacity-summary-card/capacity-summary-card";
 
 export default function Capacity() {
   const groupName = "Example group";
@@ -20,8 +21,9 @@ export default function Capacity() {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const getAllCapacity = capacity?.filter(
-    (capacity) => capacity.sprintId === currentSprint
+    (capacity) => capacity.sprintId === currentSprint,
   );
+  const filteredData = getAllCapacity;
 
   const handleSubmit = async (data: capacity) => {
     await fetch("http://localhost:3001/availability", {
@@ -29,27 +31,26 @@ export default function Capacity() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    console.log("databug:",data)
+    console.log("databug:", data);
     setIsOpen(false);
   };
-
 
   useEffect(() => {
     const fetchSprint = async () => {
       try {
         const data = await availabilityDetailsService.getAll();
         const latestData = getLatestAvaialbilityData(data);
-        if(data) {
+        if (data) {
           setCapacity(data);
         } else {
-          setCapacity(null)
+          setCapacity(null);
         }
         if (latestData) {
-        setLatestSprint(latestData?.sprintId)
-        setCurrentSprint(latestData.sprintId);
+          setLatestSprint(latestData?.sprintId);
+          setCurrentSprint(latestData.sprintId);
         } else {
-        setLatestSprint(0)
-        setCurrentSprint(0);
+          setLatestSprint(0);
+          setCurrentSprint(0);
         }
       } catch (err) {
         setErr((err as Error).message);
@@ -69,10 +70,10 @@ export default function Capacity() {
         <header className={styles.groupName}>
           <h1>{groupName}</h1>
         </header>
-        <section>
+        <div>
           <TabBar />
-        </section>
-        <section>
+        </div>
+        <div>
           <header className={styles.navigation}>
             <button
               onClick={() => setCurrentSprint(currentSprint - 1)}
@@ -88,23 +89,21 @@ export default function Capacity() {
             <button
               onClick={() => setCurrentSprint(currentSprint + 1)}
               className={
-                currentSprint != latestSprint
-                  ? styles.selector
-                  : styles.hidden
+                currentSprint != latestSprint ? styles.selector : styles.hidden
               }
             >
               -&gt;
             </button>
           </header>
-          <section className={styles.buttonSection}>
+          <div className={styles.buttonSection}>
             <button
               className={styles.dataButton}
               onClick={() => setIsOpen(true)}
             >
               Edit capacity
             </button>
-            <NewSprintButton/>
-          </section>
+            <NewSprintButton />
+          </div>
           {isOpen && (
             <CapacityForm
               onClose={() => setIsOpen(false)}
@@ -112,13 +111,15 @@ export default function Capacity() {
               onSubmit={handleSubmit}
             />
           )}
-          <section className={styles.cards}>
+          <div className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}
-            {getAllCapacity && getAllCapacity.map((capacity) => (
-              <CapacityCard capacityData={capacity} />
-            ))}
-          </section>
-        </section>
+            {filteredData && <CapacitySummaryCard capacityData={filteredData} />}
+            {getAllCapacity &&
+              getAllCapacity.map((capacity) => (
+                <CapacityCard capacityData={capacity} />
+              ))}
+          </div>
+        </div>
       </main>
     </>
   );

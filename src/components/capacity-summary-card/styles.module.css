@@ -1,0 +1,29 @@
+.root {
+    display: flex;
+    padding: 0.5rem;
+    align-content: center;
+    flex-direction: column;
+    background-color: #647687;
+    max-width: 600px;
+    border: 0.5rem;
+    border-style: double;
+    border-color: black;
+}
+
+.title {
+    display: flex;
+    padding: 0.5rem;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.details {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 0.5rem;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-around;
+    font-size: 1.1rem;
+}
