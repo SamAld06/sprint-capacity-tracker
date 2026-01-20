@@ -1,18 +1,21 @@
 import { capacity } from "@/types/capacity";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { getMdForUser } from "@/helpers/getMdForUser";
 
 export interface CapacityFormProps {
-  onClose: () => void
+  onClose: () => void;
   data: capacity[] | null;
-  onSubmit: (data: capacity) => void
+  onSubmit: (data: capacity) => void;
 }
 
-export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => {
-  const currentGroup = "t3stGr0up1"
+export const CapacityForm = ({
+  onClose,
+  data,
+  onSubmit,
+}: CapacityFormProps) => {
+  const currentGroup = "t3stGr0up1";
   const [loading, setLoading] = useState(true);
-  // const [formIsOpen, setFormIsOpen] = useState<boolean>(isOpen);
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [currentName, setCurrentName] = useState<string | null>(null);
   const [workingDays, setWorkingDays] = useState<string>("");
@@ -22,20 +25,37 @@ export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => 
   const [maintenance, setMaintenance] = useState<string>("");
   const getTeamMemberData =
     currentName && currentSprint
-      ? data?.filter(
-          (data) =>
-            currentName === data.name && Number(currentSprint) === data.sprintId
+      ? data?.find(
+          (user) =>
+            currentName === user.name &&
+            Number(currentSprint) === user.sprintId,
         )
-      : [];
-  // if (!isOpen) {
-  //   return null;
-  // }
+      : undefined;
+
+  console.log("teamdata:", getTeamMemberData);
+
+  useEffect(() => {
+    if (!getTeamMemberData) return;
+    if (getTeamMemberData.workingDays !== undefined) {
+      setWorkingDays(String(getTeamMemberData.workingDays));
+    }
+    if (getTeamMemberData.outOfOffice !== undefined) {
+      setOutOfOffice(String(getTeamMemberData.outOfOffice));
+    }
+    if (getTeamMemberData.releases !== undefined) {
+      setReleases(String(getTeamMemberData.releases));
+    }
+    if (getTeamMemberData.fridayProjects !== undefined) {
+      setFridayProject(String(getTeamMemberData.fridayProjects));
+    }
+    if (getTeamMemberData.maintenance !== undefined) {
+      setMaintenance(String(getTeamMemberData.maintenance));
+    }
+  }, [getTeamMemberData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("fire away")
-    console.log("name", currentName)
     const payload = {
-      groupCode: String(currentGroup),
+      groupCode: currentGroup,
       sprintId: Number(currentSprint),
       name: currentName || "",
       workingDays: Number(workingDays),
@@ -58,30 +78,19 @@ export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => 
       workingDays == null ||
       outOfOffice == null ||
       releases == null ||
-      fridayProject== null ||
+      fridayProject == null ||
       maintenance == null
     ) {
       alert("All fields must be filled");
       return;
     }
-    console.log(payload)
     await onSubmit(payload);
   };
-
-
-  console.log("form:", data);
-  console.log(currentName);
-  console.log(getTeamMemberData);
-  console.log(currentSprint);
-  console.log("loading:", loading)
 
   return (
     <div className={styles.root}>
       <div className={styles.modal}>
-        <button
-          onClick={onClose}
-          className={styles.closeButton}
-        >
+        <button onClick={onClose} className={styles.closeButton}>
           X
         </button>
         <form onSubmit={handleSubmit}>
@@ -157,12 +166,7 @@ export const CapacityForm = ({ onClose, data, onSubmit }: CapacityFormProps) => 
               ></input>
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={false}
-            className={styles.saveButton}
-            
-          >
+          <button type="submit" disabled={false} className={styles.saveButton}>
             Save
           </button>
         </form>
