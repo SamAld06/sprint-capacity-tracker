@@ -1,9 +1,11 @@
 export type capacity = {
-    id: number;
     groupCode: string;
     sprintId: number;
     name: string;
-    workAssigned: number;
-    workCompleted: number;
-    averagePerMd: number;
+    workingDays: number;
+    outOfOffice: number;
+    releases: number;
+    fridayProjects: number;
+    maintenance: number;
+    md: number;
 }

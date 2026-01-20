@@ -1,9 +1,9 @@
-import { capacity } from "@/types/capacity";
+import { workProgress } from "@/types/workProgress";
 
 const APIURL = "http://localhost:3001/capacity"
 
 export const capacityDetailsService = {
-    getAll: async (): Promise<capacity[]> => {
+    getAll: async (): Promise<workProgress[]> => {
         const res = await fetch(APIURL)
         if (!res.ok) {
             const err = await res.text();

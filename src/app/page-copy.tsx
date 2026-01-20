@@ -18,9 +18,6 @@ export default function Home() {
         <Link href="/groups">
           <button className={styles.button}>Join group</button>
         </Link>
-        <Link href="/group/dashboard">
-          <button className={styles.button}>View single dashboard</button>
-        </Link>
       </div>
     </main>
   );
