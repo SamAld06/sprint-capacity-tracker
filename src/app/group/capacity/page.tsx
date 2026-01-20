@@ -113,9 +113,11 @@ export default function Capacity() {
               onSubmit={handleSubmit}
             />
           )}
+          <div className={styles.summaryCard}>
+            {filteredData && <CapacitySummaryCard capacityData={filteredData} />}
+          </div>
           <div className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}
-            {filteredData && <CapacitySummaryCard capacityData={filteredData} />}
             {getAllCapacity &&
               getAllCapacity.map((capacity) => (
                 <CapacityCard capacityData={capacity} />

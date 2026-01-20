@@ -67,3 +67,10 @@
     align-items: center;
     padding: 1rem;
 }
+
+.summaryCard {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+}
