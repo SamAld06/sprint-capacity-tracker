@@ -26,13 +26,15 @@ export default function Capacity() {
   const filteredData = getAllCapacity;
 
   const handleSubmit = async (data: capacity) => {
-    await fetch("http://localhost:3001/availability", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    console.log("databug:", data);
-    setIsOpen(false);
+      const res = await fetch("http://localhost:3001/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      setIsOpen(false);
+      if (res.ok) {
+        window.location.reload()
+      }
   };
 
   useEffect(() => {

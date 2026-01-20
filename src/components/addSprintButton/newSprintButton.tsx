@@ -13,8 +13,9 @@ export const NewSprintButton = () => {
             method: "POST",
           }
         );
-        const data = await res.json();
-        console.log("completed", data);
+        if (res.ok) {
+          window.location.reload()
+        }
       }}
     >
       Add sprint
