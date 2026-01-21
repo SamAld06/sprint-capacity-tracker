@@ -1,5 +1,5 @@
 import { capacity } from "@/types/capacity";
-import styles from "./styles.module.css"
+import styles from "../styles.module.css";
 
 export interface CapacityCardProps {
   capacityData: capacity

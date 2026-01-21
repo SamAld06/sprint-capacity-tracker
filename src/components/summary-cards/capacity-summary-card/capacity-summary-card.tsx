@@ -1,5 +1,5 @@
 import { capacity } from "@/types/capacity";
-import styles from "./styles.module.css"
+import styles from "../styles.module.css";
 import { getCapacitySummary } from "@/helpers/getCapacitySummary";
 
 export interface CapacityCardProps {

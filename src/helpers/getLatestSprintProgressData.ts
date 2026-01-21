@@ -1,6 +1,6 @@
-import { capacity } from "@/types/capacity"
+import { workProgress } from "@/types/workProgress"
 
-export function getLatestAvaialbilityData(data: capacity[]) {
+export function getLatestSprintProgressData(data: workProgress[]) {
     if (!data) {
         return null
     }
