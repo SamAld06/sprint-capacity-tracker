@@ -1,7 +1,7 @@
 "use client";
 
 import { NavBar } from "@/components/navbar/navBar";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
 import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
@@ -9,36 +9,56 @@ import { sprintProgressDetailsService } from "@/services/sprintProgressDetailsSe
 import { getLatestSprintProgressData } from "@/helpers/getLatestSprintProgressData";
 import { workProgress } from "@/types/workProgress";
 import { SprintProgressCard } from "@/components/details-cards/sprint-progress-card/sprint-progress-card";
+import { SprintProgressSummaryCard } from "@/components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
+import { sprintDetailsService } from "@/services/sprintDetailsService";
+import { getLatestSprintData } from "@/helpers/getLatestSprintData";
+import { sprint } from "@/types/sprint";
 
 export default function Sprint() {
-  const groupName = "Example group"
+  const groupName = "Example group";
   const [latestSprint, setLatestSprint] = useState<number>(1);
-  const [sprintProgress, setSprintProgress] = useState<workProgress[] | null>(null);
+  const [sprintProgress, setSprintProgress] = useState<workProgress[] | null>(
+    null,
+  );
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
+  const [sprintData, setSprintData] = useState<sprint[] | null>(null) 
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const getAllCapacity = sprintProgress?.filter(
-    (sprintProgress) => sprintProgress.sprintId === currentSprint,
+    (sprintProgress) => sprintProgress.sprintId === currentSprint
   );
-  const filteredData = getAllCapacity;
+  const filteredData = sprintData?.filter(
+    (sprintData) => sprintData.sprintId === currentSprint
+  );
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await sprintProgressDetailsService.getAll();
-        const latestData = getLatestSprintProgressData(data)
-        if (data) {
-          setSprintProgress(data);
+        const sprintData = await sprintDetailsService.getAll();
+        const sprintProgressdata = await sprintProgressDetailsService.getAll();
+        const latestSprintProgressData = getLatestSprintProgressData(sprintProgressdata);
+        const latestSprintData = getLatestSprintData(sprintData)
+
+        if (sprintProgressdata) {
+          setSprintProgress(sprintProgressdata);
         } else {
           setSprintProgress(null);
         }
-        if (latestData) {
-          setLatestSprint(latestData?.sprintId);
-          setCurrentSprint(latestData.sprintId);
+
+        if (sprintData) {
+          setSprintData(sprintData)
+        } else {
+          setSprintData(null)
+        }
+
+        if (latestSprintProgressData && latestSprintData) {
+          setLatestSprint(latestSprintProgressData?.sprintId);
+          setCurrentSprint(latestSprintProgressData.sprintId);
         } else {
           setLatestSprint(0);
           setCurrentSprint(0);
         }
+
       } catch (err) {
         setErr((err as Error).message);
       } finally {
@@ -47,6 +67,7 @@ export default function Sprint() {
     };
     fetchSprint();
   }, []);
+  console.log('sprint', sprintData)
   return (
     <>
       <NavBar />
@@ -66,9 +87,9 @@ export default function Sprint() {
               &lt;-
             </button>
             {/* {capacity && ( */}
-              <h1 className={styles.sprintHeader}>
-                Current sprint: {currentSprint}
-              </h1>
+            <h1 className={styles.sprintHeader}>
+              Current sprint: {currentSprint}
+            </h1>
             {/* )} */}
             <button
               onClick={() => setCurrentSprint(currentSprint + 1)}
@@ -84,9 +105,9 @@ export default function Sprint() {
               className={styles.dataButton}
               onClick={() => setIsOpen(true)}
             >
-              Edit capacity
+              Edit sprint progress
             </button>
-            <NewSprintButton/>
+            <NewSprintButton />
           </div>
           {isOpen && (
             <SprintForm
@@ -96,7 +117,9 @@ export default function Sprint() {
             />
           )}
           <div className={styles.summaryCard}>
-            {/* {filteredData && <SprintSummaryCard capacityData={filteredData} />} */}
+            {getAllCapacity && filteredData && (
+              <SprintProgressSummaryCard sprintProgressData={getAllCapacity} sprintData={filteredData}/>
+            )}
           </div>
           <div className={styles.cards}>
             {!sprintProgress && <h1>Error loading data</h1>}
@@ -110,4 +133,3 @@ export default function Sprint() {
     </>
   );
 }
-
