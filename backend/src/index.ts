@@ -106,6 +106,7 @@ app.get("/availability", (req, res) => {
 });
 
 app.get("/availability/all", (req, res) => {
+  //Get specific availability 
   db.all(
     "SELECT availability.*, sprint.sprintId AS sprintId FROM availability JOIN sprint ON availability.sprintID = sprint.sprintId",
     (err, rows) => {
@@ -159,13 +160,29 @@ app.post("/capacity", (req, res) => {
     workCompleted,
     averagePerMd,
   } = req.body;
+  if (!groupCode || !name || !sprintId) {
+    return res.status(400).send("groupCode / name / sprintId are missing",);
+  }
   db.run(
-    "INSERT INTO capacity (groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)",
-    [groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd],
+    `UPDATE capacity
+    SET workAssigned=?, workCompleted=?, averagePerMd=?
+    WHERE sprintId=? AND groupCode=? AND name=?`,
+    [
+      workAssigned,
+      workCompleted,
+      averagePerMd,
+      sprintId,
+      groupCode,
+      name,
+    ],
     function (err) {
       if (err) return res.status(500).send(err.message);
-      res.json({ id: this.lastID });
-    }
+      if (this.changes === 0)
+        return res
+          .status(404)
+          .send("Could not find a row for the given details");
+      res.json({ success: true });
+    },
   );
 });
 
@@ -184,7 +201,7 @@ app.post("/availability", (req, res) => {
     md,
   } = req.body;
   if (!groupCode || !name || !sprintId) {
-    return res.status(400).send("groupCode / name / sprintId are missing")
+    return res.status(400).send("groupCode / name / sprintId are missing");
   }
   db.run(
     `UPDATE availability
@@ -199,7 +216,7 @@ app.post("/availability", (req, res) => {
       md,
       sprintId,
       groupCode,
-      name
+      name,
     ],
     function (err) {
       if (err) return res.status(500).send(err.message);
@@ -208,7 +225,7 @@ app.post("/availability", (req, res) => {
           .status(404)
           .send("Could not find a row for the given details");
       res.json({ success: true });
-    }
+    },
   );
 });
 
@@ -259,6 +276,48 @@ app.post("/availability/new-sprint", (req, res) => {
               maintenance,
               md
             ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0)
+          `);
+
+          users.forEach((user) => {
+            stmt.run(groupCode, nextSprintId, user.name);
+          });
+
+          stmt.finalize((err) => {
+            if (err) {
+              return res.status(500).json(err.message);
+            }
+
+            res.json({
+              completed: true,
+              sprintId: nextSprintId,
+              rowsCreated: users.length,
+            });
+          });
+        }
+      );
+      db.all(
+        "SELECT DISTINCT name FROM capacity WHERE groupCode = ?",
+        [groupCode],
+        (err, users: UserDetailsRow[]) => {
+          if (err) {
+            return res.status(500).json(err.message);
+          }
+          if (users.length == 0) {
+            return res
+              .status(400)
+              .json({ error: "Could not find any users in group" });
+          }
+
+          const stmt = db.prepare(`
+            INSERT INTO capacity (
+              groupCode,
+              sprintId,
+              name,
+              workAssigned,
+              workCompleted,
+              averagePerMd,
+            
+            ) VALUES (?, ?, ?, 0, 0, 0,)
           `);
 
           users.forEach((user) => {

@@ -13,6 +13,7 @@ import { SprintProgressSummaryCard } from "@/components/summary-cards/sprint-pro
 import { sprintDetailsService } from "@/services/sprintDetailsService";
 import { getLatestSprintData } from "@/helpers/getLatestSprintData";
 import { sprint } from "@/types/sprint";
+import { SprintProgressForm } from "@/components/details-forms/sprint-progress-form/sprint-progress-form";
 
 export default function Sprint() {
   const groupName = "Example group";
@@ -31,6 +32,20 @@ export default function Sprint() {
   const filteredData = sprintData?.filter(
     (sprintData) => sprintData.sprintId === currentSprint
   );
+
+  const handleSubmit = async (data: workProgress) => {
+    console.log("data", data)
+      const res = await fetch("http://localhost:3001/capacity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      setIsOpen(false);
+      if (res.ok) {
+        window.location.reload()
+      }
+  };
+
   useEffect(() => {
     const fetchSprint = async () => {
       try {
@@ -110,7 +125,7 @@ export default function Sprint() {
             <NewSprintButton />
           </div>
           {isOpen && (
-            <SprintForm
+            <SprintProgressForm
               onClose={() => setIsOpen(false)}
               data={sprintProgress}
               onSubmit={handleSubmit}
