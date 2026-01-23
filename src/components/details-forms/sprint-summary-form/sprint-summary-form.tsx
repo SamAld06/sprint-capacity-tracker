@@ -1,0 +1,170 @@
+import { useEffect, useState } from "react";
+import styles from "../styles.module.css";
+import { workProgress } from "@/types/workProgress";
+import { sprint } from "@/types/sprint";
+import { getTeamCompletionDifference } from "@/helpers/getTeamCompletionDifference";
+
+export interface SprintProgressFormProps {
+  onClose: () => void;
+  progressData: workProgress[] | null;
+  summaryData: sprint[] | null;
+  onSubmit: (data: sprint) => void;
+}
+
+export const SprintSummaryForm = ({
+  onClose,
+  progressData,
+  summaryData,
+  onSubmit,
+}: SprintProgressFormProps) => {
+  const currentGroup = "t3stGr0up1";
+  const [loading, setLoading] = useState(true);
+  const [currentSprint, setCurrentSprint] = useState<string>("");
+  const [workPlanned, setworkPlanned] = useState<string>("");
+  const [workAdded, setWorkAdded] = useState<string>("");
+  const [workRemoved, setworkRemoved] = useState<string>("")
+  const [averagePerMd, setAveragePerMd] = useState<string>("")
+  const [totalMd,setTotalMd] = useState<string>("")
+  const [workCompleted, setWorkCompleted] = useState<string>("")
+  const [completionDifference, setCompletionDifference] = useState<string>("")
+  const getTeamMemberData =
+    currentSprint
+      ? summaryData?.find(
+          (sprint) =>
+            Number(currentSprint) === sprint.sprintId,
+        )
+      : undefined;
+  console.log("HEREEEteamdata:", getTeamMemberData);
+  console.log("HERE2", progressData)
+
+  useEffect(() => {
+    if (!getTeamMemberData) return;
+    if (getTeamMemberData.planned !== undefined) {
+      setworkPlanned(String(getTeamMemberData.planned));
+    }
+    if (getTeamMemberData.added !== undefined) {
+      setWorkAdded(String(getTeamMemberData.added));
+    }
+    if (getTeamMemberData.removed!== undefined) {
+      setworkRemoved(String(getTeamMemberData.removed));
+    }
+  }, [getTeamMemberData]);
+    const latestSprintProgressData = progressData?.filter(
+        (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
+    );
+    console.log("currentHEREEEEE", latestSprintProgressData)
+    // setCompletionDifference(getTeamCompletionDifference())
+  const handleSubmit = async (e: React.FormEvent) => {
+    // const latestSprintProgressData = progressData?.filter(
+    //     (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
+    // );
+    // console.log("current", latestSprintProgressData)
+    // setCompletionDifference(getTeamCompletionDifference())
+    // data.reduce((total, member) => total + member.workCompleted, 0)
+    const payload = {
+      groupCode: currentGroup,
+      sprintId: Number(currentSprint),
+      planned: Number(workPlanned),
+      added: Number(workAdded),
+      removed: Number(workRemoved),
+      totalCompleted: Number(workCompleted),
+      totalMd: Number(totalMd),
+      plannedCompletedDifference: Number(completionDifference)
+    };
+    e.preventDefault();
+    if (
+      currentSprint == null ||
+      workPlanned == null ||
+      workAdded == null ||
+      workRemoved == null ||
+      workCompleted == null ||
+      totalMd == null ||
+      completionDifference == null 
+    ) {
+      alert("All fields must be filled");
+      return;
+    }
+    console.log("payload", payload)
+    await onSubmit(payload);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.modal}>
+        <button onClick={onClose} className={styles.closeButton}>
+          X
+        </button>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.inputs}>
+            <div className={styles.inputRow}>
+              <label>Sprint to edit:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={currentSprint}
+                onChange={(e) => setCurrentSprint(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Work planned:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={workPlanned}
+                onChange={(e) => setworkPlanned(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Work added:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={workAdded}
+                onChange={(e) => setWorkAdded(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Work removed:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={workRemoved}
+                onChange={(e) => setworkRemoved(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Work completed:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={workCompleted}
+                onChange={(e) => setworkRemoved(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Total md's:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={totalMd}
+                onChange={(e) => setworkRemoved(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Planned completed difference:</label>
+              <input
+                className={styles.inputBox}
+                type="number"
+                value={completionDifference}
+                onChange={(e) => setworkRemoved(e.target.value)}
+              ></input>
+            </div>
+          </div>
+          <button type="submit" disabled={false} className={styles.saveButton}>
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};

@@ -14,6 +14,7 @@ import { sprintDetailsService } from "@/services/sprintDetailsService";
 import { getLatestSprintData } from "@/helpers/getLatestSprintData";
 import { sprint } from "@/types/sprint";
 import { SprintProgressForm } from "@/components/details-forms/sprint-progress-form/sprint-progress-form";
+import { SprintSummaryForm } from "@/components/details-forms/sprint-summary-form/sprint-summary-form";
 
 export default function Sprint() {
   const groupName = "Example group";
@@ -26,6 +27,7 @@ export default function Sprint() {
   const [sprintData, setSprintData] = useState<sprint[] | null>(null) 
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [summaryFormIsOpen, setSummaryFormIsOpen] = useState<boolean>(false);
   const getAllCapacity = sprintProgress?.filter(
     (sprintProgress) => sprintProgress.sprintId === currentSprint
   );
@@ -44,6 +46,16 @@ export default function Sprint() {
       if (res.ok) {
         window.location.reload()
       }
+  };
+
+    const handleSummaryFormSubmit = async (data: sprint) => {
+    console.log("data", data)
+      const res = await fetch("http://localhost:3001/sprint", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      setIsOpen(false);
   };
 
   useEffect(() => {
@@ -82,7 +94,8 @@ export default function Sprint() {
     };
     fetchSprint();
   }, []);
-  console.log('sprint', sprintData)
+  console.log('sprintHERE', sprintData)
+  console.log('PROGRESSHERE', sprintProgress)
   return (
     <>
       <NavBar />
@@ -122,6 +135,12 @@ export default function Sprint() {
             >
               Edit sprint progress
             </button>
+            <button
+              className={styles.dataButton}
+              onClick={() => setSummaryFormIsOpen(true)}
+            >
+              Edit summary
+            </button>
             <NewSprintButton />
           </div>
           {isOpen && (
@@ -129,6 +148,14 @@ export default function Sprint() {
               onClose={() => setIsOpen(false)}
               data={sprintProgress}
               onSubmit={handleSubmit}
+            />
+          )}
+          {summaryFormIsOpen && (
+            <SprintSummaryForm
+            onClose={() => setSummaryFormIsOpen(false)}
+            progressData= {sprintProgress}
+            summaryData= {sprintData}
+            onSubmit={handleSummaryFormSubmit}
             />
           )}
           <div className={styles.summaryCard}>

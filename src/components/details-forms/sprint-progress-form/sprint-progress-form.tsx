@@ -20,7 +20,6 @@ export const SprintProgressForm = ({
   const [workAssigned, setworkAssigned] = useState<string>("");
   const [workCompleted, setWorkCompleted] = useState<string>("");
   const [averagePerMd, setAveragePerMd] = useState<string>("0.7")
-//   const [workAdded, setWorkAdded] = useState<string>("");
   const getTeamMemberData =
     currentName && currentSprint
       ? data?.find(
@@ -40,9 +39,6 @@ export const SprintProgressForm = ({
     if (getTeamMemberData.workCompleted !== undefined) {
       setWorkCompleted(String(getTeamMemberData.workCompleted));
     }
-    // if (getTeamMemberData.workAdded!== undefined) {
-    //   setWorkAdded(String(getTeamMemberData.releases));
-    // }
   }, [getTeamMemberData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -120,15 +116,6 @@ export const SprintProgressForm = ({
                 onChange={(e) => setWorkCompleted(e.target.value)}
               ></input>
             </div>
-            {/* <div className={styles.inputRow}>
-              <label>Work added:</label>
-              <input
-                className={styles.inputBox}
-                type="number"
-                value={workAdded}
-                onChange={(e) => setWorkAdded(e.target.value)}
-              ></input>
-            </div> */}
           </div>
           <button type="submit" disabled={false} className={styles.saveButton}>
             Save

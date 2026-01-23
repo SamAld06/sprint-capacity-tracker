@@ -85,7 +85,21 @@ app.get("/", (req, res) => {
     });
   });
 });
+
 app.get("/capacity", (req, res) => {
+  //get all capacity info
+  const groupCode = "t3stGr0up1";
+  db.all(
+    "SELECT * FROM capacity WHERE groupCode = ? ORDER BY sprintId, groupCode, name",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.get("/capacity/all", (req, res) => {
   db.all(
     "SELECT capacity.*, sprint.sprintId AS sprintId FROM capacity JOIN sprint ON capacity.sprintID = sprint.sprintId",
     (err, rows) => {
@@ -126,28 +140,39 @@ app.get("/sprint", (req, res) => {
 app.post("/sprint", (req, res) => {
   const {
     groupCode,
+    sprintId,
     planned,
     added,
     removed,
     totalCompleted,
     totalMd,
-    plannedCompletedDifference,
+    plannedCompletedDifference
   } = req.body;
+  if (!groupCode|| !sprintId) {
+    return res.status(400).send("groupCode / sprintId are missing",);
+  }
   db.run(
-    "INSERT INTO sprint (groupCode, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    `UPDATE sprint
+    SET planned=?, added=?, removed=?, totalCompleted=?, totalMd=?, plannedCompletedDifference=?
+    WHERE sprintId=? AND groupCode=?`,
     [
-      groupCode,
       planned,
       added,
       removed,
       totalCompleted,
       totalMd,
       plannedCompletedDifference,
+      sprintId,
+      groupCode
     ],
     function (err) {
       if (err) return res.status(500).send(err.message);
-      res.json({ id: this.lastID });
-    }
+      if (this.changes === 0)
+        return res
+          .status(404)
+          .send("Could not find a row for the given details");
+      res.json({ success: true });
+    },
   );
 });
 

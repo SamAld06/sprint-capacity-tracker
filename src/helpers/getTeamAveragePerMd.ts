@@ -9,6 +9,6 @@ export function getTeamAveragePerMd(data: workProgress[]) {
     },
     { sum: 0, count: 0 },
   );
-  const result = helper.sum / helper.count;
+  const result = (helper.sum / helper.count).toFixed(2);
   return result
 }

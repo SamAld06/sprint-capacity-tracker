@@ -9,7 +9,5 @@ export function getSprintProgressSummary(data: workProgress[]) {
     const totalWorkCompleted = data.reduce((total, member) => total + member.workCompleted, 0)
     const totalAveragePerMd = getTeamAveragePerMd(data)
     // const totalCompletionDifference = data.reduce((total, member) => total + member.releases, 0)
-    // const totalFridayProjects = data.reduce((total, member) => total + member.fridayProjects, 0)
-    // const totalMaintenance = data.reduce((total, member) => total + member.maintenance, 0)
     return{totalWorkAssigned, totalWorkCompleted, totalAveragePerMd}
 }

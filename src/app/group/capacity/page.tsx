@@ -115,7 +115,9 @@ export default function Capacity() {
             />
           )}
           <div className={styles.summaryCard}>
-            {filteredData && <CapacitySummaryCard capacityData={filteredData} />}
+            {filteredData && (
+              <CapacitySummaryCard capacityData={filteredData} />
+            )}
           </div>
           <div className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}
