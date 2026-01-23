@@ -8,7 +8,7 @@ export const NewSprintButton = () => {
         if (!confirm("Are you sure you want to create a new sprint?")) return;
 
         const res = await fetch(
-          "http://localhost:3001/availability/new-sprint",
+          "http://localhost:3001/new-sprint",
           {
             method: "POST",
           }
