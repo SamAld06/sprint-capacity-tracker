@@ -1,14 +1,9 @@
-// Will calculate the users average per md 
+// Will calculate the users average per md for one sprint
 
-export interface functionProps {
-    userCompleted: number
-    userMd: number
-}
-
-export function getCompletionDiffernce({
-    userCompleted,
-    userMd
-}: functionProps) {
+export function getUserAveragePerMd(
+    userCompleted : number,
+    userMd : number
+) {
     const result = userCompleted / userMd
   return result ;
 }

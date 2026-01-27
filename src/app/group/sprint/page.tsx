@@ -15,6 +15,10 @@ import { getLatestSprintData } from "@/helpers/getLatestSprintData";
 import { sprint } from "@/types/sprint";
 import { SprintProgressForm } from "@/components/details-forms/sprint-progress-form/sprint-progress-form";
 import { SprintSummaryForm } from "@/components/details-forms/sprint-summary-form/sprint-summary-form";
+import { getTeamestimatedCompleted } from "@/helpers/getTeamEstimatedCompleted";
+import { getLatestCapacityData } from "@/helpers/getLatestCapacityData";
+import { capacityDetailsService } from "@/services/capacityDetailsService";
+import { capacity } from "@/types/capacity";
 
 export default function Sprint() {
   const groupName = "Example group";
@@ -27,6 +31,7 @@ export default function Sprint() {
   const [sprintData, setSprintData] = useState<sprint[] | null>(null) 
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [capacityData, setCapacityData] = useState<capacity[] | null>(null) 
   const [summaryFormIsOpen, setSummaryFormIsOpen] = useState<boolean>(false);
   const getAllCapacity = sprintProgress?.filter(
     (sprintProgress) => sprintProgress.sprintId === currentSprint
@@ -65,6 +70,8 @@ export default function Sprint() {
         const sprintProgressdata = await sprintProgressDetailsService.getAll();
         const latestSprintProgressData = getLatestSprintProgressData(sprintProgressdata);
         const latestSprintData = getLatestSprintData(sprintData)
+        const capacityData = await capacityDetailsService.getAll();
+        const latestCapacityData = getLatestCapacityData(capacityData);
 
         if (sprintProgressdata) {
           setSprintProgress(sprintProgressdata);
@@ -76,6 +83,12 @@ export default function Sprint() {
           setSprintData(sprintData)
         } else {
           setSprintData(null)
+        }
+
+        if (capacityData) {
+          setCapacityData(capacityData)
+        } else {
+          setCapacityData(null)
         }
 
         if (latestSprintProgressData && latestSprintData) {
@@ -96,6 +109,14 @@ export default function Sprint() {
   }, []);
   console.log('sprintHERE', sprintData)
   console.log('PROGRESSHERE', sprintProgress)
+  if (sprintProgress && capacityData && sprintData) {
+    getTeamestimatedCompleted({
+      progressData: sprintProgress,
+      capacityData: capacityData,
+      sprintData: sprintData,
+      nextSprintId: latestSprint + 1,
+    });
+  }
   return (
     <>
       <NavBar />

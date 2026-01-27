@@ -110,31 +110,39 @@ app.get("/capacity/all", (req, res) => {
 });
 
 app.get("/availability", (req, res) => {
-  //get all availability info
+  //get all availability info where the groupcode is a specific one
+  const groupCode = "t3stGr0up1";
   db.all(
-    "SELECT * FROM availability ORDER BY sprintId, groupCode, name", (err, rows) => {
+    "SELECT * FROM availability WHERE groupCode = ? ORDER BY sprintId, groupCode, name",
+    [groupCode],
+    (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
-    }
-  )
+    },
+  );
 });
 
 app.get("/availability/all", (req, res) => {
-  //Get specific availability 
+  //Get specific availability
   db.all(
     "SELECT availability.*, sprint.sprintId AS sprintId FROM availability JOIN sprint ON availability.sprintID = sprint.sprintId",
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
-    }
+    },
   );
-})
+});
 
 app.get("/sprint", (req, res) => {
-  db.all("SELECT * FROM sprint", (err, rows) => {
-    if (err) return res.status(500).send(err.message);
-    res.json(rows);
-  });
+  const groupCode = "t3stGr0up1";
+  db.all(
+    "SELECT * FROM sprint WHERE groupCode = ? ORDER BY sprintId, groupCode",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
 });
 
 app.post("/sprint", (req, res) => {

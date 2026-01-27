@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { workProgress } from "@/types/workProgress";
 import { sprint } from "@/types/sprint";
-import { getTeamCompletionDifference } from "@/helpers/getTeamCompletionDifference";
 
 export interface SprintProgressFormProps {
   onClose: () => void;
@@ -27,28 +26,42 @@ export const SprintSummaryForm = ({
   const [totalMd,setTotalMd] = useState<string>("")
   const [workCompleted, setWorkCompleted] = useState<string>("")
   const [completionDifference, setCompletionDifference] = useState<string>("")
-  const getTeamMemberData =
+  const getTeamData =
     currentSprint
       ? summaryData?.find(
           (sprint) =>
             Number(currentSprint) === sprint.sprintId,
         )
       : undefined;
-  console.log("HEREEEteamdata:", getTeamMemberData);
+  console.log("HEREEEteamdata:", getTeamData);
   console.log("HERE2", progressData)
 
   useEffect(() => {
-    if (!getTeamMemberData) return;
-    if (getTeamMemberData.planned !== undefined) {
-      setworkPlanned(String(getTeamMemberData.planned));
+    if (!getTeamData) return;
+    if (getTeamData.planned !== undefined) {
+      setworkPlanned(String(getTeamData.planned));
     }
-    if (getTeamMemberData.added !== undefined) {
-      setWorkAdded(String(getTeamMemberData.added));
+
+    if (getTeamData.added !== undefined) {
+      setWorkAdded(String(getTeamData.added));
     }
-    if (getTeamMemberData.removed!== undefined) {
-      setworkRemoved(String(getTeamMemberData.removed));
+
+    if (getTeamData.removed!== undefined) {
+      setworkRemoved(String(getTeamData.removed));
     }
-  }, [getTeamMemberData]);
+
+    if (getTeamData.totalCompleted!== undefined) {
+      setWorkCompleted(String(getTeamData.totalCompleted));
+    }
+
+    if (getTeamData.totalMd!== undefined) {
+      setTotalMd(String(getTeamData.totalMd));
+    }
+
+    if (getTeamData.plannedCompletedDifference!== undefined) {
+      setCompletionDifference(String(getTeamData.plannedCompletedDifference));
+    }
+  }, [getTeamData]);
     const latestSprintProgressData = progressData?.filter(
         (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
     );
@@ -138,7 +151,7 @@ export const SprintSummaryForm = ({
                 className={styles.inputBox}
                 type="number"
                 value={workCompleted}
-                onChange={(e) => setworkRemoved(e.target.value)}
+                onChange={(e) => setWorkCompleted(e.target.value)}
               ></input>
             </div>
             <div className={styles.inputRow}>
@@ -147,7 +160,7 @@ export const SprintSummaryForm = ({
                 className={styles.inputBox}
                 type="number"
                 value={totalMd}
-                onChange={(e) => setworkRemoved(e.target.value)}
+                onChange={(e) => setTotalMd(e.target.value)}
               ></input>
             </div>
             <div className={styles.inputRow}>
@@ -156,7 +169,7 @@ export const SprintSummaryForm = ({
                 className={styles.inputBox}
                 type="number"
                 value={completionDifference}
-                onChange={(e) => setworkRemoved(e.target.value)}
+                onChange={(e) => setCompletionDifference(e.target.value)}
               ></input>
             </div>
           </div>
