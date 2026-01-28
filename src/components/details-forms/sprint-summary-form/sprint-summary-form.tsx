@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { workProgress } from "@/types/workProgress";
 import { sprint } from "@/types/sprint";
+import { getSprintCompletionDifference } from "@/helpers/getSprintCompletionDifference";
 
 export interface SprintProgressFormProps {
   onClose: () => void;
@@ -66,14 +67,7 @@ export const SprintSummaryForm = ({
         (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
     );
     console.log("currentHEREEEEE", latestSprintProgressData)
-    // setCompletionDifference(getTeamCompletionDifference())
   const handleSubmit = async (e: React.FormEvent) => {
-    // const latestSprintProgressData = progressData?.filter(
-    //     (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
-    // );
-    // console.log("current", latestSprintProgressData)
-    // setCompletionDifference(getTeamCompletionDifference())
-    // data.reduce((total, member) => total + member.workCompleted, 0)
     const payload = {
       groupCode: currentGroup,
       sprintId: Number(currentSprint),
@@ -82,7 +76,7 @@ export const SprintSummaryForm = ({
       removed: Number(workRemoved),
       totalCompleted: Number(workCompleted),
       totalMd: Number(totalMd),
-      plannedCompletedDifference: Number(completionDifference)
+      plannedCompletedDifference: getSprintCompletionDifference(Number(workCompleted), Number(workPlanned))
     };
     e.preventDefault();
     if (
@@ -161,15 +155,6 @@ export const SprintSummaryForm = ({
                 type="number"
                 value={totalMd}
                 onChange={(e) => setTotalMd(e.target.value)}
-              ></input>
-            </div>
-            <div className={styles.inputRow}>
-              <label>Planned completed difference:</label>
-              <input
-                className={styles.inputBox}
-                type="number"
-                value={completionDifference}
-                onChange={(e) => setCompletionDifference(e.target.value)}
               ></input>
             </div>
           </div>

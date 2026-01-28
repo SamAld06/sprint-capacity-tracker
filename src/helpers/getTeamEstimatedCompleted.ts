@@ -7,7 +7,15 @@ import { getSprintCompletionDifference } from "./getSprintCompletionDifference";
 import { getUserFinalAveragePerMd } from "./getUserFinalAveragePerMd";
 import { getTeamFewSprintCompletionDifference } from "./getTeamFewSprintCompletionDifference";
 
-//Will add all the individual estimates
+//Tmrw to do list:
+//
+//Add functionality to update sprint data 
+// (estimate completed, work completed, totalMd, teamAveragePerMd, 
+// team completion difference)
+//
+//When:
+//A new sprint is created
+//When a team member updates their sprint progress
 
 export interface functionProps {
     progressData: workProgress[]
@@ -16,7 +24,7 @@ export interface functionProps {
     nextSprintId: number
 }
 
-export function getTeamestimatedCompleted({
+export function getTeamEstimatedCompleted({
     progressData,
     capacityData,
     sprintData,
@@ -31,6 +39,10 @@ export function getTeamestimatedCompleted({
     );
     const usersSprintAverages: number[] = []
     const completionDifferences: number[] = []
+    console.log("FUNCTION HERE", progressData)
+    console.log("FUNCTION HERE", capacityData)
+    console.log("FUNCTION HERE", sprintData)
+    console.log("FUNCTION HERE", nextSprintId)
     for (const sprint of latestFewSprintData) {
         const sprintData = latestFewSprintData.find(
             data => data.sprintId === sprint.sprintId
@@ -38,6 +50,8 @@ export function getTeamestimatedCompleted({
         if (sprintData?.totalCompleted && sprintData.planned) {
             const completionDifference = getSprintCompletionDifference(sprintData?.totalCompleted, sprintData?.planned)
             completionDifferences.push(completionDifference)
+            console.log("start here", sprintData)
+            console.log(completionDifference)
         } else {
             const completionDifference = 0
             completionDifferences.push(completionDifference)
@@ -80,8 +94,15 @@ export function getTeamestimatedCompleted({
         const fewSprintAverage = getUserFewSprintAveragePerMd(sprintAverages)
         console.log("3sprinbtsdasd", fewSprintAverage)
         const finalAvgPerMd = getUserFinalAveragePerMd(finalCompletionDifferencePercent, fewSprintAverage)
-        usersSprintAverages.push(finalAvgPerMd)
+        console.log(finalAvgPerMd)
+        console.log("afnasdfnadjoasd", nextSprintId)
+        const userMd = capacityData.find(data => data.sprintId === nextSprintId)?.md ?? 0
+        console.log(userMd)
+        const userEstimatedComplete = finalAvgPerMd * userMd
+        usersSprintAverages.push(userEstimatedComplete)
     }
     console.log("ALL AVERAGES", usersSprintAverages)
-  return ;
+    const FinalEstimatedCompleted = usersSprintAverages.reduce((total, num) => total + num, 0)
+    console.log(FinalEstimatedCompleted)
+  return FinalEstimatedCompleted;
 }
