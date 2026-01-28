@@ -9,7 +9,7 @@ import { capacity } from "@/types/capacity";
 export interface SprintProgressCardProps {
   sprintProgressData: workProgress[] |  null;
   sprintData: sprint[] | null;
-  estimatedCompletion : number
+  estimatedCompletion : number | undefined
   allSprintData: sprint[];
   allCapacityData: capacity[];
   allProgressData: workProgress[];

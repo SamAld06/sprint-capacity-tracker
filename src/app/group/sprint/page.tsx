@@ -22,49 +22,54 @@ import { capacity } from "@/types/capacity";
 
 export default function Sprint() {
   const groupName = "Example group";
-  const [estimatedCompleted, setEstimatedCompleted] = useState<number | undefined>(undefined)
+  const [estimatedCompleted, setEstimatedCompleted] = useState<
+    number | undefined
+  >(undefined);
   const [latestSprint, setLatestSprint] = useState<number>(1);
   const [sprintProgress, setSprintProgress] = useState<workProgress[] | null>(
     null,
   );
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
-  const [sprintData, setSprintData] = useState<sprint[] | null>(null) 
+  const [sprintData, setSprintData] = useState<sprint[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [capacityData, setCapacityData] = useState<capacity[] | null>(null) 
+  const [capacityData, setCapacityData] = useState<capacity[] | null>(null);
   const [summaryFormIsOpen, setSummaryFormIsOpen] = useState<boolean>(false);
   const filteredProgressData = sprintProgress?.filter(
-    (sprintProgress) => sprintProgress.sprintId === currentSprint
+    (sprintProgress) => sprintProgress.sprintId === currentSprint,
   );
   const filteredSprintData = sprintData?.filter(
-    (sprintData) => sprintData.sprintId === currentSprint
+    (sprintData) => sprintData.sprintId === currentSprint,
   );
   const filteredCapacityData = capacityData?.filter(
-    (capacityData) => capacityData.sprintId === currentSprint
-  )
+    (capacityData) => capacityData.sprintId === currentSprint,
+  );
 
   const handleSubmit = async (data: workProgress) => {
-    console.log("data", data)
-      const res = await fetch("http://localhost:3001/capacity", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      setIsOpen(false);
-      if (res.ok) {
-        window.location.reload()
-      }
+    console.log("data", data);
+    const res = await fetch("http://localhost:3001/capacity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    setIsOpen(false);
+    if (res.ok) {
+      window.location.reload();
+    }
   };
 
-    const handleSummaryFormSubmit = async (data: sprint) => {
-    console.log("data", data)
-      const res = await fetch("http://localhost:3001/sprint", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      setIsOpen(false);
+  const handleSummaryFormSubmit = async (data: sprint) => {
+    console.log("data", data);
+    const res = await fetch("http://localhost:3001/sprint", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    setIsOpen(false);
+    if (res.ok) {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -72,11 +77,12 @@ export default function Sprint() {
       try {
         const sprintData = await sprintDetailsService.getAll();
         const sprintProgressData = await sprintProgressDetailsService.getAll();
-        const latestSprintProgressData = getLatestSprintProgressData(sprintProgressData);
-        const latestSprintData = getLatestSprintData(sprintData)
+        const latestSprintProgressData =
+          getLatestSprintProgressData(sprintProgressData);
+        const latestSprintData = getLatestSprintData(sprintData);
         const capacityData = await capacityDetailsService.getAll();
         const latestCapacityData = getLatestCapacityData(capacityData);
-        console.log("DATA HEREEE", sprintProgress, capacityData, sprintData)
+        console.log("DATA HEREEE", sprintProgress, capacityData, sprintData);
         if (sprintProgressData) {
           setSprintProgress(sprintProgressData);
         } else {
@@ -84,15 +90,15 @@ export default function Sprint() {
         }
 
         if (sprintData) {
-          setSprintData(sprintData)
+          setSprintData(sprintData);
         } else {
-          setSprintData(null)
+          setSprintData(null);
         }
 
         if (capacityData) {
-          setCapacityData(capacityData)
+          setCapacityData(capacityData);
         } else {
-          setCapacityData(null)
+          setCapacityData(null);
         }
 
         if (latestSprintProgressData && latestSprintData) {
@@ -102,18 +108,22 @@ export default function Sprint() {
           setLatestSprint(0);
           setCurrentSprint(0);
         }
-        // if (sprintProgressData && capacityData && sprintData && latestSprintProgressData) {
-        //   console.log("LOOK OVER HEREEEE", currentSprint)
-        //   setEstimatedCompleted(
-        //     getTeamEstimatedCompleted({
-        //       progressData: sprintProgressData,
-        //       capacityData: capacityData,
-        //       sprintData: sprintData,
-        //       nextSprintId: latestSprintProgressData.sprintId
-        //     }),
-        //   );
-        // }
-
+        if (
+          sprintProgressData &&
+          capacityData &&
+          sprintData &&
+          latestSprintProgressData
+        ) {
+          console.log("LOOK OVER HEREEEE", currentSprint);
+          setEstimatedCompleted(
+            getTeamEstimatedCompleted({
+              progressData: sprintProgressData,
+              capacityData: capacityData,
+              sprintData: sprintData,
+              nextSprintId: latestSprintProgressData.sprintId,
+            }),
+          );
+        }
       } catch (err) {
         setErr((err as Error).message);
       } finally {
@@ -122,9 +132,9 @@ export default function Sprint() {
     };
     fetchSprint();
   }, []);
-  console.log('sprintHERE', sprintData)
-  console.log('PROGRESSHERE', sprintProgress)
-  console.log("CAPACITY HERE:", capacityData)
+  console.log("sprintHERE", sprintData);
+  console.log("PROGRESSHERE", sprintProgress);
+  console.log("CAPACITY HERE:", capacityData);
   return (
     <>
       <NavBar />
@@ -188,7 +198,7 @@ export default function Sprint() {
             />
           )}
           <div className={styles.summaryCard}>
-            {filteredProgressData && filteredSprintData && (
+            {filteredProgressData && filteredSprintData && sprintData && capacityData && sprintProgress &&(
               <SprintProgressSummaryCard
                 sprintProgressData={filteredProgressData}
                 sprintData={filteredSprintData}

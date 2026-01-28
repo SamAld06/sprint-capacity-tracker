@@ -32,7 +32,7 @@ export default function Dashboard() {
     <>
       <NavBar />
       <main className={styles.root}>
-        {sprint.filter((sprint) => sprint.id === 3).map((sprint) => (
+        {sprint.filter((sprint) => sprint.sprintId=== 3).map((sprint) => (
           <div>
         <header className={styles.groupName}>
           <h1>{groupName}</h1>
@@ -44,7 +44,7 @@ export default function Dashboard() {
           <InfoBox title="Sprint Capacity:" data={sprint.planned} />
           <div className={styles.sprintNumber}>
             <p>Current sprint:</p>
-            <p key={sprint.id}>{sprint.id}</p>
+            <p key={sprint.sprintId}>{sprint.sprintId}</p>
           </div>
           <InfoBox title="Available MDs:" data={sprint.totalMd} />
         </section>

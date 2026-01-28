@@ -61,6 +61,9 @@ export function getTeamEstimatedCompleted({
     console.log("differences hereee", completionDifferences)
     console.log("FINAL DIFFERENCE HERE", finalCompletionDifferencePercent)
     for (const user of users) {
+        const allUserCapacityData = capacityData.filter(
+            data => data.name === user
+        )
         const userCapacityData = capacityData.filter(
             data => data.name === user && 
             data.sprintId < nextSprintId && 
@@ -94,15 +97,16 @@ export function getTeamEstimatedCompleted({
         const fewSprintAverage = getUserFewSprintAveragePerMd(sprintAverages)
         console.log("3sprinbtsdasd", fewSprintAverage)
         const finalAvgPerMd = getUserFinalAveragePerMd(finalCompletionDifferencePercent, fewSprintAverage)
-        console.log(finalAvgPerMd)
+        console.log('finalavgpermd', finalAvgPerMd)
         console.log("afnasdfnadjoasd", nextSprintId)
-        const userMd = capacityData.find(data => data.sprintId === nextSprintId)?.md ?? 0
-        console.log(userMd)
+        console.log(capacityData)
+        const userMd = allUserCapacityData.find(data => data.sprintId === nextSprintId)?.md ?? 0
+        console.log('usermd',userMd)
         const userEstimatedComplete = finalAvgPerMd * userMd
         usersSprintAverages.push(userEstimatedComplete)
     }
     console.log("ALL AVERAGES", usersSprintAverages)
-    const FinalEstimatedCompleted = usersSprintAverages.reduce((total, num) => total + num, 0)
+    const FinalEstimatedCompleted = Math.round(usersSprintAverages.reduce((total, num) => total + num, 0));
     console.log(FinalEstimatedCompleted)
   return FinalEstimatedCompleted;
 }

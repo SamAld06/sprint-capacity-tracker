@@ -2,5 +2,5 @@
 
 export function getUserFinalAveragePerMd(completedDifference: number, avgPerMd: number) {
     const result = avgPerMd - (avgPerMd * (completedDifference / 100))
-  return Math.round(result * 100) / 100;
+  return (result * 100) / 100;
 }
