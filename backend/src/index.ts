@@ -35,7 +35,7 @@ db.serialize(() => {
     UNIQUE(groupCode, sprintId)
     )`);
   db.run(`
-    CREATE TABLE IF NOT EXISTS capacity (
+    CREATE TABLE IF NOT EXISTS workProgress (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     groupCode TEXT,
     sprintId INTEGER,
@@ -48,7 +48,7 @@ db.serialize(() => {
     ON DELETE CASCADE
     )`);
   db.run(`
-    CREATE TABLE IF NOT EXISTS availability (
+    CREATE TABLE IF NOT EXISTS capacity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     groupCode TEXT,
     sprintId INTEGER,

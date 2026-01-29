@@ -23,7 +23,7 @@ db.serialize(() => {
             ('t3stGr0up2', 1, 14, 2, 1, 12, 20, 0.154),
             ('t3stGr0up2', 2, 25, 0, 2, 25, 25, 0.182),
             ('t3stGr0up2', 3, 15, 0, 2, 25, 25, 0.182);`);
-  db.exec(`INSERT INTO capacity (
+  db.exec(`INSERT INTO workProgress (
             groupCode,
             sprintId,
             name,
@@ -43,7 +43,7 @@ db.serialize(() => {
             ('t3stGr0up2', 1, 'admin1', 8, 5, 0.5),
             ('t3stGr0up2', 2, 'admin1', 6, 3, 0.429),
             ('t3stGr0up2', 3, 'admin1', 2, 4, 0.667);`);
-  db.exec(`INSERT INTO availability (
+  db.exec(`INSERT INTO capacity (
             groupCode,
             sprintId,
             name,
