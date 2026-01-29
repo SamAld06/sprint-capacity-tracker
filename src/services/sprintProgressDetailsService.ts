@@ -1,6 +1,6 @@
 import { workProgress } from "../types/workProgress";
 
-const APIURL = "http://localhost:3001/capacity"
+const APIURL = "http://localhost:3001/workProgress"
 
 export const sprintProgressDetailsService = {
     getAll: async (): Promise<workProgress[]> => {

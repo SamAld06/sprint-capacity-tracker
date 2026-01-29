@@ -5,8 +5,8 @@ const db = new sqlite3.Database("mydatabase.db");
 db.serialize(() => {
   console.log("Seeding database");
   db.exec("DELETE FROM sprint;");
+  db.exec("DELETE FROM workProgress");
   db.exec("DELETE FROM capacity");
-  db.exec("DELETE FROM availability");
   db.exec(`INSERT INTO sprint (
             groupCode,
             sprintId,
@@ -41,8 +41,14 @@ db.serialize(() => {
             ('t3stGr0up1', 2, 'tester3', 0, 0, 0),
             ('t3stGr0up1', 3, 'tester3', 4, 4, 0.5),
             ('t3stGr0up2', 1, 'admin1', 8, 5, 0.5),
+            ('t3stGr0up2', 1, 'admin2', 6, 3, 0.429),
+            ('t3stGr0up2', 1, 'admin3', 6, 3, 0.429),
             ('t3stGr0up2', 2, 'admin1', 6, 3, 0.429),
-            ('t3stGr0up2', 3, 'admin1', 2, 4, 0.667);`);
+            ('t3stGr0up2', 2, 'admin2', 6, 3, 0.429),
+            ('t3stGr0up2', 2, 'admin3', 6, 3, 0.429),
+            ('t3stGr0up2', 3, 'admin1', 2, 4, 0.667),
+            ('t3stGr0up2', 3, 'admin2', 6, 3, 0.429),
+            ('t3stGr0up2', 3, 'admin3', 6, 3, 0.429);`);
   db.exec(`INSERT INTO capacity (
             groupCode,
             sprintId,
@@ -64,7 +70,13 @@ db.serialize(() => {
             ('t3stGr0up1', 3, 'tester2', 7, 3, 0, 0, 1, 3),
             ('t3stGr0up1', 3, 'tester3', 10, 3, 0, 1, 1, 5),
             ('t3stGr0up2', 1, 'admin1', 6, 0, 0, 0, 0, 6),
+            ('t3stGr0up2', 1, 'admin2', 6, 0, 0, 0, 0, 6),
+            ('t3stGr0up2', 1, 'admin3', 6, 0, 0, 0, 0, 6),
             ('t3stGr0up2', 2, 'admin1', 6, 4, 0, 0, 0, 2),
-            ('t3stGr0up2', 3, 'admin1', 6, 1, 0, 0, 0, 5);`);
+            ('t3stGr0up2', 2, 'admin2', 6, 0, 0, 0, 0, 6),
+            ('t3stGr0up2', 2, 'admin3', 6, 0, 0, 0, 0, 6),
+            ('t3stGr0up2', 3, 'admin1', 6, 1, 0, 0, 0, 5);
+            ('t3stGr0up2', 3, 'admin2', 6, 0, 0, 0, 0, 6),
+            ('t3stGr0up2', 3, 'admin3', 6, 0, 0, 0, 0, 6);`);
   console.log("Seeding complete");
 });

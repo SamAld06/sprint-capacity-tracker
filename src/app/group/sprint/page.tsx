@@ -47,7 +47,7 @@ export default function Sprint() {
   );
 
   const handleSubmit = async (data: workProgress) => {
-    const res = await fetch("http://localhost:3001/capacity", {
+    const res = await fetch("http://localhost:3001/workProgress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
