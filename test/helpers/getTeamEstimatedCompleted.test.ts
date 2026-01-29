@@ -29,13 +29,13 @@ describe('getTeamEstimatedCompleted', () => {
         const progressTestData: workProgress[] = [
             {groupCode: "test", sprintId: 1, name: "tester", workAssigned: 9, workCompleted: 7, averagePerMd: 0.7},
             {groupCode: "test", sprintId: 1, name: "tester2", workAssigned: 7, workCompleted: 5, averagePerMd: 1.25},
-            {groupCode: "test", sprintId: 1, name: "tester3", workAssigned: 3, workCompleted: 3, averagePerMd: 1.5},//sprint1
+            {groupCode: "test", sprintId: 1, name: "tester3", workAssigned: 3, workCompleted: 3, averagePerMd: 1.5},
             {groupCode: "test", sprintId: 2, name: "tester", workAssigned: 7, workCompleted: 5, averagePerMd: 0.625},
             {groupCode: "test", sprintId: 2, name: "tester2", workAssigned: 7, workCompleted: 5, averagePerMd: 1},
-            {groupCode: "test", sprintId: 2, name: "tester3", workAssigned: 5, workCompleted: 4, averagePerMd: 1},//sprint2
+            {groupCode: "test", sprintId: 2, name: "tester3", workAssigned: 5, workCompleted: 4, averagePerMd: 1},
             {groupCode: "test", sprintId: 3, name: "tester", workAssigned: 9, workCompleted: 7, averagePerMd: 0.7},
             {groupCode: "test", sprintId: 3, name: "tester2", workAssigned: 7, workCompleted: 5, averagePerMd: 0.625},
-            {groupCode: "test", sprintId: 3, name: "tester3", workAssigned: 7, workCompleted: 5, averagePerMd: 0.5},//sprint3
+            {groupCode: "test", sprintId: 3, name: "tester3", workAssigned: 7, workCompleted: 5, averagePerMd: 0.5},
             {groupCode: "test", sprintId: 4, name: "tester", workAssigned: 0, workCompleted: 0, averagePerMd: 0},
             {groupCode: "test", sprintId: 4, name: "tester2", workAssigned: 0, workCompleted: 0, averagePerMd: 0},
             {groupCode: "test", sprintId: 4, name: "tester3", workAssigned: 0, workCompleted: 0, averagePerMd: 0}

@@ -16,7 +16,6 @@ export const SprintProgressCard = ({sprintData}: SprintCardProps) => {
         <p className={styles.data}>Work assigned: {sprintData.workAssigned}</p>
         <p className={styles.data}>Work completed: {sprintData.workCompleted}</p>
         <p className={styles.data}>Avg per md: {sprintData.averagePerMd}</p>
-        <p className={styles.data}>Completion difference(%): BLANK</p>
       </section>
     </div>
   );
