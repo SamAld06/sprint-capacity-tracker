@@ -265,7 +265,6 @@ app.post("/availability", (req, res) => {
 app.post("/new-sprint", (req, res) => {
   console.log("NEW SPRINT CALLED AT", new Date().toISOString())
   const groupCode = "t3stGr0up1"; //retrieve group code
-  console.log(groupCode);
   if (!groupCode) {
     return res.status(400).json({ error: "No group code could be found" });
   }
@@ -278,7 +277,6 @@ app.post("/new-sprint", (req, res) => {
       }
       const nextSprintId = (row?.newestSprint ?? 0) + 1;
       const previousSprintId = nextSprintId - 1
-      console.log(nextSprintId);
       db.run(
         "INSERT INTO sprint (groupCode, sprintId, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, 0, 0, 0, 0, 0, 0)",
         [groupCode, nextSprintId],

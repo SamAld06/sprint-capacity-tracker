@@ -66,7 +66,6 @@ export default function Capacity() {
 
   if (loading) return <p>Loading sprints...</p>;
   if (err) return <p>Error: {err}</p>;
-  console.log("filtered", filteredData)
   return (
     <>
       <NavBar />

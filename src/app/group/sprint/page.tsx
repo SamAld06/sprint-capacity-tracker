@@ -47,7 +47,6 @@ export default function Sprint() {
   );
 
   const handleSubmit = async (data: workProgress) => {
-    console.log("data", data);
     const res = await fetch("http://localhost:3001/capacity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -60,7 +59,6 @@ export default function Sprint() {
   };
 
   const handleSummaryFormSubmit = async (data: sprint) => {
-    console.log("data", data);
     const res = await fetch("http://localhost:3001/sprint", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -82,7 +80,6 @@ export default function Sprint() {
         const latestSprintData = getLatestSprintData(sprintData);
         const capacityData = await capacityDetailsService.getAll();
         const latestCapacityData = getLatestCapacityData(capacityData);
-        console.log("DATA HEREEE", sprintProgress, capacityData, sprintData);
         if (sprintProgressData) {
           setSprintProgress(sprintProgressData);
         } else {
@@ -114,7 +111,6 @@ export default function Sprint() {
           sprintData &&
           latestSprintProgressData
         ) {
-          console.log("LOOK OVER HEREEEE", currentSprint);
           setEstimatedCompleted(
             getTeamEstimatedCompleted({
               progressData: sprintProgressData,
@@ -132,9 +128,6 @@ export default function Sprint() {
     };
     fetchSprint();
   }, []);
-  console.log("sprintHERE", sprintData);
-  console.log("PROGRESSHERE", sprintProgress);
-  console.log("CAPACITY HERE:", capacityData);
   return (
     <>
       <NavBar />

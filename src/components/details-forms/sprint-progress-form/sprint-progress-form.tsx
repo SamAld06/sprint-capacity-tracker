@@ -29,7 +29,6 @@ export const SprintProgressForm = ({
         )
       : undefined;
 
-  console.log("teamdata:", getTeamMemberData);
 
   useEffect(() => {
     if (!getTeamMemberData) return;
@@ -61,7 +60,6 @@ export const SprintProgressForm = ({
       alert("All fields must be filled");
       return;
     }
-    console.log("payload", payload)
     await onSubmit(payload);
   };
 

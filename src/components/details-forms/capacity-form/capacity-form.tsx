@@ -32,7 +32,6 @@ export const CapacityForm = ({
         )
       : undefined;
 
-  console.log("teamdata:", getTeamMemberData);
 
   useEffect(() => {
     if (!getTeamMemberData) return;

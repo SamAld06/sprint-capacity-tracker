@@ -34,8 +34,6 @@ export const SprintSummaryForm = ({
             Number(currentSprint) === sprint.sprintId,
         )
       : undefined;
-  console.log("HEREEEteamdata:", getTeamData);
-  console.log("HERE2", progressData)
 
   useEffect(() => {
     if (!getTeamData) return;
@@ -66,7 +64,6 @@ export const SprintSummaryForm = ({
     const latestSprintProgressData = progressData?.filter(
         (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
     );
-    console.log("currentHEREEEEE", latestSprintProgressData)
   const handleSubmit = async (e: React.FormEvent) => {
     const payload = {
       groupCode: currentGroup,
@@ -91,7 +88,6 @@ export const SprintSummaryForm = ({
       alert("All fields must be filled");
       return;
     }
-    console.log("payload", payload)
     await onSubmit(payload);
   };
 

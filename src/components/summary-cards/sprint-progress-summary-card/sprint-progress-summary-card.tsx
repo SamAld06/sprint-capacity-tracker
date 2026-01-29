@@ -20,9 +20,6 @@ export const SprintProgressSummaryCard = ({sprintProgressData, sprintData, estim
         return null
     }
     const totalAveragePerMd = getTeamAveragePerMd(sprintProgressData)
-    console.log('SPRINTHEREeeee***',sprintProgressData)
-    console.log('LOOK HERE', sprintData)
-    console.log(estimatedCompletion)
   return (
     <div className={styles.root}>
       <div className={styles.header}>

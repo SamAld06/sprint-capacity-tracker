@@ -10,7 +10,6 @@ export const capacityDetailsService = {
             throw new Error(`Api fetch for capacity details failed with error:): ${err}`)
         }
         const data = await res.json()
-        console.log("res", data)
         return data
     }
 }
