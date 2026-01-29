@@ -39,6 +39,7 @@ export function getTeamEstimatedCompleted({
     );
     const usersSprintAverages: number[] = []
     const completionDifferences: number[] = []
+    //Get all users and the last 3 sprints of data before current one
     console.log("FUNCTION HERE", progressData)
     console.log("FUNCTION HERE", capacityData)
     console.log("FUNCTION HERE", sprintData)
@@ -57,10 +58,12 @@ export function getTeamEstimatedCompleted({
             completionDifferences.push(completionDifference)
         }
     }
+    //Get sprint completion difference for each of the last 3 sprints
     const finalCompletionDifferencePercent = getTeamFewSprintCompletionDifference(completionDifferences)
     console.log("differences hereee", completionDifferences)
     console.log("FINAL DIFFERENCE HERE", finalCompletionDifferencePercent)
     for (const user of users) {
+        //Get required data for a user in users from each data
         const allUserCapacityData = capacityData.filter(
             data => data.name === user
         )
@@ -79,6 +82,7 @@ export function getTeamEstimatedCompleted({
         console.log("IFJAKJFAKF", user)
         const sprintAverages: number[] = []
         for (const sprint of userCapacityData && userProgressData) {
+            //Get user average md for each sprint
             const sprintProgress = userProgressData.find(
                 data => data.sprintId === sprint.sprintId
             )
@@ -93,6 +97,8 @@ export function getTeamEstimatedCompleted({
                 sprintAverages.push(averagePerMd)
             }
         }
+        //Calculate the users few sprint average md before and after completion
+        //difference, then calculate user estimated capacity and push to array
         console.log("averages here", sprintAverages)
         const fewSprintAverage = getUserFewSprintAveragePerMd(sprintAverages)
         console.log("3sprinbtsdasd", fewSprintAverage)
@@ -105,6 +111,7 @@ export function getTeamEstimatedCompleted({
         const userEstimatedComplete = finalAvgPerMd * userMd
         usersSprintAverages.push(userEstimatedComplete)
     }
+    //calculate final estimated completed for team
     console.log("ALL AVERAGES", usersSprintAverages)
     const FinalEstimatedCompleted = Math.round(usersSprintAverages.reduce((total, num) => total + num, 0));
     console.log(FinalEstimatedCompleted)
