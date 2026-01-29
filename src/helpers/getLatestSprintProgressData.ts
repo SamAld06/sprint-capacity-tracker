@@ -1,4 +1,4 @@
-import { workProgress } from "@/types/workProgress"
+import { workProgress } from "../types/workProgress"
 
 export function getLatestSprintProgressData(data: workProgress[]) {
     if (!data) {

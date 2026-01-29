@@ -1,4 +1,4 @@
-import { workProgress } from "@/types/workProgress";
+import { workProgress } from "../types/workProgress";
 
 export function getTeamAveragePerMd(data: workProgress[]) {
   const helper = data.reduce(

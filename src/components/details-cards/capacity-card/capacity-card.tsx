@@ -1,4 +1,4 @@
-import { capacity } from "@/types/capacity";
+import { capacity } from "../../../types/capacity";
 import styles from "../styles.module.css";
 
 export interface CapacityCardProps {

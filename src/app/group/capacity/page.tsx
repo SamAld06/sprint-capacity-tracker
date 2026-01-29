@@ -1,16 +1,17 @@
 "use client";
 
-import { NavBar } from "@/components/navbar/navBar";
+import { NewSprintButton } from "../../../components/addSprintButton/newSprintButton";
+import { CapacityCard } from "../../../components/details-cards/capacity-card/capacity-card";
+import { CapacityForm } from "../../../components/details-forms/capacity-form/capacity-form";
+import { NavBar } from "../../../components/navbar/navBar";
+import { CapacitySummaryCard } from "../../../components/summary-cards/capacity-summary-card/capacity-summary-card";
+import { TabBar } from "../../../components/tabbar/tabBar";
+import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
+import { capacityDetailsService } from "../../../services/capacityDetailsService";
+import { capacity } from "../../../types/capacity";
 import styles from "./styles.module.css";
-import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
-import { capacity } from "@/types/capacity";
-import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
-import { CapacityCard } from "@/components/details-cards/capacity-card/capacity-card";
-import { CapacitySummaryCard } from "@/components/summary-cards/capacity-summary-card/capacity-summary-card";
-import { CapacityForm } from "@/components/details-forms/capacity-form/capacity-form";
-import { capacityDetailsService } from "@/services/capacityDetailsService";
-import { getLatestCapacityData } from "@/helpers/getLatestCapacityData";
+
 
 export default function Capacity() {
   const groupName = "Example group";

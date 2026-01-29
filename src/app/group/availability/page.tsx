@@ -1,8 +1,9 @@
 "use client";
 
-import { NavBar } from "@/components/navbar/navBar";
+import { NavBar } from '../../../components/navbar/navBar';
+import { TabBar } from '../../../components/tabbar/tabBar';
 import styles from './styles.module.css'
-import { TabBar } from "@/components/tabbar/tabBar";
+
 
 export default function Availability() {
   const groupName = "Example group"

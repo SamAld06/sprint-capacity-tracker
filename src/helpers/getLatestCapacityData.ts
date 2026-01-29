@@ -1,4 +1,4 @@
-import { capacity } from "@/types/capacity"
+import { capacity } from "../types/capacity"
 
 export function getLatestCapacityData(data: capacity[]) {
     if (!data) {

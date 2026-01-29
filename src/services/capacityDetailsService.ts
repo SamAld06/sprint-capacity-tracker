@@ -1,4 +1,4 @@
-import { capacity } from "@/types/capacity";
+import { capacity } from "../types/capacity";
 
 const APIURL = "http://localhost:3001/availability"
 

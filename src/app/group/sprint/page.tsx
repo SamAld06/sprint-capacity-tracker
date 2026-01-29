@@ -1,24 +1,24 @@
 "use client";
 
-import { NavBar } from "@/components/navbar/navBar";
+import { NewSprintButton } from "../../../components/addSprintButton/newSprintButton";
+import { SprintProgressCard } from "../../../components/details-cards/sprint-progress-card/sprint-progress-card";
+import { SprintProgressForm } from "../../../components/details-forms/sprint-progress-form/sprint-progress-form";
+import { SprintSummaryForm } from "../../../components/details-forms/sprint-summary-form/sprint-summary-form";
+import { NavBar } from "../../../components/navbar/navBar";
+import { SprintProgressSummaryCard } from "../../../components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
+import { TabBar } from "../../../components/tabbar/tabBar";
+import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
+import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
+import { getLatestSprintProgressData } from "../../../helpers/getLatestSprintProgressData";
+import { getTeamEstimatedCompleted } from "../../../helpers/getTeamEstimatedCompleted";
+import { capacityDetailsService } from "../../../services/capacityDetailsService";
+import { sprintDetailsService } from "../../../services/sprintDetailsService";
+import { sprintProgressDetailsService } from "../../../services/sprintProgressDetailsService";
+import { capacity } from "../../../types/capacity";
+import { sprint } from "../../../types/sprint";
+import { workProgress } from "../../../types/workProgress";
 import styles from "./styles.module.css";
-import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
-import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
-import { sprintProgressDetailsService } from "@/services/sprintProgressDetailsService";
-import { getLatestSprintProgressData } from "@/helpers/getLatestSprintProgressData";
-import { workProgress } from "@/types/workProgress";
-import { SprintProgressCard } from "@/components/details-cards/sprint-progress-card/sprint-progress-card";
-import { SprintProgressSummaryCard } from "@/components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
-import { sprintDetailsService } from "@/services/sprintDetailsService";
-import { getLatestSprintData } from "@/helpers/getLatestSprintData";
-import { sprint } from "@/types/sprint";
-import { SprintProgressForm } from "@/components/details-forms/sprint-progress-form/sprint-progress-form";
-import { SprintSummaryForm } from "@/components/details-forms/sprint-summary-form/sprint-summary-form";
-import { getTeamEstimatedCompleted } from "@/helpers/getTeamEstimatedCompleted";
-import { getLatestCapacityData } from "@/helpers/getLatestCapacityData";
-import { capacityDetailsService } from "@/services/capacityDetailsService";
-import { capacity } from "@/types/capacity";
 
 export default function Sprint() {
   const groupName = "Example group";

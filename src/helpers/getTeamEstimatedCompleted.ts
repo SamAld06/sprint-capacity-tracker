@@ -1,11 +1,11 @@
-import { capacity } from "@/types/capacity";
-import { workProgress } from "@/types/workProgress";
-import { sprint } from "@/types/sprint";
 import { getUserAveragePerMd } from "./getUserAveragePerMd";
 import { getUserFewSprintAveragePerMd } from "./getUserFewSprintAveragePerMd";
 import { getSprintCompletionDifference } from "./getSprintCompletionDifference";
 import { getUserFinalAveragePerMd } from "./getUserFinalAveragePerMd";
 import { getTeamFewSprintCompletionDifference } from "./getTeamFewSprintCompletionDifference";
+import { sprint } from "../types/sprint";
+import { capacity } from "../types/capacity";
+import { workProgress } from "../types/workProgress";
 
 //Tmrw to do list:
 //
@@ -102,6 +102,7 @@ export function getTeamEstimatedCompleted({
         console.log("averages here", sprintAverages)
         const fewSprintAverage = getUserFewSprintAveragePerMd(sprintAverages)
         console.log("3sprinbtsdasd", fewSprintAverage)
+        console.log(finalCompletionDifferencePercent)
         const finalAvgPerMd = getUserFinalAveragePerMd(finalCompletionDifferencePercent, fewSprintAverage)
         console.log('finalavgpermd', finalAvgPerMd)
         console.log("afnasdfnadjoasd", nextSprintId)

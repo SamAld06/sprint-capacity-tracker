@@ -1,6 +1,6 @@
-import { capacity } from "@/types/capacity";
+import { getCapacitySummary } from "../../../helpers/getCapacitySummary";
+import { capacity } from "../../../types/capacity";
 import styles from "../styles.module.css";
-import { getCapacitySummary } from "@/helpers/getCapacitySummary";
 
 export interface CapacityCardProps {
   capacityData: capacity[]|  null

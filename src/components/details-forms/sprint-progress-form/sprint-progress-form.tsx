@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
-import { workProgress } from "@/types/workProgress";
+import { workProgress } from "../../../types/workProgress";
 
 export interface SprintProgressFormProps {
   onClose: () => void;

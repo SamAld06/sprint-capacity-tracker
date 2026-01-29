@@ -1,6 +1,6 @@
-import { capacity } from "@/types/capacity";
+import { capacity } from "../types/capacity"
 
-//Should get the total number of man days for all users for a sprint
+//Should get the summary details for all users in a sprint
 export function getCapacitySummary(data: capacity[]) {
     const totalWorkingDays = data.reduce((total, member) => total + member.workingDays, 0)
     const totalMd = data.reduce((total, member) => total + member.md, 0)

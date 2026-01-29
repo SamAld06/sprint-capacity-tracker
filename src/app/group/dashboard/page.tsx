@@ -1,12 +1,12 @@
 "use client";
 
-import { NavBar } from "@/components/navbar/navBar";
+import { InfoBox } from '../../../components/dashboard-info-box/dashboard-info-box';
+import { NavBar } from '../../../components/navbar/navBar';
+import { TabBar } from '../../../components/tabbar/tabBar';
+import { sprintDetailsService } from '../../../services/sprintDetailsService';
+import { sprint } from '../../../types/sprint';
 import styles from './styles.module.css'
-import { InfoBox } from "@/components/dashboard-info-box/dashboard-info-box";
-import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
-import { sprintDetailsService } from "@/services/sprintDetailsService";
-import { sprint } from "@/types/sprint";
 
 export default function Dashboard() {
   const groupName = "Example group"

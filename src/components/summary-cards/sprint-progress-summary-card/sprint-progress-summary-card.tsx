@@ -1,10 +1,9 @@
+import { getTeamAveragePerMd } from "../../../helpers/getTeamAveragePerMd";
+import { getTeamEstimatedCompleted } from "../../../helpers/getTeamEstimatedCompleted";
+import { capacity } from "../../../types/capacity";
+import { sprint } from "../../../types/sprint";
+import { workProgress } from "../../../types/workProgress";
 import styles from "../styles.module.css";
-import { workProgress } from "@/types/workProgress";
-import { getSprintProgressSummary } from "@/helpers/getSprintProgressSummary";
-import { sprint } from "@/types/sprint";
-import { getTeamAveragePerMd } from "@/helpers/getTeamAveragePerMd";
-import { getTeamEstimatedCompleted } from "@/helpers/getTeamEstimatedCompleted";
-import { capacity } from "@/types/capacity";
 
 export interface SprintProgressCardProps {
   sprintProgressData: workProgress[] |  null;

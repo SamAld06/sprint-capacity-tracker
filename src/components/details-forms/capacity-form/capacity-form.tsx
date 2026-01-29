@@ -1,7 +1,7 @@
-import { capacity } from "@/types/capacity";
 import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
-import { getMdForUser } from "@/helpers/getMdForUser";
+import { capacity } from "../../../types/capacity";
+import { getMdForUser } from "../../../helpers/getMdForUser";
 
 export interface CapacityFormProps {
   onClose: () => void;

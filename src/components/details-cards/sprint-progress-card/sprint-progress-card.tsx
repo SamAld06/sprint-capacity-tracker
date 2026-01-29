@@ -1,6 +1,6 @@
-import { capacity } from "@/types/capacity";
+import { workProgress } from "../../../types/workProgress";
 import styles from "../styles.module.css";
-import { workProgress } from "@/types/workProgress";
+
 
 export interface SprintCardProps {
     sprintData: workProgress

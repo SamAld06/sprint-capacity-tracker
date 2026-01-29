@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
-import { workProgress } from "@/types/workProgress";
-import { sprint } from "@/types/sprint";
-import { getSprintCompletionDifference } from "@/helpers/getSprintCompletionDifference";
+import { workProgress } from "../../../types/workProgress";
+import { sprint } from "../../../types/sprint";
+import { getSprintCompletionDifference } from "../../../helpers/getSprintCompletionDifference";
 
 export interface SprintProgressFormProps {
   onClose: () => void;
