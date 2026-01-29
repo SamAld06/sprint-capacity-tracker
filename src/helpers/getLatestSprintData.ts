@@ -1,4 +1,5 @@
-import { sprint } from "@/types/sprint";
+import { sprint } from "../types/sprint"
+
 
 export function getLatestSprintData(data: sprint[]) {
     if (!data) {

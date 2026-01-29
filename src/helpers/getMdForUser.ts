@@ -13,7 +13,6 @@ export function getMdForUser({
   releases,
   maintenance,
 }: functionProps) {
-  console.log("working", workingDays)
   const availableMds =
     Number(workingDays) -
     (Number(outOfOffice) +

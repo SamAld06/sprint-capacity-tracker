@@ -1,16 +1,17 @@
 "use client";
 
-import { NavBar } from "@/components/navbar/navBar";
+import { NewSprintButton } from "../../../components/addSprintButton/newSprintButton";
+import { CapacityCard } from "../../../components/details-cards/capacity-card/capacity-card";
+import { CapacityForm } from "../../../components/details-forms/capacity-form/capacity-form";
+import { NavBar } from "../../../components/navbar/navBar";
+import { CapacitySummaryCard } from "../../../components/summary-cards/capacity-summary-card/capacity-summary-card";
+import { TabBar } from "../../../components/tabbar/tabBar";
+import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
+import { capacityDetailsService } from "../../../services/capacityDetailsService";
+import { capacity } from "../../../types/capacity";
 import styles from "./styles.module.css";
-import { TabBar } from "@/components/tabbar/tabBar";
 import { useEffect, useState } from "react";
-import { CapacityCard } from "@/components/capacity-card/capacity-card";
-import { getLatestAvaialbilityData } from "@/helpers/getLatestAvailabilityData";
-import { availabilityDetailsService } from "@/services/availabilityDetailsService";
-import { capacity } from "@/types/capacity";
-import { CapacityForm } from "@/components/capacity-form/capacity-form";
-import { NewSprintButton } from "@/components/addSprintButton/newSprintButton";
-import { CapacitySummaryCard } from "@/components/capacity-summary-card/capacity-summary-card";
+
 
 export default function Capacity() {
   const groupName = "Example group";
@@ -40,8 +41,8 @@ export default function Capacity() {
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await availabilityDetailsService.getAll();
-        const latestData = getLatestAvaialbilityData(data);
+        const data = await capacityDetailsService.getAll();
+        const latestData = getLatestCapacityData(data);
         if (data) {
           setCapacity(data);
         } else {
@@ -114,7 +115,9 @@ export default function Capacity() {
             />
           )}
           <div className={styles.summaryCard}>
-            {filteredData && <CapacitySummaryCard capacityData={filteredData} />}
+            {filteredData && (
+              <CapacitySummaryCard capacityData={filteredData} />
+            )}
           </div>
           <div className={styles.cards}>
             {!capacity && <h1>Error loading data</h1>}

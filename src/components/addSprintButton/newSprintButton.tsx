@@ -5,10 +5,10 @@ export const NewSprintButton = () => {
     <button
     className={styles.button}
       onClick={async () => {
-        if (!confirm("Are you sure you want to create a new sprint?")) return;
+        if (!confirm("Are you sure you want to create a new sprint?\n\nEnsure all sprint data for the current sprint is accurate")) return;
 
         const res = await fetch(
-          "http://localhost:3001/availability/new-sprint",
+          "http://localhost:3001/new-sprint",
           {
             method: "POST",
           }

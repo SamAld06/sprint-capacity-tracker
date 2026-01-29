@@ -1,4 +1,4 @@
-import { sprint } from "@/types/sprint";
+import { sprint } from "../types/sprint";
 
 const APIURL = "http://localhost:3001/sprint"
 

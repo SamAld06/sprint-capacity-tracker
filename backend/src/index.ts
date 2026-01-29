@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import sqlite3 from "sqlite3";
 import next from "next";
+import path from "path";
 
 
 interface UserDetailsRow {
@@ -12,7 +13,6 @@ interface UserDetailsRow {
 interface SprintDetailsRow {
   newestSprint: number;
 }
-
 const app = express();
 const db = new sqlite3.Database("mydatabase.db");
 
@@ -85,9 +85,23 @@ app.get("/", (req, res) => {
     });
   });
 });
+
 app.get("/capacity", (req, res) => {
+  //get all capacity info
+  const groupCode = "t3stGr0up1";
   db.all(
-    "SELECT capacity.*, sprint.id AS sprintId FROM capacity JOIN sprint ON capacity.sprintID = sprint.sprintId",
+    "SELECT * FROM capacity WHERE groupCode = ? ORDER BY sprintId, groupCode, name",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.get("/capacity/all", (req, res) => {
+  db.all(
+    "SELECT capacity.*, sprint.sprintId AS sprintId FROM capacity JOIN sprint ON capacity.sprintID = sprint.sprintId",
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
@@ -96,57 +110,77 @@ app.get("/capacity", (req, res) => {
 });
 
 app.get("/availability", (req, res) => {
-  //get all availability info
+  //get all availability info where the groupcode is a specific one
+  const groupCode = "t3stGr0up1";
   db.all(
-    "SELECT * FROM availability ORDER BY sprintId, groupCode, name", (err, rows) => {
+    "SELECT * FROM availability WHERE groupCode = ? ORDER BY sprintId, groupCode, name",
+    [groupCode],
+    (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
-    }
-  )
+    },
+  );
 });
 
 app.get("/availability/all", (req, res) => {
+  //Get specific availability
   db.all(
     "SELECT availability.*, sprint.sprintId AS sprintId FROM availability JOIN sprint ON availability.sprintID = sprint.sprintId",
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
-    }
+    },
   );
-})
+});
 
 app.get("/sprint", (req, res) => {
-  db.all("SELECT * FROM sprint", (err, rows) => {
-    if (err) return res.status(500).send(err.message);
-    res.json(rows);
-  });
+  const groupCode = "t3stGr0up1";
+  db.all(
+    "SELECT * FROM sprint WHERE groupCode = ? ORDER BY sprintId, groupCode",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
 });
 
 app.post("/sprint", (req, res) => {
   const {
     groupCode,
+    sprintId,
     planned,
     added,
     removed,
     totalCompleted,
     totalMd,
-    plannedCompletedDifference,
+    plannedCompletedDifference
   } = req.body;
+  if (!groupCode|| !sprintId) {
+    return res.status(400).send("groupCode / sprintId are missing",);
+  }
   db.run(
-    "INSERT INTO sprint (groupCode, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    `UPDATE sprint
+    SET planned=?, added=?, removed=?, totalCompleted=?, totalMd=?, plannedCompletedDifference=?
+    WHERE sprintId=? AND groupCode=?`,
     [
-      groupCode,
       planned,
       added,
       removed,
       totalCompleted,
       totalMd,
       plannedCompletedDifference,
+      sprintId,
+      groupCode
     ],
     function (err) {
       if (err) return res.status(500).send(err.message);
-      res.json({ id: this.lastID });
-    }
+      if (this.changes === 0)
+        return res
+          .status(404)
+          .send("Could not find a row for the given details");
+      res.json({ success: true });
+    },
   );
 });
 
@@ -159,13 +193,29 @@ app.post("/capacity", (req, res) => {
     workCompleted,
     averagePerMd,
   } = req.body;
+  if (!groupCode || !name || !sprintId) {
+    return res.status(400).send("groupCode / name / sprintId are missing",);
+  }
   db.run(
-    "INSERT INTO capacity (groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd) VALUES (?, ?, ?, ?, ?, ?)",
-    [groupCode, sprintId, name, workAssigned, workCompleted, averagePerMd],
+    `UPDATE capacity
+    SET workAssigned=?, workCompleted=?, averagePerMd=?
+    WHERE sprintId=? AND groupCode=? AND name=?`,
+    [
+      workAssigned,
+      workCompleted,
+      averagePerMd,
+      sprintId,
+      groupCode,
+      name,
+    ],
     function (err) {
       if (err) return res.status(500).send(err.message);
-      res.json({ id: this.lastID });
-    }
+      if (this.changes === 0)
+        return res
+          .status(404)
+          .send("Could not find a row for the given details");
+      res.json({ success: true });
+    },
   );
 });
 
@@ -184,7 +234,7 @@ app.post("/availability", (req, res) => {
     md,
   } = req.body;
   if (!groupCode || !name || !sprintId) {
-    return res.status(400).send("groupCode / name / sprintId are missing")
+    return res.status(400).send("groupCode / name / sprintId are missing");
   }
   db.run(
     `UPDATE availability
@@ -199,7 +249,7 @@ app.post("/availability", (req, res) => {
       md,
       sprintId,
       groupCode,
-      name
+      name,
     ],
     function (err) {
       if (err) return res.status(500).send(err.message);
@@ -208,81 +258,114 @@ app.post("/availability", (req, res) => {
           .status(404)
           .send("Could not find a row for the given details");
       res.json({ success: true });
-    }
+    },
   );
 });
 
-app.post("/availability/new-sprint", (req, res) => {
-  const groupCode = 't3stGr0up1' //retrieve group code
-  console.log(groupCode)
+app.post("/new-sprint", (req, res) => {
+  console.log("NEW SPRINT CALLED AT", new Date().toISOString())
+  const groupCode = "t3stGr0up1"; //retrieve group code
   if (!groupCode) {
-    return res.status(400).json({ error: "No group code could be found"})
+    return res.status(400).json({ error: "No group code could be found" });
   }
   db.get(
-    "SELECT MAX(sprintId) as newestSprint FROM sprint",
+    "SELECT MAX(sprintId) as newestSprint FROM sprint WHERE groupCode = ?",
+    [groupCode],
     (err, row: SprintDetailsRow) => {
       if (err) {
         return res.status(500).json(err.message);
       }
       const nextSprintId = (row?.newestSprint ?? 0) + 1;
-      console.log(nextSprintId)
+      const previousSprintId = nextSprintId - 1
       db.run(
         "INSERT INTO sprint (groupCode, sprintId, planned, added, removed, totalCompleted, totalMd, plannedCompletedDifference) VALUES (?, ?, 0, 0, 0, 0, 0, 0)",
         [groupCode, nextSprintId],
-        err => {
-          if (err) return res.status(500).json(err.message)
-        }
+        (err) => {
+          if (err) return res.status(500).json({ error: err.message });
+          db.all(
+            "SELECT DISTINCT name FROM availability WHERE groupCode = ?",
+            [groupCode],
+            (err, availabilityNames: UserDetailsRow[]) => {
+              if (err) {
+                return res.status(500).json(err.message);
+              }
+              if (availabilityNames.length == 0) {
+                return res
+                  .status(400)
+                  .json({ error: "Could not find any users in group" });
+              }
+
+              const availabilityStmt = db.prepare(`
+                INSERT INTO availability (
+                  groupCode,
+                  sprintId,
+                  name,
+                  workingDays,
+                  outOfOffice,
+                  releases,
+                  fridayProjects,
+                  maintenance,
+                  md
+                ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0)
+              `);
+
+              availabilityNames.forEach((user) => {
+                availabilityStmt.run(groupCode, nextSprintId, user.name);
+              });
+
+              availabilityStmt.finalize((err) => {
+                if (err) return res.status(500).json(err.message);
+
+                db.all(
+                  "SELECT DISTINCT name FROM capacity WHERE groupCode = ?",
+                  [groupCode],
+                  (err, capacityNames: UserDetailsRow[]) => {
+                    if (err) return res.status(500).json(err.message);
+
+                    if (capacityNames.length == 0) {
+                      return res
+                        .status(400)
+                        .json({ error: "Could not find any users in group" });
+                    }
+
+                    const capacityStmt = db.prepare(`
+                      INSERT INTO capacity (
+                      groupCode,
+                      sprintId,
+                      name,
+                      workAssigned,
+                      workCompleted,
+                      averagePerMd
+                      ) VALUES (?, ?, ?, 0, 0, 0)
+                    `);
+
+                    capacityNames.forEach((user) => {
+                      capacityStmt.run(groupCode, nextSprintId, user.name);
+                    });
+
+                    capacityStmt.finalize((err) => {
+                      if (err) return res.status(500).json(err.message);
+
+                      res.json({
+                        completed: true,
+                        sprintId: nextSprintId,
+                        availabilityTableRowsCreated: availabilityNames.length,
+                        capacityTableRowsCreated: capacityNames.length,
+                      });
+                    });
+                  },
+                );
+              });
+            },
+          );
+        },
       );
-
-      db.all(
-        "SELECT DISTINCT name FROM availability WHERE groupCode = ?",
-        [groupCode],
-        (err, users: UserDetailsRow[]) => {
-          if (err) {
-            return res.status(500).json(err.message);
-          }
-          if (users.length == 0) {
-            return res
-              .status(400)
-              .json({ error: "Could not find any users in group" });
-          }
-
-          const stmt = db.prepare(`
-            INSERT INTO availability (
-              groupCode,
-              sprintId,
-              name,
-              workingDays,
-              outOfOffice,
-              releases,
-              fridayProjects,
-              maintenance,
-              md
-            ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0)
-          `);
-
-          users.forEach((user) => {
-            stmt.run(groupCode, nextSprintId, user.name);
-          });
-
-          stmt.finalize((err) => {
-            if (err) {
-              return res.status(500).json(err.message);
-            }
-
-            res.json({
-              completed: true,
-              sprintId: nextSprintId,
-              rowsCreated: users.length,
-            });
-          });
-        }
-      );
-    }
+    },
   );
 });
 
-app.delete("/availability/delete-sprint/:id", (req, res) => {
+
+app.delete("/all/delete-sprint/:id", (req, res) => {
   const sprintId = Number(req.params.id);
 
   db.run(
@@ -296,7 +379,15 @@ app.delete("/availability/delete-sprint/:id", (req, res) => {
         [sprintId],
         function (err) {
           if (err) return res.status(500).json(err.message);
-          res.json({ deleteSprintId: sprintId })
+
+          db.run(
+            "DELETE FROM sprint WHERE sprintId = ?",
+            [sprintId],
+            function (err) {
+              if (err) return res.status(500).json(err.message);
+              res.json({ deleteSprintId: sprintId})
+            }
+          )
         }
       );
     }
@@ -308,6 +399,18 @@ app.delete("/sprint/delete-sprint/:id", (req, res) => {
 
   db.run(
     "DELETE FROM sprint WHERE sprintId = ?",
+    [sprintId],
+    function (err) {
+      if (err) return res.status(500).json(err.message);
+    }
+  );
+});
+
+app.delete("/capacity/delete-sprint/:id", (req, res) => {
+  const sprintId = Number(req.params.id);
+
+  db.run(
+    "DELETE FROM capacity WHERE sprintId = ?",
     [sprintId],
     function (err) {
       if (err) return res.status(500).json(err.message);

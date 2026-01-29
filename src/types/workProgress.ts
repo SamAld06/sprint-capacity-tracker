@@ -1,5 +1,4 @@
 export type workProgress = {
-    id: number;
     groupCode: string;
     sprintId: number;
     name: string;
