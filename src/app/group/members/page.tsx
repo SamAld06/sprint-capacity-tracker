@@ -74,7 +74,6 @@ export default function Members() {
     };
     fetchSprint();
   }, []);
-  console.log(groupMemberData)
   return (
     <>
       <NavBar />

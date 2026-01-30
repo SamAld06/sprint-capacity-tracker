@@ -301,7 +301,7 @@ app.post("/new-sprint", (req, res) => {
         (err) => {
           if (err) return res.status(500).json({ error: err.message });
           db.all(
-            "SELECT DISTINCT name FROM capacity WHERE groupCode = ?",
+            "SELECT DISTINCT name FROM groupMember WHERE groupCode = ?",
             [groupCode],
             (err, capacityNames: UserDetailsRow[]) => {
               if (err) {
@@ -335,7 +335,7 @@ app.post("/new-sprint", (req, res) => {
                 if (err) return res.status(500).json(err.message);
 
                 db.all(
-                  "SELECT DISTINCT name FROM workProgress WHERE groupCode = ?",
+                  "SELECT DISTINCT name FROM groupMember WHERE groupCode = ?",
                   [groupCode],
                   (err, workProgressNames: UserDetailsRow[]) => {
                     if (err) return res.status(500).json(err.message);

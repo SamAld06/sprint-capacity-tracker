@@ -3,7 +3,6 @@ import styles from "./styles.module.css"
 
 
 export const EditUserButton = ({member}: {member: string}) => {
-  console.log(member)
   const groupCode = 't3stGr0up1'
   return (
     <button
