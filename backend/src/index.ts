@@ -382,6 +382,16 @@ app.post("/new-sprint", (req, res) => {
   );
 });
 
+app.delete("/remove-member", (req, res) => {
+  const name = String(req.body)
+  db.run(
+    "DELETE FROM groupMember WHERE name = ?",
+    [name],
+    function (err) {
+      if (err) return res.status(500).json(err.message)
+    }
+  )
+})
 
 app.delete("/all/delete-sprint/:id", (req, res) => {
   const sprintId = Number(req.params.id);

@@ -1,5 +1,5 @@
 import styles from "./styles.module.css"
-//Button to remove a user from a group
+//Button to add a user to a group
 
 
 export const RemoveUserButton = ({member}: {member: string}) => {
@@ -7,12 +7,14 @@ export const RemoveUserButton = ({member}: {member: string}) => {
     <button
     className={styles.button}
       onClick={async () => {
-        if (!confirm("Are you sure you want to remove this team member: ${member}\n\nThey will no longer be in future sprints")) return;
+        if (!confirm(`Are you sure you want to add this team memberP:  ${member}\n\nThey will appear in the next created sprint`)) return;
 
         const res = await fetch(
           "http://localhost:3001/remove-member",
           {
             method: "DELETE",
+            headers: { "content-Type": "application/json"},
+            body: JSON.stringify({name: member})
           }
         );
         if (res.ok) {

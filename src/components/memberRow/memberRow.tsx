@@ -1,4 +1,4 @@
-import { RemoveUserButton } from "../removeUserButton/removeUserButton";
+import { RemoveUserButton } from "../membersTabButtons/removeUserButton";
 import styles from "./styles.module.css"
 
 export interface MemberRowProps {
