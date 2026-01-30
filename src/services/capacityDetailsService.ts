@@ -1,6 +1,6 @@
 import { capacity } from "../types/capacity";
 
-const APIURL = "http://localhost:3001/availability"
+const APIURL = "http://localhost:3001/capacity"
 
 export const capacityDetailsService = {
     getAll: async (): Promise<capacity[]> => {

@@ -87,7 +87,7 @@ export const capacityTestData = [
     outOfOffice: 0,
     releases: 0,
     fridayProjects: 0,
-    maintenance: 2,
+    maintenance: 0,
   },
   {
     groupCode: "test",
