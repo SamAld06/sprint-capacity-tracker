@@ -1,3 +1,4 @@
+import { RemoveUserButton } from "../removeUserButton/removeUserButton";
 import styles from "./styles.module.css"
 
 export interface MemberRowProps {
@@ -11,7 +12,7 @@ export const MemberRow = ({ name }: MemberRowProps) => {
             <p>{name}</p>
         </div>
         <div className={styles.buttonHolder}>
-            <button className={styles.button}>Remove</button>
+            <RemoveUserButton member={name}/>
             <button className={styles.button}>Edit name</button>
         </div>
       </div>

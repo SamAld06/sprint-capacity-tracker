@@ -2,7 +2,7 @@ import { groupMember } from "../types/groupMember";
 
 const APIURL = "http://localhost:3001/groupMember"
 
-export const capacityDetailsService = {
+export const groupMemberDetailsService = {
     getAll: async (): Promise<groupMember[]> => {
         const res = await fetch(APIURL)
         if (!res.ok) {

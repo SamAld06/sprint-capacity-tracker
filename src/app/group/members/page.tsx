@@ -11,6 +11,8 @@ import { getLatestCapacityData } from '../../../helpers/getLatestCapacityData';
 import { capacityDetailsService } from '../../../services/capacityDetailsService';
 import { capacity } from '../../../types/capacity';
 import { workProgress } from '../../../types/workProgress';
+import { groupMemberDetailsService } from '../../../services/groupMemberService';
+import { groupMember } from '../../../types/groupMember';
 
 export default function Members() {
   const groupName = "Example group";
@@ -21,6 +23,7 @@ export default function Members() {
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [groupMemberData, setGroupMemberData] = useState<groupMember[] | null>(null)
   const [capacityData, setCapacityData] = useState<capacity[] | null>(null);
   const filteredProgressData = sprintProgress?.filter(
     (sprintProgress) => sprintProgress.sprintId === currentSprint,
@@ -32,6 +35,7 @@ export default function Members() {
   useEffect(() => {
     const fetchSprint = async () => {
       try {
+        const groupMemberData = await groupMemberDetailsService.getAll();
         const sprintProgressData = await sprintProgressDetailsService.getAll();
         const latestSprintProgressData =
           getLatestSprintProgressData(sprintProgressData);
@@ -41,6 +45,11 @@ export default function Members() {
           setSprintProgress(sprintProgressData);
         } else {
           setSprintProgress(null);
+        }
+        if (groupMemberData) {
+          setGroupMemberData(groupMemberData)
+        } else {
+          setGroupMemberData(null)
         }
 
         if (capacityData) {
@@ -64,6 +73,7 @@ export default function Members() {
     };
     fetchSprint();
   }, []);
+  console.log(groupMemberData)
   return (
     <>
       <NavBar />
@@ -75,9 +85,9 @@ export default function Members() {
           <TabBar />
         </div>
         <div className={styles.memberRows}>
-          {filteredCapacityData &&
-            filteredCapacityData.map((capacity) => (
-              <MemberRow name={capacity.name} />
+          {groupMemberData &&
+            groupMemberData.map((groupMember) => (
+              <MemberRow name={groupMember.name} />
             ))}
         </div>
       </main>

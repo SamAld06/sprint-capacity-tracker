@@ -25,7 +25,7 @@ db.serialize(() => {
             ('t3stGr0up2', 1, 14, 2, 1, 12, 20, 0.154),
             ('t3stGr0up2', 2, 25, 0, 2, 25, 25, 0.182),
             ('t3stGr0up2', 3, 15, 0, 2, 25, 25, 0.182);`);
-            
+
   db.exec(`INSERT INTO workProgress (
             groupCode,
             sprintId,
@@ -87,11 +87,11 @@ db.serialize(() => {
             groupCode,
             name
         ) VALUES
-            ('t3stGr0up1', tester1),
-            ('t3stGr0up1', tester2),
-            ('t3stGr0up1', tester3),
-            ('t3stGr0up2', admin1),
-            ('t3stGr0up2', admin2),
-            ('t3stGr0up2', admin3);`);
+            ('t3stGr0up1', 'tester1'),
+            ('t3stGr0up1', 'tester2'),
+            ('t3stGr0up1', 'tester3'),
+            ('t3stGr0up2', 'admin1'),
+            ('t3stGr0up2', 'admin2'),
+            ('t3stGr0up2', 'admin3');`);
   console.log("Seeding complete");
 });
