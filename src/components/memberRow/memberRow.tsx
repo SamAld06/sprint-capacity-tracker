@@ -1,3 +1,4 @@
+import { EditUserButton } from "../membersTabButtons/editUserButton";
 import { RemoveUserButton } from "../membersTabButtons/removeUserButton";
 import styles from "./styles.module.css"
 
@@ -13,7 +14,7 @@ export const MemberRow = ({ name }: MemberRowProps) => {
         </div>
         <div className={styles.buttonHolder}>
             <RemoveUserButton member={name}/>
-            <button className={styles.button}>Edit name</button>
+            <EditUserButton member={name}/>
         </div>
       </div>
   );

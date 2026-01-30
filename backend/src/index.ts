@@ -405,6 +405,31 @@ app.post("/add-member", (req, res) => {
   );
 });
 
+app.post("/edit-member", (req, res) => {
+  const { currentName, newName, groupCode } = req.body;
+  if (!currentName || !newName || !groupCode) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "A groupcode or current name or a new name was missing from the request",
+      });
+  }
+  db.run(
+    `UPDATE groupMember
+    SET name = ?
+    WHERE groupCode = ? AND name = ?
+  `,
+    [newName, groupCode, currentName],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
+    },
+  );
+});
+
 app.delete("/remove-member", (req, res) => {
   const { name, groupCode } = req.body;
   db.run(
