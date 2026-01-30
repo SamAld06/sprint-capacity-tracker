@@ -63,6 +63,12 @@ db.serialize(() => {
     REFERENCES sprint(groupCode, sprintId)
     ON DELETE CASCADE
     )`);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS groupMember (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    groupCode TEXT NOT NULL,
+    name TEXT NOT NULL
+    )`)
 });
 
 app.get("/", (req, res) => {
@@ -137,6 +143,18 @@ app.get("/sprint", (req, res) => {
   const groupCode = "t3stGr0up1";
   db.all(
     "SELECT * FROM sprint WHERE groupCode = ? ORDER BY sprintId, groupCode",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.get("/groupMember", (req, res) => {
+  const groupCode = "t3stGr0up1";
+  db.all(
+    "SELECT * FROM groupMember WHERE groupCode = ? ORDER BY groupCode",
     [groupCode],
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
@@ -283,7 +301,7 @@ app.post("/new-sprint", (req, res) => {
         (err) => {
           if (err) return res.status(500).json({ error: err.message });
           db.all(
-            "SELECT DISTINCT name FROM capacity WHERE groupCode = ?",
+            "SELECT DISTINCT name FROM groupMember WHERE groupCode = ?",
             [groupCode],
             (err, capacityNames: UserDetailsRow[]) => {
               if (err) {
@@ -317,7 +335,7 @@ app.post("/new-sprint", (req, res) => {
                 if (err) return res.status(500).json(err.message);
 
                 db.all(
-                  "SELECT DISTINCT name FROM workProgress WHERE groupCode = ?",
+                  "SELECT DISTINCT name FROM groupMember WHERE groupCode = ?",
                   [groupCode],
                   (err, workProgressNames: UserDetailsRow[]) => {
                     if (err) return res.status(500).json(err.message);
@@ -347,7 +365,7 @@ app.post("/new-sprint", (req, res) => {
                       if (err) return res.status(500).json(err.message);
 
                       res.json({
-                        completed: true,
+                        success: true,
                         sprintId: nextSprintId,
                         capacityTableRowsCreated: capacityNames.length,
                         workProgressTableRowsCreated: workProgressNames.length,
@@ -364,6 +382,67 @@ app.post("/new-sprint", (req, res) => {
   );
 });
 
+app.post("/add-member", (req, res) => {
+  const { name, groupCode } = req.body;
+  if (!name || !groupCode) {
+    return res
+      .status(400)
+      .json({ error: "A groupcode or name was missing from the request" });
+  }
+  db.run(
+    `INSERT INTO groupMember(
+    groupCode,
+    name
+    ) VALUES (?, ?)
+  `,
+    [groupCode, name],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
+    },
+  );
+});
+
+app.post("/edit-member", (req, res) => {
+  const { currentName, newName, groupCode } = req.body;
+  if (!currentName || !newName || !groupCode) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "A groupcode or current name or a new name was missing from the request",
+      });
+  }
+  db.run(
+    `UPDATE groupMember
+    SET name = ?
+    WHERE groupCode = ? AND name = ?
+  `,
+    [newName, groupCode, currentName],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
+    },
+  );
+});
+
+app.delete("/remove-member", (req, res) => {
+  const { name, groupCode } = req.body;
+  db.run(
+    "DELETE FROM groupMember WHERE name = ? AND groupCode = ?",
+    [name, groupCode],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
+    },
+  );
+})
 
 app.delete("/all/delete-sprint/:id", (req, res) => {
   const sprintId = Number(req.params.id);
