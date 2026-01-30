@@ -2,6 +2,7 @@ import styles from "./styles.module.css";
 //Button to add a user to a group
 
 export const AddUserButton = () => {
+    const groupCode = 't3stGr0up1'
   return (
     <button
       className={styles.button}
@@ -18,8 +19,8 @@ export const AddUserButton = () => {
 
         const res = await fetch("http://localhost:3001/add-member", {
           method: "POST",
-          headers: { "content-Type": "application/json" },
-          body: JSON.stringify({ name: newUser }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newUser, groupCode: groupCode }),
         });
         if (res.ok) {
           window.location.reload();

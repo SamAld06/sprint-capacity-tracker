@@ -365,7 +365,7 @@ app.post("/new-sprint", (req, res) => {
                       if (err) return res.status(500).json(err.message);
 
                       res.json({
-                        completed: true,
+                        success: true,
                         sprintId: nextSprintId,
                         capacityTableRowsCreated: capacityNames.length,
                         workProgressTableRowsCreated: workProgressNames.length,
@@ -383,28 +383,40 @@ app.post("/new-sprint", (req, res) => {
 });
 
 app.post("/add-member", (req, res) => {
-  const name = String(req.body);
+  const { name, groupCode } = req.body;
+  if (!name || !groupCode) {
+    return res
+      .status(400)
+      .json({ error: "A groupcode or name was missing from the request" });
+  }
   db.run(
     `INSERT INTO groupMember(
     groupCode,
     name
     ) VALUES (?, ?)
   `,
+    [groupCode, name],
     function (err) {
-      if (err) return res.status(500).json(err.message);
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
     },
   );
 });
 
 app.delete("/remove-member", (req, res) => {
-  const name = String(req.body)
+  const { name, groupCode } = req.body;
   db.run(
-    "DELETE FROM groupMember WHERE name = ?",
-    [name],
+    "DELETE FROM groupMember WHERE name = ? AND groupCode = ?",
+    [name, groupCode],
     function (err) {
-      if (err) return res.status(500).json(err.message)
-    }
-  )
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true });
+    },
+  );
 })
 
 app.delete("/all/delete-sprint/:id", (req, res) => {

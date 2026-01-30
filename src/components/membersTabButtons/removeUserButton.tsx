@@ -3,6 +3,8 @@ import styles from "./styles.module.css"
 
 
 export const RemoveUserButton = ({member}: {member: string}) => {
+  console.log(member)
+  const groupCode = 't3stGr0up1'
   return (
     <button
     className={styles.button}
@@ -13,8 +15,8 @@ export const RemoveUserButton = ({member}: {member: string}) => {
           "http://localhost:3001/remove-member",
           {
             method: "DELETE",
-            headers: { "content-Type": "application/json"},
-            body: JSON.stringify({name: member})
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({name: member, groupCode: groupCode })
           }
         );
         if (res.ok) {
