@@ -382,6 +382,20 @@ app.post("/new-sprint", (req, res) => {
   );
 });
 
+app.post("/add-member", (req, res) => {
+  const name = String(req.body);
+  db.run(
+    `INSERT INTO groupMember(
+    groupCode,
+    name
+    ) VALUES (?, ?)
+  `,
+    function (err) {
+      if (err) return res.status(500).json(err.message);
+    },
+  );
+});
+
 app.delete("/remove-member", (req, res) => {
   const name = String(req.body)
   db.run(

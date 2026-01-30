@@ -13,6 +13,7 @@ import { capacity } from '../../../types/capacity';
 import { workProgress } from '../../../types/workProgress';
 import { groupMemberDetailsService } from '../../../services/groupMemberService';
 import { groupMember } from '../../../types/groupMember';
+import { AddUserButton } from '../../../components/membersTabButtons/addUserButton';
 
 export default function Members() {
   const groupName = "Example group";
@@ -83,6 +84,9 @@ export default function Members() {
         </header>
         <div>
           <TabBar />
+        </div>
+        <div className={styles.addButton}>
+          <AddUserButton/>
         </div>
         <div className={styles.memberRows}>
           {groupMemberData &&
