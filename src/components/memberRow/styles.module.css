@@ -1,0 +1,32 @@
+.root {
+    display: flex;
+    padding: 1rem;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.name {
+    display: flex;
+    flex: 1 1 auto;
+    padding: 0.5rem;
+    max-width: 500px;
+    max-height: 300px;
+    min-height: 60px;
+    align-items: center;
+    background-color: rgba(255, 148, 148, 0.418);
+}
+
+.buttonHolder {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button {
+    border-style: solid;
+    padding: 0.5rem;
+    border-style: solid;
+    border-width: 0.15rem;
+    border-color: black;
+    cursor: pointer;
+}

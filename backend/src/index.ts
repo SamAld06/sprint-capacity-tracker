@@ -63,6 +63,12 @@ db.serialize(() => {
     REFERENCES sprint(groupCode, sprintId)
     ON DELETE CASCADE
     )`);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS groupMember (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    groupCode TEXT NOT NULL,
+    name TEXT NOT NULL
+    )`)
 });
 
 app.get("/", (req, res) => {
@@ -137,6 +143,18 @@ app.get("/sprint", (req, res) => {
   const groupCode = "t3stGr0up1";
   db.all(
     "SELECT * FROM sprint WHERE groupCode = ? ORDER BY sprintId, groupCode",
+    [groupCode],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.get("/groupMember", (req, res) => {
+  const groupCode = "t3stGr0up1";
+  db.all(
+    "SELECT * FROM groupMember WHERE groupCode = ? ORDER BY groupCode",
     [groupCode],
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
