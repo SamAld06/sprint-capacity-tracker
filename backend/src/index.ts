@@ -1,9 +1,8 @@
 import express from "express";
 import cors from "cors";
 import sqlite3 from "sqlite3";
-import next from "next";
-import path from "path";
-
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 interface UserDetailsRow {
   groupCode: string;
@@ -69,6 +68,13 @@ db.serialize(() => {
     groupCode TEXT NOT NULL,
     name TEXT NOT NULL
     )`)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS account (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    passwordHashed TEXT NOT NULL
+    )
+    `)
 });
 
 app.get("/", (req, res) => {
@@ -162,6 +168,48 @@ app.get("/groupMember", (req, res) => {
     },
   );
 });
+
+app.post("/create-account", (req, res) => {
+  const {username, password} = req.body;
+  const saltRounds = 10
+  if (!username || !password) {
+    return res.status(400).json({ error: "A username AND password are required"})
+  }
+
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  try {
+    db.prepare( 
+      "INSERT INTO account (username, passwordHashed) VALUES (?, ?)"
+    ).run(username, hashedPassword);
+
+    res.json({ success: true })
+  } catch {
+    res.status(400).json({ error: "This user already has an account"})
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { username , password } = req.body;
+  const user = db.prepare("SELECT * FROM account WHERE username = ?")
+  .get(username)
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid login details"})
+  }
+
+  const validatePassword = await bcrypt.compare(password, user.passwordHashed);
+  if (!validatePassword) {
+    return res.status(401).json({ error: "Invalid login details"})
+  }
+  const webToken = jwt.sign(
+    {userId: user.id},
+    JWT_SECRET,
+    { expiresIn: "1h"}
+  )
+
+  res.json({webToken})
+})
 
 app.post("/sprint", (req, res) => {
   const {
