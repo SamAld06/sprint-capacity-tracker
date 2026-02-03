@@ -3,6 +3,13 @@ import cors from "cors";
 import sqlite3 from "sqlite3";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
+import { NextResponse } from "next/server";
+
+interface Account {
+  id: number;
+  username: string;
+  passwordHashed: string;
+}
 
 interface UserDetailsRow {
   groupCode: string;
@@ -176,7 +183,7 @@ app.post("/create-account", (req, res) => {
     return res.status(400).json({ error: "A username AND password are required"})
   }
 
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const hashedPassword = bcrypt.hash(password, saltRounds);
 
   try {
     db.prepare( 
@@ -190,26 +197,33 @@ app.post("/create-account", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { username , password } = req.body;
-  const user = db.prepare("SELECT * FROM account WHERE username = ?")
-  .get(username)
+  const { username, password } = await req.body;
+  const JWT_SECRET = "thisisreallysecret";
+  const user = db.get(
+    "SELECT * FROM account WHERE username = ?",
+    [username],
+    async (err, user: Account) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!user) {
+        return res.status(401).json({ error: "Invalid login details" });
+      }
+      const validatePassword = await bcrypt.compare(
+        password,
+        user.passwordHashed,
+      );
+      if (!validatePassword) {
+        return res.status(401).json({ error: "Invalid login details" });
+      }
+      const webToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+        expiresIn: "1h",
+      });
 
-  if (!user) {
-    return res.status(401).json({ error: "Invalid login details"})
-  }
-
-  const validatePassword = await bcrypt.compare(password, user.passwordHashed);
-  if (!validatePassword) {
-    return res.status(401).json({ error: "Invalid login details"})
-  }
-  const webToken = jwt.sign(
-    {userId: user.id},
-    JWT_SECRET,
-    { expiresIn: "1h"}
-  )
-
-  res.json({webToken})
-})
+      res.json({ webToken });
+    },
+  );
+});
 
 app.post("/sprint", (req, res) => {
   const {

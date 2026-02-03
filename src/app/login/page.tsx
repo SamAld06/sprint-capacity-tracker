@@ -10,7 +10,11 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3000/login", {});
+    const res = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentUsername, currentPassword})
+    });
     const data = await res.json();
     if (!res.ok) {
       setError(data.error);
