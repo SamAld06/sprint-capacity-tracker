@@ -12,7 +12,7 @@ export default function Home() {
         <Link href="/groups">
           <button className={styles.button}>Create group</button>
         </Link>
-        <Link href="/account">
+        <Link href="/login">
           <button className={styles.button}>Create account</button>
         </Link>
         <Link href="/groups">
