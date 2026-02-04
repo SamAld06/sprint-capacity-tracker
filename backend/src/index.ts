@@ -217,6 +217,8 @@ app.post("/create-account", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = await req.body;
   const JWT_SECRET = "thisisreallysecret";
+  console.log(username)
+  console.log(password)
   const user = db.get(
     "SELECT * FROM account WHERE username = ?",
     [username],
@@ -237,7 +239,7 @@ app.post("/login", async (req, res) => {
       const webToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
         expiresIn: "1h",
       });
-
+      console.log(webToken)
       res.json({ webToken });
     },
   );

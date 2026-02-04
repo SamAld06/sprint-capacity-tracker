@@ -1,5 +1,6 @@
 "use client"
 
+import { navigate } from 'next/dist/client/components/segment-cache/navigation';
 import { NavBar } from '../../components/navbar/navBar';
 import styles from './styles.module.css'
 import { useState } from "react";
@@ -8,19 +9,19 @@ export default function Login() {
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [error, setError] = useState("");
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch("http://localhost:3001/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentUsername, currentPassword})
+      body: JSON.stringify({ username: currentUsername, password: currentPassword})
     });
     const data = await res.json();
     if (!res.ok) {
       setError(data.error);
     } else {
       localStorage.setItem("webToken", data.webToken);
+      window.location.href = "/groupBoard"
     }
   };
   return (

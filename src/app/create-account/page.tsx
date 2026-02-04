@@ -8,6 +8,7 @@ export default function CreateAccount() {
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +23,10 @@ export default function CreateAccount() {
       setError(data.error);
     } else {
       localStorage.setItem("webToken", data.webToken);
+      setSuccessMessage(true)
+      setTimeout(() => {
+        window.location.href = "/login"
+      }, 2000)
     }
   };
   return (
@@ -45,6 +50,14 @@ export default function CreateAccount() {
         <button className={styles.button}>Create account</button>
         {error && <p className={styles.error}>{error}</p>}
       </form>
+      {successMessage && 
+      <div className={styles.backdrop}>
+        <div className={styles.container}>
+          <p className={styles.success}>Account successfully created</p>
+          <p className={styles.success}>Redirecting to login</p>
+        </div>
+      </div>
+      }
     </main>
   );
 }
