@@ -8,6 +8,7 @@ db.serialize(() => {
   db.exec("DELETE FROM workProgress");
   db.exec("DELETE FROM capacity");
   db.exec("DELETE FROM groupMember");
+  db.exec("DELETE FROM account")
 
   db.exec(`INSERT INTO sprint (
             groupCode,
@@ -93,5 +94,10 @@ db.serialize(() => {
             ('t3stGr0up2', 'admin1'),
             ('t3stGr0up2', 'admin2'),
             ('t3stGr0up2', 'admin3');`);
+  db.exec(`INSERT INTO account (
+            username,
+            passwordHashed
+        ) VALUES
+            ('tester1', '$2b$10$EvvrXeNBmZdjjIgBf1ed0OvFQ0n45OtZ820qnfrSRYhnncClVHB9O');`);
   console.log("Seeding complete");
 });

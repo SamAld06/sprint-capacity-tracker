@@ -24,8 +24,8 @@
     color: black;
     background-color: #647687;
     cursor: pointer;
-    max-width: 175px;
-    width: 100%;
+    width: 175px;
+    justify-content: center;
 }
 
 .button:hover {

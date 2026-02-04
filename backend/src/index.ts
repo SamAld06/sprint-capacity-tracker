@@ -1,9 +1,16 @@
 import express from "express";
 import cors from "cors";
 import sqlite3 from "sqlite3";
-import next from "next";
-import path from "path";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
+import { NextResponse } from "next/server";
+import { hash } from "node:crypto";
 
+interface Account {
+  id: number;
+  username: string;
+  passwordHashed: string;
+}
 
 interface UserDetailsRow {
   groupCode: string;
@@ -69,6 +76,13 @@ db.serialize(() => {
     groupCode TEXT NOT NULL,
     name TEXT NOT NULL
     )`)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS account (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    passwordHashed TEXT NOT NULL
+    )
+    `)
 });
 
 app.get("/", (req, res) => {
@@ -86,7 +100,17 @@ app.get("/", (req, res) => {
         if (err) return res.status(500).send(err.message);
         result.capacity = capacity;
 
-        res.json(result);
+        db.all("SELECT * FROM groupMember", (err, groupMember) => {
+          if (err) return res.status(500).send(err.message);
+          result.groupMember = groupMember;
+
+          db.all("SELECT * FROM account", (err, account) => {
+            if (err) return res.status(500).send(err.message);
+            result.account = account;
+
+            res.json(result);
+          });
+        });
       });
     });
   });
@@ -159,6 +183,64 @@ app.get("/groupMember", (req, res) => {
     (err, rows) => {
       if (err) return res.status(500).send(err.message);
       res.json(rows);
+    },
+  );
+});
+
+app.get("/account", (req, res) => {
+  db.all(
+    "SELECT * FROM account",
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.post("/create-account", async (req, res) => {
+  const {username, password} = req.body;
+  const saltRounds = 10
+  if (!username || !password) {
+    return res.status(400).json({ error: "A username AND password are required",  username: username, password: password })
+  }
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    db.run( 
+      "INSERT INTO account (username, passwordHashed) VALUES (?, ?)"
+    , [username, hashedPassword],
+    function (err: Error | null) {
+      if (err) return res.status(400).json({ error: "This user already has an account"});
+      res.json({ success: true, hashedPassword: hashedPassword });
+    }, 
+  )
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = await req.body;
+  const JWT_SECRET = "thisisreallysecret";
+  console.log(username)
+  console.log(password)
+  const user = db.get(
+    "SELECT * FROM account WHERE username = ?",
+    [username],
+    async (err, user: Account) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!user) {
+        return res.status(401).json({ error: "Invalid login details" });
+      }
+      const validatePassword = await bcrypt.compare(
+        password,
+        user.passwordHashed,
+      );
+      if (!validatePassword) {
+        return res.status(401).json({ error: "Invalid login details" });
+      }
+      const webToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      console.log(webToken)
+      res.json({ webToken });
     },
   );
 });
