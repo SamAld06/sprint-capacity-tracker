@@ -13,7 +13,6 @@ export default function CreateAccount() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(currentUsername, currentPassword)
     const res = await fetch("http://localhost:3001/create-account", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

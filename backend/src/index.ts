@@ -217,8 +217,6 @@ app.post("/create-account", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = await req.body;
   const JWT_SECRET = "thisisreallysecret";
-  console.log(username)
-  console.log(password)
   const user = db.get(
     "SELECT * FROM account WHERE username = ?",
     [username],
@@ -239,7 +237,6 @@ app.post("/login", async (req, res) => {
       const webToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
         expiresIn: "1h",
       });
-      console.log(webToken)
       res.json({ webToken });
     },
   );
@@ -363,7 +360,6 @@ app.post("/capacity", (req, res) => {
 });
 
 app.post("/new-sprint", (req, res) => {
-  console.log("NEW SPRINT CALLED AT", new Date().toISOString())
   const groupCode = "t3stGr0up1"; //retrieve group code
   if (!groupCode) {
     return res.status(400).json({ error: "No group code could be found" });
