@@ -73,12 +73,19 @@ export const SprintProgressForm = ({
           <div className={styles.inputs}>
             <div className={styles.inputRow}>
               <label>Sprint to edit:</label>
-              <input
-                className={styles.inputBox}
-                type="number"
-                value={currentSprint}
-                onChange={(e) => setCurrentSprint(e.target.value)}
-              ></input>
+              <select
+              className={styles.inputBox}
+              value= {currentSprint}
+              onChange={(e) => setCurrentSprint(e.target.value)}
+              >
+                <option value="">Select a sprint</option>
+                {data &&
+                  [...new Set(data.map(data => data.sprintId))]
+                    .filter(Boolean)
+                    .map(sprint => (
+                      <option value={sprint}>{sprint}</option>
+                    ))}
+              </select>
             </div>
             <div className={styles.inputRow}>
               <label>Team Member:</label>

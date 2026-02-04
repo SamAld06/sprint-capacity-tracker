@@ -101,12 +101,19 @@ export const SprintSummaryForm = ({
           <div className={styles.inputs}>
             <div className={styles.inputRow}>
               <label>Sprint to edit:</label>
-              <input
-                className={styles.inputBox}
-                type="number"
-                value={currentSprint}
-                onChange={(e) => setCurrentSprint(e.target.value)}
-              ></input>
+              <select
+              className={styles.inputBox}
+              value= {currentSprint}
+              onChange={(e) => setCurrentSprint(e.target.value)}
+              >
+                <option value="">Select a sprint</option>
+                {summaryData &&
+                  summaryData
+                    .filter((data) => data.sprintId)
+                    .map((data) => (
+                      <option value={data.sprintId}>{data.sprintId}</option>
+                    ))}
+              </select>
             </div>
             <div className={styles.inputRow}>
               <label>Work planned:</label>
