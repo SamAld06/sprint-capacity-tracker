@@ -12,14 +12,14 @@ export default function Home() {
         <Link href="/groups">
           <button className={styles.button}>Create group</button>
         </Link>
-        <Link href="/login">
+        <Link href="/create-account">
           <button className={styles.button}>Create account</button>
         </Link>
-        <Link href="/groups">
-          <button className={styles.button}>Join group</button>
+        <Link href="/login">
+          <button className={styles.button}>Login</button>
         </Link>
         <Link href="/group/dashboard">
-          <button className={styles.button}>View single dashboard</button>
+          <button className={styles.button}>View group</button>
         </Link>
       </div>
     </main>

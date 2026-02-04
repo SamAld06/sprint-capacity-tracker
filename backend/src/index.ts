@@ -4,6 +4,7 @@ import sqlite3 from "sqlite3";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import { NextResponse } from "next/server";
+import { hash } from "node:crypto";
 
 interface Account {
   id: number;
@@ -78,7 +79,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS account (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     passwordHashed TEXT NOT NULL
     )
     `)
@@ -99,7 +100,17 @@ app.get("/", (req, res) => {
         if (err) return res.status(500).send(err.message);
         result.capacity = capacity;
 
-        res.json(result);
+        db.all("SELECT * FROM groupMember", (err, groupMember) => {
+          if (err) return res.status(500).send(err.message);
+          result.groupMember = groupMember;
+
+          db.all("SELECT * FROM account", (err, account) => {
+            if (err) return res.status(500).send(err.message);
+            result.account = account;
+
+            res.json(result);
+          });
+        });
       });
     });
   });
@@ -176,24 +187,31 @@ app.get("/groupMember", (req, res) => {
   );
 });
 
-app.post("/create-account", (req, res) => {
+app.get("/account", (req, res) => {
+  db.all(
+    "SELECT * FROM account",
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    },
+  );
+});
+
+app.post("/create-account", async (req, res) => {
   const {username, password} = req.body;
   const saltRounds = 10
   if (!username || !password) {
-    return res.status(400).json({ error: "A username AND password are required"})
+    return res.status(400).json({ error: "A username AND password are required",  username: username, password: password })
   }
-
-  const hashedPassword = bcrypt.hash(password, saltRounds);
-
-  try {
-    db.prepare( 
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    db.run( 
       "INSERT INTO account (username, passwordHashed) VALUES (?, ?)"
-    ).run(username, hashedPassword);
-
-    res.json({ success: true })
-  } catch {
-    res.status(400).json({ error: "This user already has an account"})
-  }
+    , [username, hashedPassword],
+    function (err: Error | null) {
+      if (err) return res.status(400).json({ error: "This user already has an account"});
+      res.json({ success: true, hashedPassword: hashedPassword });
+    }, 
+  )
 });
 
 app.post("/login", async (req, res) => {
