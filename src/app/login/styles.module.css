@@ -54,6 +54,18 @@
     width: 100%;
 }
 
+.createOption {
+    display: flex;
+    font-size: 15px;
+    padding: 0.5rem;
+    justify-content: space-between;
+}
+
+.createRedirect {
+    display: flex;
+    text-decoration: underline;
+}
+
 .error {
     justify-self: center;
     color: rgb(230, 14, 14);

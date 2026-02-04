@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link';
 import { NavBar } from '../../components/navbar/navBar';
 import styles from './styles.module.css'
 import { useState } from "react";
@@ -48,6 +49,12 @@ export default function CreateAccount() {
           onChange={(e) => setCurrentPassword(e.target.value)}
         />
         <button className={styles.button}>Create account</button>
+        <div className={styles.loginOption}>
+          <p>Already have an account?</p>
+          <Link href='/login'>
+          <p className={styles.loginRedirect}>Click here</p>
+          </Link>
+        </div>
         {error && <p className={styles.error}>{error}</p>}
       </form>
       {successMessage && 
