@@ -1,0 +1,15 @@
+.root {
+    color: black;
+}
+
+.pageTitle {
+    font-size: 50px;
+}
+
+.separator {
+    height: 1rem;
+    border-bottom: 0.1rem;
+    border-color: black;   
+    border-style: solid;
+    margin-bottom: 1rem;
+}

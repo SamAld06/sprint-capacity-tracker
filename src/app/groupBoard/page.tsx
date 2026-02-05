@@ -6,7 +6,11 @@ export default function GroupsBoard() {
   return (
     <main className={styles.root}>
       <NavBar/>
-      <GroupCard groupCode="testcode1"/>
+      <h1 className={styles.pageTitle}>
+        Group board
+      </h1>
+      <div className={styles.separator}/>
+      <GroupCard groupCode="testcode1" groupName="Test group 1"/>
     </main>
   );
 }
