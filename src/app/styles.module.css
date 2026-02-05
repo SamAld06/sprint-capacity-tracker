@@ -22,14 +22,15 @@
     padding: 0.5rem 1rem;
     border: none;
     color: black;
-    background-color: #647687;
+    background-color: #bacee5;
     cursor: pointer;
     width: 175px;
     justify-content: center;
 }
 
 .button:hover {
-    background-color: #15682D;
+    background-color: #094f99;
+    color: white;
     transition-duration: 0.5s;
 }
 
