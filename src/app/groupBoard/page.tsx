@@ -1,9 +1,12 @@
-import Image from "next/image";
+import { GroupCard } from "../../components/groupCard/groupCard";
+import { NavBar } from "../../components/navbar/navBar";
+import styles from './styles.module.css'
 
 export default function GroupsBoard() {
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <h1 className="text-2xl font-bold">Sprint Capacity Tracker</h1>
+    <main className={styles.root}>
+      <NavBar/>
+      <GroupCard groupCode="testcode1"/>
     </main>
   );
 }
