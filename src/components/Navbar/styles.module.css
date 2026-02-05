@@ -1,7 +1,7 @@
 .root {
     display: flex;
     color: black;
-    background-color: #647687;
+    background-color: #bacee5;
     padding: 1rem;
     align-content: center;
     align-items: center;
@@ -32,6 +32,6 @@
 }
 
 .navigation:hover {
-    color: #15682D;
+    color: #cf9008;
     transition-duration: 1s;
 }
