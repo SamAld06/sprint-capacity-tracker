@@ -1,14 +1,14 @@
 import { getGroupShortName } from "../../helpers/getGroupShortName";
 import { getRandomColour } from "../../helpers/getRandomColour";
+import { group } from "../../types/group";
 import styles from "./styles.module.css";
 
 export interface GroupCardProps {
-  groupCode: string;
-  groupName: string
+  groupData: group;
 }
 
-export const GroupCard = ({groupCode, groupName}: GroupCardProps) => {
-  const shortenedName = getGroupShortName(groupName)
+export const GroupCard = ({groupData}: GroupCardProps) => {
+  const shortenedName = getGroupShortName(groupData.groupName)
   return (
     <div className={styles.root}>
       <section className={styles.iconContainer} style={{ backgroundColor: getRandomColour()}}>
@@ -17,7 +17,7 @@ export const GroupCard = ({groupCode, groupName}: GroupCardProps) => {
         </div>
       </section>
       <div className={styles.fullName}>
-        {groupName}
+        {groupData.groupName}
       </div>
     </div>
   );

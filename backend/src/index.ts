@@ -81,8 +81,15 @@ db.serialize(() => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     passwordHashed TEXT NOT NULL
-    )
-    `)
+    )`)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS group (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    groupCode TEXT UNIQUE NOT NULL,
+    groupName TEXT UNIQUE NOT NULL,
+    creator TEXT NOT NULL,
+    groupHashedPassword TEXT NOT NULL
+    )`)
 });
 
 app.get("/", (req, res) => {
@@ -196,6 +203,18 @@ app.get("/account", (req, res) => {
     },
   );
 });
+
+app.get("/groups", (req, res) => {
+  const creator = "tester1"
+  db.all(
+    "SELECT * FROM group WHERE creator = ? ORDER BY id",
+    [creator],
+    (err, rows) => {
+      if (err) return res.status(500).send(err.message);
+      res.json(rows);
+    }
+  )
+})
 
 app.post("/create-account", async (req, res) => {
   const {username, password} = req.body;

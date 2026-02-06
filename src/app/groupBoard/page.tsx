@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { GroupCard } from "../../components/groupCard/groupCard";
 import { NavBar } from "../../components/navbar/navBar";
 import styles from './styles.module.css'
+import { group } from "../../types/group";
 
 export default function GroupsBoard() {
+  const [groupMemberData, setGroupMemberData] = useState<group[] | null>(null)
   return (
     <main className={styles.root}>
       <NavBar/>
@@ -10,7 +13,13 @@ export default function GroupsBoard() {
         Group board
       </h1>
       <div className={styles.separator}/>
-      <GroupCard groupCode="testcode1" groupName="Test group 1"/>
+      <div className={styles.cards}>
+            {!groups && <h1>Error loading data</h1>}
+            {groupData &&
+              groupData.map((groupData) => (
+                <GroupCard groupData={groupData}/>
+              ))}
+          </div>
     </main>
   );
 }
