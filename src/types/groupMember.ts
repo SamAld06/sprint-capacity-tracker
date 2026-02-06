@@ -1,4 +1,4 @@
 export type groupMember = {
-    groupCode: string;
+    groupcode: string;
     name: string;
 }

@@ -88,8 +88,3 @@ INSERT INTO groupMember (
             ('t3stGr0up2', 'admin1'),
             ('t3stGr0up2', 'admin2'),
             ('t3stGr0up2', 'admin3');
-INSERT INTO account (
-            username,
-            passwordHashed
-        ) VALUES
-            ('tester1', '$2b$10$EvvrXeNBmZdjjIgBf1ed0OvFQ0n45OtZ820qnfrSRYhnncClVHB9O');

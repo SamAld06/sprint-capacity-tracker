@@ -27,10 +27,10 @@ export default function Members() {
   const [groupMemberData, setGroupMemberData] = useState<groupMember[] | null>(null)
   const [capacityData, setCapacityData] = useState<capacity[] | null>(null);
   const filteredProgressData = sprintProgress?.filter(
-    (sprintProgress) => sprintProgress.sprintId === currentSprint,
+    (sprintProgress) => sprintProgress.sprintid === currentSprint,
   );
   const filteredCapacityData = capacityData?.filter(
-    (capacityData) => capacityData.sprintId === currentSprint,
+    (capacityData) => capacityData.sprintid === currentSprint,
   );
 
   useEffect(() => {
@@ -60,8 +60,8 @@ export default function Members() {
         }
 
         if (latestSprintProgressData) {
-          setLatestSprint(latestSprintProgressData?.sprintId);
-          setCurrentSprint(latestSprintProgressData.sprintId);
+          setLatestSprint(latestSprintProgressData?.sprintid);
+          setCurrentSprint(latestSprintProgressData.sprintid);
         } else {
           setLatestSprint(0);
           setCurrentSprint(0);

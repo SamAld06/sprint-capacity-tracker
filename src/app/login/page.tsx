@@ -1,29 +1,21 @@
 "use client"
 
-import { navigate } from 'next/dist/client/components/segment-cache/navigation';
 import { NavBar } from '../../components/navbar/navBar';
 import styles from './styles.module.css'
 import { useState } from "react";
 import Link from 'next/link';
+import { CreateSuperbaseBrowserClient } from '../../lib/supabase/browser';
 
 export default function Login() {
-  const [currentUsername, setCurrentUsername] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   const [error, setError] = useState("");
+  const supabase = CreateSuperbaseBrowserClient()
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res = await fetch("http://localhost:3000/api/account/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: currentUsername, password: currentPassword})
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error);
-    } else {
-      localStorage.setItem("webToken", data.webToken);
-      window.location.href = "/groupBoard"
-    }
+    e.preventDefault()
+    console.log(email, password)
+    const { error }= await supabase.auth.signInWithPassword({email, password})
+    console.log(error)
   };
   return (
     <main className={styles.root}>
@@ -33,15 +25,15 @@ export default function Login() {
         <p className={styles.formTitle}>Login here</p>
         <input
           className={styles.input}
-          placeholder="Enter a username"
-          value={currentUsername}
-          onChange={(e) => setCurrentUsername(e.target.value)}
+          placeholder="Enter an email"
+          value={email}
+          onChange={(e) => setemail(e.target.value)}
         />
         <input
           className={styles.input}
           placeholder="Enter a password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
+          value={password}
+          onChange={(e) => setpassword(e.target.value)}
         />
         <button className={styles.button}>Login</button>
         <div className={styles.createOption}>

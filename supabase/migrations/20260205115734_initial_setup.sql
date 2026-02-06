@@ -45,9 +45,3 @@ CREATE TABLE IF NOT EXISTS groupMember (
     groupCode TEXT NOT NULL,
     name TEXT NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS account (
-    id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
-    passwordHashed TEXT NOT NULL
-);

@@ -37,7 +37,7 @@ export default function CreateAccount() {
         <p className={styles.formTitle}>Create an account</p>
         <input
           className={styles.input}
-          placeholder="Enter a username"
+          placeholder="Enter an email"
           value={currentUsername}
           onChange={(e) => setCurrentUsername(e.target.value)}
         />
