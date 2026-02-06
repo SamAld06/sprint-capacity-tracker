@@ -12,7 +12,6 @@ import { capacity } from "../../../types/capacity";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 
-
 export default function Capacity() {
   const groupName = "Example group";
   const [latestSprint, setLatestSprint] = useState<number>(1);
@@ -22,12 +21,12 @@ export default function Capacity() {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const getAllCapacity = capacity?.filter(
-    (capacity) => capacity.sprintId === currentSprint,
+    (capacity) => capacity.sprintid === currentSprint,
   );
   const filteredData = getAllCapacity;
 
   const handleSubmit = async (data: capacity) => {
-      const res = await fetch("http://localhost:3001/capacity", {
+      const res = await fetch("http://localhost:3000/api/group/capacity", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -42,6 +41,7 @@ export default function Capacity() {
     const fetchSprint = async () => {
       try {
         const data = await capacityDetailsService.getAll();
+        console.log(data)
         const latestData = getLatestCapacityData(data);
         if (data) {
           setCapacity(data);
@@ -49,8 +49,8 @@ export default function Capacity() {
           setCapacity(null);
         }
         if (latestData) {
-          setLatestSprint(latestData?.sprintId);
-          setCurrentSprint(latestData.sprintId);
+          setLatestSprint(latestData?.sprintid);
+          setCurrentSprint(latestData.sprintid);
         } else {
           setLatestSprint(0);
           setCurrentSprint(0);

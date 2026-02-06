@@ -37,17 +37,17 @@ export default function Sprint() {
   const [capacityData, setCapacityData] = useState<capacity[] | null>(null);
   const [summaryFormIsOpen, setSummaryFormIsOpen] = useState<boolean>(false);
   const filteredProgressData = sprintProgress?.filter(
-    (sprintProgress) => sprintProgress.sprintId === currentSprint,
+    (sprintProgress) => sprintProgress.sprintid === currentSprint,
   );
   const filteredSprintData = sprintData?.filter(
-    (sprintData) => sprintData.sprintId === currentSprint,
+    (sprintData) => sprintData.sprintid === currentSprint,
   );
   const filteredCapacityData = capacityData?.filter(
-    (capacityData) => capacityData.sprintId === currentSprint,
+    (capacityData) => capacityData.sprintid === currentSprint,
   );
 
   const handleSubmit = async (data: workProgress) => {
-    const res = await fetch("http://localhost:3001/workProgress", {
+    const res = await fetch("http://localhost:3000/api/group/workProgress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -59,7 +59,7 @@ export default function Sprint() {
   };
 
   const handleSummaryFormSubmit = async (data: sprint) => {
-    const res = await fetch("http://localhost:3001/sprint", {
+    const res = await fetch("http://localhost:3000/api/group/sprint", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -99,8 +99,8 @@ export default function Sprint() {
         }
 
         if (latestSprintProgressData && latestSprintData) {
-          setLatestSprint(latestSprintProgressData?.sprintId);
-          setCurrentSprint(latestSprintProgressData.sprintId);
+          setLatestSprint(latestSprintProgressData?.sprintid);
+          setCurrentSprint(latestSprintProgressData.sprintid);
         } else {
           setLatestSprint(0);
           setCurrentSprint(0);
@@ -116,7 +116,7 @@ export default function Sprint() {
               progressData: sprintProgressData,
               capacityData: capacityData,
               sprintData: sprintData,
-              nextSprintId: latestSprintProgressData.sprintId,
+              nextSprintId: latestSprintProgressData.sprintid,
             }),
           );
         }

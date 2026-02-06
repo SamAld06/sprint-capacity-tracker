@@ -22,6 +22,7 @@ export default function Dashboard() {
         const latestData = getLatestSprintData(data)
         setLatestSprint(latestData)
         setSprint(data)
+        console.log('lookHerr', latestSprint)
       } catch (err) {
         setErr((err as Error).message)
       } finally {
@@ -32,12 +33,10 @@ export default function Dashboard() {
   }, []);
   if (loading) return <p>Loading sprints...</p>;
   if (err) return <p>Error: {err}</p>;
-  console.log(latestSprint)
   return (
     <>
       <NavBar />
       <main className={styles.root}>
-        {sprint.filter((sprint) => sprint.sprintId=== latestSprint?.sprintId).map((sprint) => (
           <div>
         <header className={styles.groupName}>
           <h1>{groupName}</h1>
@@ -46,15 +45,18 @@ export default function Dashboard() {
           <TabBar />
         </section>
         <section className={styles.info}>
+          {sprint.filter((sprint) => sprint.sprintid === latestSprint?.sprintid).map((sprint) => (
+          <>
           <InfoBox title="Work planned:" data={sprint.planned} />
           <div className={styles.sprintNumber}>
             <p>Current sprint:</p>
-            <p key={sprint.sprintId}>{sprint.sprintId}</p>
+            <p key={sprint.sprintid}>{sprint.sprintid}</p>
           </div>
-          <InfoBox title="Available MDs:" data={sprint.totalMd} />
+          <InfoBox title="Available MDs:" data={sprint.totalmd} />
+          </>
+          ))}
         </section>
         </div>
-        ))}
       </main>
     </>
   );

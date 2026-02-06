@@ -3,7 +3,7 @@ import { workProgress } from "../types/workProgress";
 export function getTeamAveragePerMd(data: workProgress[]) {
   const helper = data.reduce(
     (total, member) => {
-      total.sum += member.averagePerMd;
+      total.sum += member.averagepermd;
       total.count += 1;
       return total;
     },

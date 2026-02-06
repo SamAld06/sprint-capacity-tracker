@@ -12,7 +12,7 @@ export const EditUserButton = ({member}: {member: string}) => {
         if (!newName) return;
 
         const res = await fetch(
-          "http://localhost:3001/edit-member",
+          "http://localhost:3000/api/group/edit-member",
           {
             method: "POST",
             headers: { "Content-Type": "application/json"},

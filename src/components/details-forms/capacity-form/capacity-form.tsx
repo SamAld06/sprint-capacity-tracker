@@ -28,24 +28,24 @@ export const CapacityForm = ({
       ? data?.find(
           (user) =>
             currentName === user.name &&
-            Number(currentSprint) === user.sprintId,
+            Number(currentSprint) === user.sprintid,
         )
       : undefined;
 
 
   useEffect(() => {
     if (!getTeamMemberData) return;
-    if (getTeamMemberData.workingDays !== undefined) {
-      setWorkingDays(String(getTeamMemberData.workingDays));
+    if (getTeamMemberData.workingdays !== undefined) {
+      setWorkingDays(String(getTeamMemberData.workingdays));
     }
-    if (getTeamMemberData.outOfOffice !== undefined) {
-      setOutOfOffice(String(getTeamMemberData.outOfOffice));
+    if (getTeamMemberData.outofoffice !== undefined) {
+      setOutOfOffice(String(getTeamMemberData.outofoffice));
     }
     if (getTeamMemberData.releases !== undefined) {
       setReleases(String(getTeamMemberData.releases));
     }
-    if (getTeamMemberData.fridayProjects !== undefined) {
-      setFridayProject(String(getTeamMemberData.fridayProjects));
+    if (getTeamMemberData.fridayprojects !== undefined) {
+      setFridayProject(String(getTeamMemberData.fridayprojects));
     }
     if (getTeamMemberData.maintenance !== undefined) {
       setMaintenance(String(getTeamMemberData.maintenance));
@@ -54,13 +54,13 @@ export const CapacityForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     const payload = {
-      groupCode: currentGroup,
-      sprintId: Number(currentSprint),
+      groupcode: currentGroup,
+      sprintid: Number(currentSprint),
       name: currentName || "",
-      workingDays: Number(workingDays),
-      outOfOffice: Number(outOfOffice),
+      workingdays: Number(workingDays),
+      outofoffice: Number(outOfOffice),
       releases: Number(releases),
-      fridayProjects: Number(fridayProject),
+      fridayprojects: Number(fridayProject),
       maintenance: Number(maintenance),
       md: getMdForUser({
         workingDays,
@@ -103,7 +103,7 @@ export const CapacityForm = ({
               >
                 <option value="">Select a sprint</option>
                 {data &&
-                  [...new Set(data.map(data => data.sprintId))]
+                  [...new Set(data.map(data => data.sprintid))]
                     .filter(Boolean)
                     .map(sprint => (
                       <option value={sprint}>{sprint}</option>
@@ -126,7 +126,7 @@ export const CapacityForm = ({
                 <option value="">Select a team member</option>
                 {data &&
                   data
-                    .filter((data) => data.sprintId === Number(currentSprint))
+                    .filter((data) => data.sprintid === Number(currentSprint))
                     .map((data) => (
                       <option value={data.name}>{data.name}</option>
                     ))}

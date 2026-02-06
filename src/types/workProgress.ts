@@ -1,8 +1,8 @@
 export type workProgress = {
-    groupCode: string;
-    sprintId: number;
+    groupcode: string;
+    sprintid: number;
     name: string;
-    workAssigned: number;
-    workCompleted: number;
-    averagePerMd: number;
+    workassigned: number;
+    workcompleted: number;
+    averagepermd: number;
 }

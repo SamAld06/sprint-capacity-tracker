@@ -30,22 +30,22 @@ export function getTeamEstimatedCompleted({
     sprintData,
     nextSprintId
 }: functionProps) {
-    const sprints = Array.from(new Set(sprintData.map(data => data.sprintId)))
+    const sprints = Array.from(new Set(sprintData.map(data => data.sprintid)))
     const users = Array.from(new Set(progressData.map(data => data.name)))
     const latestFewSprintData = sprintData.filter(
       (data) =>
-        data.sprintId < nextSprintId &&
-        data.sprintId >= nextSprintId - 3,
+        data.sprintid < nextSprintId &&
+        data.sprintid >= nextSprintId - 3,
     );
     const usersSprintAverages: number[] = []
     const completionDifferences: number[] = []
     //Get all users and the last 3 sprints of data before current one
     for (const sprint of latestFewSprintData) {
         const sprintData = latestFewSprintData.find(
-            data => data.sprintId === sprint.sprintId
+            data => data.sprintid === sprint.sprintid
         )
-        if (sprintData?.totalCompleted && sprintData.planned) {
-            const completionDifference = getSprintCompletionDifference(sprintData?.totalCompleted, sprintData?.planned)
+        if (sprintData?.totalcompleted && sprintData.planned) {
+            const completionDifference = getSprintCompletionDifference(sprintData?.totalcompleted, sprintData?.planned)
             completionDifferences.push(completionDifference)
         } else {
             const completionDifference = 0
@@ -61,25 +61,25 @@ export function getTeamEstimatedCompleted({
         )
         const userCapacityData = capacityData.filter(
             data => data.name === user && 
-            data.sprintId < nextSprintId && 
-            data.sprintId >= nextSprintId - 3
+            data.sprintid < nextSprintId && 
+            data.sprintid >= nextSprintId - 3
         )
         const userProgressData = progressData.filter(
             data => data.name === user &&
-            data.sprintId < nextSprintId && 
-            data.sprintId >= nextSprintId - 3
+            data.sprintid < nextSprintId && 
+            data.sprintid >= nextSprintId - 3
         )
         const sprintAverages: number[] = []
         for (const sprint of userCapacityData && userProgressData) {
             //Get user average md for each sprint
             const sprintProgress = userProgressData.find(
-                data => data.sprintId === sprint.sprintId
+                data => data.sprintid === sprint.sprintid
             )
             const sprintCapacity = userCapacityData.find(
-                data => data.sprintId === sprint.sprintId
+                data => data.sprintid === sprint.sprintid
             )
-            if (sprintProgress?.workCompleted && sprintCapacity?.md) {
-                const averagePerMd = getUserAveragePerMd(sprintProgress?.workCompleted, sprintCapacity?.md)
+            if (sprintProgress?.workcompleted && sprintCapacity?.md) {
+                const averagePerMd = getUserAveragePerMd(sprintProgress?.workcompleted, sprintCapacity?.md)
                 sprintAverages.push(averagePerMd)
             } else {
                 const averagePerMd = 0
@@ -90,7 +90,7 @@ export function getTeamEstimatedCompleted({
         //difference, then calculate user estimated capacity and push to array
         const fewSprintAverage = getUserFewSprintAveragePerMd(sprintAverages)
         const finalAvgPerMd = getUserFinalAveragePerMd(finalCompletionDifferencePercent, fewSprintAverage)
-        const userMd = allUserCapacityData.find(data => data.sprintId === nextSprintId)?.md ?? 0
+        const userMd = allUserCapacityData.find(data => data.sprintid === nextSprintId)?.md ?? 0
         const userEstimatedComplete = finalAvgPerMd * userMd
         usersSprintAverages.push(userEstimatedComplete)
     }

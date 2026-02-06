@@ -1,0 +1,7 @@
+import { createClient } from "@supabase/supabase-js";
+
+if(!process.env.SUPABASE_LINK || !process.env.SUPABASE_KEY) {
+    throw new Error("Missing supabase env variables")
+}
+
+export const supabase = createClient(process.env.SUPABASE_LINK, process.env.SUPABASE_KEY)
