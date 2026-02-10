@@ -1,11 +1,14 @@
 "use client";
 
+import { redirect } from 'next/dist/server/api-utils';
 import { InfoBox } from '../../../components/dashboard-info-box/dashboard-info-box';
 import { NavBar } from '../../../components/navbar/navBar';
 import { TabBar } from '../../../components/tabbar/tabBar';
 import { getLatestSprintData } from '../../../helpers/getLatestSprintData';
+import { CreateServerClient } from '../../../lib/supabase/server';
 import { sprintDetailsService } from '../../../services/sprintDetailsService';
 import { sprint } from '../../../types/sprint';
+import { supabase } from '../../api/_libs/supabaseclient';
 import styles from './styles.module.css'
 import { useEffect, useState } from "react";
 
@@ -18,10 +21,10 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await sprintDetailsService.getAll()
-        const latestData = getLatestSprintData(data)
+        const sprintData = await sprintDetailsService.getAll()
+        const latestData = getLatestSprintData(sprintData)
         setLatestSprint(latestData)
-        setSprint(data)
+        setSprint(sprintData)
       } catch (err) {
         setErr((err as Error).message)
       } finally {
@@ -31,13 +34,11 @@ export default function Dashboard() {
     fetchSprint();
   }, []);
   if (loading) return <p>Loading sprints...</p>;
-  if (err) return <p>Error: {err}</p>;
-  console.log(latestSprint)
+  if (err){return <p>Error: {err}</p>};
   return (
     <>
       <NavBar />
       <main className={styles.root}>
-        {sprint.filter((sprint) => sprint.sprintId=== latestSprint?.sprintId).map((sprint) => (
           <div>
         <header className={styles.groupName}>
           <h1>{groupName}</h1>
@@ -46,15 +47,18 @@ export default function Dashboard() {
           <TabBar />
         </section>
         <section className={styles.info}>
+          {sprint.filter((sprint) => sprint.sprintid === latestSprint?.sprintid).map((sprint) => (
+          <>
           <InfoBox title="Work planned:" data={sprint.planned} />
           <div className={styles.sprintNumber}>
             <p>Current sprint:</p>
-            <p key={sprint.sprintId}>{sprint.sprintId}</p>
+            <p key={sprint.sprintid}>{sprint.sprintid}</p>
           </div>
-          <InfoBox title="Available MDs:" data={sprint.totalMd} />
+          <InfoBox title="Available MDs:" data={sprint.totalmd} />
+          </>
+          ))}
         </section>
         </div>
-        ))}
       </main>
     </>
   );

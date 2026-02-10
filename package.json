@@ -10,7 +10,10 @@
     "test": "node --experimental-require-module node_modules/jest/bin/jest.js"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.94.1",
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
     "jest": "^30.2.0",
     "jsonwebtoken": "^9.0.3",
     "next": "^16.1.6",
@@ -33,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
     "jest-environment-jsdom": "^30.2.0",
+    "supabase": "^2.75.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

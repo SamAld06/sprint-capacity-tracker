@@ -11,7 +11,7 @@ export const RemoveUserButton = ({member}: {member: string}) => {
         if (!confirm(`Are you sure you want to remove this team member: ${member}\n\nThey will no longer be in future sprints`)) return;
 
         const res = await fetch(
-          "http://localhost:3001/remove-member",
+          "http://localhost:3000/api/group/remove-member",
           {
             method: "DELETE",
             headers: { "Content-Type": "application/json"},

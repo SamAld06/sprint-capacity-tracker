@@ -35,10 +35,10 @@ export const SprintProgressSummaryCard = ({sprintProgressData, sprintData, estim
         <p className={styles.data}>Team work planned: {sprintData[0].planned}</p>
         <p className={styles.data}>Team work added: {sprintData[0].added}</p>
         <p className={styles.data}>Team work removed: {sprintData[0].removed}</p>
-        <p className={styles.data}>Team total md: {sprintData[0].totalMd}</p>
-        <p className={styles.data}>Team work completed: {sprintData[0].totalCompleted}</p>
+        <p className={styles.data}>Team total md: {sprintData[0].totalmd}</p>
+        <p className={styles.data}>Team work completed: {sprintData[0].totalcompleted}</p>
         <p className={styles.data}>Team averagePerMd | current sprint: {totalAveragePerMd}</p>
-        <p className={styles.data}>Team completion difference: {sprintData[0].plannedCompletedDifference}%</p>
+        <p className={styles.data}>Team completion difference: {sprintData[0].plannedcompleteddifference}%</p>
       </section>
     </div>
   );

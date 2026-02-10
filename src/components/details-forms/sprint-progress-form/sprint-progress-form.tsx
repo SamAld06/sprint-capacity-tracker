@@ -25,29 +25,29 @@ export const SprintProgressForm = ({
       ? data?.find(
           (user) =>
             currentName === user.name &&
-            Number(currentSprint) === user.sprintId,
+            Number(currentSprint) === user.sprintid,
         )
       : undefined;
 
 
   useEffect(() => {
     if (!getTeamMemberData) return;
-    if (getTeamMemberData.workAssigned !== undefined) {
-      setworkAssigned(String(getTeamMemberData.workAssigned));
+    if (getTeamMemberData.workassigned !== undefined) {
+      setworkAssigned(String(getTeamMemberData.workassigned));
     }
-    if (getTeamMemberData.workCompleted !== undefined) {
-      setWorkCompleted(String(getTeamMemberData.workCompleted));
+    if (getTeamMemberData.workcompleted !== undefined) {
+      setWorkCompleted(String(getTeamMemberData.workcompleted));
     }
   }, [getTeamMemberData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     const payload = {
       groupCode: currentGroup,
-      sprintId: Number(currentSprint),
+      sprintid: Number(currentSprint),
       name: currentName || "",
-      workAssigned: Number(workAssigned),
-      workCompleted: Number(workCompleted),
-      averagePerMd: Number(averagePerMd)
+      workassigned: Number(workAssigned),
+      workcompleted: Number(workCompleted),
+      averagepermd: Number(averagePerMd)
     };
     e.preventDefault();
     if (
@@ -80,7 +80,7 @@ export const SprintProgressForm = ({
               >
                 <option value="">Select a sprint</option>
                 {data &&
-                  [...new Set(data.map(data => data.sprintId))]
+                  [...new Set(data.map(data => data.sprintid))]
                     .filter(Boolean)
                     .map(sprint => (
                       <option value={sprint}>{sprint}</option>
@@ -97,7 +97,7 @@ export const SprintProgressForm = ({
                 <option value="">Select a team member</option>
                 {data &&
                   data
-                    .filter((data) => data.sprintId === Number(currentSprint))
+                    .filter((data) => data.sprintid === Number(currentSprint))
                     .map((data) => (
                       <option value={data.name}>{data.name}</option>
                     ))}

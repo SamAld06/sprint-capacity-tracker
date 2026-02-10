@@ -1,10 +1,10 @@
 export type sprint = {
-    groupCode: string;
-    sprintId: number
+    groupcode: string;
+    sprintid: number
     planned: number;
     added: number;
     removed: number;
-    totalCompleted: number;
-    totalMd: number;
-    plannedCompletedDifference: number;
+    totalcompleted: number;
+    totalmd: number;
+    plannedcompleteddifference: number;
 }

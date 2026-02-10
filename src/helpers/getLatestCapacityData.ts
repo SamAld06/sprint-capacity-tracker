@@ -5,6 +5,6 @@ export function getLatestCapacityData(data: capacity[]) {
         return null
     }
     return data.reduce((inital, current) => {
-        return current.id > inital.id ? current : inital
+        return current.sprintid > inital.sprintid ? current : inital
     })
 }

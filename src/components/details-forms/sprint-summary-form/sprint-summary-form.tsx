@@ -31,7 +31,7 @@ export const SprintSummaryForm = ({
     currentSprint
       ? summaryData?.find(
           (sprint) =>
-            Number(currentSprint) === sprint.sprintId,
+            Number(currentSprint) === sprint.sprintid,
         )
       : undefined;
 
@@ -49,31 +49,31 @@ export const SprintSummaryForm = ({
       setworkRemoved(String(getTeamData.removed));
     }
 
-    if (getTeamData.totalCompleted!== undefined) {
-      setWorkCompleted(String(getTeamData.totalCompleted));
+    if (getTeamData.totalcompleted!== undefined) {
+      setWorkCompleted(String(getTeamData.totalcompleted));
     }
 
-    if (getTeamData.totalMd!== undefined) {
-      setTotalMd(String(getTeamData.totalMd));
+    if (getTeamData.totalmd!== undefined) {
+      setTotalMd(String(getTeamData.totalmd));
     }
 
-    if (getTeamData.plannedCompletedDifference!== undefined) {
-      setCompletionDifference(String(getTeamData.plannedCompletedDifference));
+    if (getTeamData.plannedcompleteddifference!== undefined) {
+      setCompletionDifference(String(getTeamData.plannedcompleteddifference));
     }
   }, [getTeamData]);
     const latestSprintProgressData = progressData?.filter(
-        (sprintProgress) => sprintProgress.sprintId === Number(currentSprint)
+        (sprintProgress) => sprintProgress.sprintid === Number(currentSprint)
     );
   const handleSubmit = async (e: React.FormEvent) => {
     const payload = {
       groupCode: currentGroup,
-      sprintId: Number(currentSprint),
+      sprintid: Number(currentSprint),
       planned: Number(workPlanned),
       added: Number(workAdded),
       removed: Number(workRemoved),
-      totalCompleted: Number(workCompleted),
-      totalMd: Number(totalMd),
-      plannedCompletedDifference: getSprintCompletionDifference(Number(workCompleted), Number(workPlanned))
+      totalcompleted: Number(workCompleted),
+      totalcd: Number(totalMd),
+      plannedcompleteddifference: getSprintCompletionDifference(Number(workCompleted), Number(workPlanned))
     };
     e.preventDefault();
     if (
@@ -109,9 +109,9 @@ export const SprintSummaryForm = ({
                 <option value="">Select a sprint</option>
                 {summaryData &&
                   summaryData
-                    .filter((data) => data.sprintId)
+                    .filter((data) => data.sprintid)
                     .map((data) => (
-                      <option value={data.sprintId}>{data.sprintId}</option>
+                      <option value={data.sprintid}>{data.sprintid}</option>
                     ))}
               </select>
             </div>

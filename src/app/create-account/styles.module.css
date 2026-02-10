@@ -16,7 +16,7 @@
     display: block;
     background-color: #fff;
     padding: 1rem;
-    max-width: 350px;
+    max-width: 450px;
     align-items: center;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border-radius: 0.5rem;
@@ -101,4 +101,22 @@
     border-radius: 0.5rem;
     justify-content: space-around;
     color: rgb(13, 156, 13);
+}
+
+.passwordWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.showPassword {
+    display: flex;
+    cursor: pointer;
+    width: 50px;
+    height: 25px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(211, 207, 207);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
 }
