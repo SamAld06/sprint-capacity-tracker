@@ -1,11 +1,14 @@
 "use client";
 
+import { redirect } from 'next/dist/server/api-utils';
 import { InfoBox } from '../../../components/dashboard-info-box/dashboard-info-box';
 import { NavBar } from '../../../components/navbar/navBar';
 import { TabBar } from '../../../components/tabbar/tabBar';
 import { getLatestSprintData } from '../../../helpers/getLatestSprintData';
+import { CreateServerClient } from '../../../lib/supabase/server';
 import { sprintDetailsService } from '../../../services/sprintDetailsService';
 import { sprint } from '../../../types/sprint';
+import { supabase } from '../../api/_libs/supabaseclient';
 import styles from './styles.module.css'
 import { useEffect, useState } from "react";
 
@@ -18,11 +21,10 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchSprint = async () => {
       try {
-        const data = await sprintDetailsService.getAll()
-        const latestData = getLatestSprintData(data)
+        const sprintData = await sprintDetailsService.getAll()
+        const latestData = getLatestSprintData(sprintData)
         setLatestSprint(latestData)
-        setSprint(data)
-        console.log('lookHerr', latestSprint)
+        setSprint(sprintData)
       } catch (err) {
         setErr((err as Error).message)
       } finally {
@@ -32,7 +34,7 @@ export default function Dashboard() {
     fetchSprint();
   }, []);
   if (loading) return <p>Loading sprints...</p>;
-  if (err) return <p>Error: {err}</p>;
+  if (err){return <p>Error: {err}</p>};
   return (
     <>
       <NavBar />

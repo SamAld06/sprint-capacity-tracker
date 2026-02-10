@@ -128,6 +128,8 @@ export default function Sprint() {
     };
     fetchSprint();
   }, []);
+  if (loading) return <p>Loading sprints...</p>;
+  if (err) return <p>Error: {err}</p>;
   return (
     <>
       <NavBar />

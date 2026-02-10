@@ -2,7 +2,6 @@ DELETE FROM sprint;
 DELETE FROM workProgress;
 DELETE FROM capacity;
 DELETE FROM groupMember;
-DELETE FROM account;
 
 INSERT INTO sprint (
             groupCode,

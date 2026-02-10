@@ -41,7 +41,6 @@ export default function Capacity() {
     const fetchSprint = async () => {
       try {
         const data = await capacityDetailsService.getAll();
-        console.log(data)
         const latestData = getLatestCapacityData(data);
         if (data) {
           setCapacity(data);
