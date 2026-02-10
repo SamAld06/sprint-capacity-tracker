@@ -9,8 +9,8 @@ export default function Home() {
       <h1 className={styles.header}>Welcome to the sprint capacity wizard</h1>
       <p className={styles.description}>A tool to track sprint capacity as accuratley as possible</p>
       <div className={styles.navigation}>
-        <Link href="/groups">
-          <button className={styles.button}>Create group</button>
+        <Link href="/groupBoard">
+          <button className={styles.button}>View groups</button>
         </Link>
         <Link href="/create-account">
           <button className={styles.button}>Create account</button>
