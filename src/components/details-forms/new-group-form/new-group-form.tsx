@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { NewGroup } from "../../../types/newGroup";
+import { supabase } from "../../../app/api/_libs/supabaseclient";
+import { generateGroupCode } from "../../../helpers/generateGroupCode";
 
 export interface SprintProgressFormProps {
   onClose: () => void;
@@ -13,21 +15,34 @@ export const NewGroupForm = ({
 }: SprintProgressFormProps) => {
   const currentGroup = "t3stGr0up1";
   const [currentGroupName, setCurrentGroupName] = useState<string>("");
-  const [currentCreator, setCurrentName] = useState<string>("");
+  const [currentCreator, setCurrentCreator] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (error || !user?.email) {
+        console.error("Supabase get user error:", error);
+      } else {
+        setCurrentCreator(user?.email);
+      }
+    };
+    fetchUser();
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     const payload = {
-      groupname: currentGroup,
+      groupname: currentGroupName,
       creator: currentCreator,
-      password: password
+      password: password,
     };
     e.preventDefault();
     if (
       currentGroupName == null ||
       currentCreator == null ||
-      password == null
+      password == null 
     ) {
       alert("All fields must be filled");
       return;
@@ -35,6 +50,7 @@ export const NewGroupForm = ({
     if (confirmPassword != password) {
         alert("Passwords must match")
     }
+    console.log('payload here', payload)
     await onSubmit(payload);
   };
 

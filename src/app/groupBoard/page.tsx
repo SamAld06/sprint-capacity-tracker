@@ -20,7 +20,11 @@ export default function GroupsBoard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+    const result = await res.json()
     setIsOpen(false);
+    if (!res.ok) {
+      console.error("Server error", result);
+    }
     if (res.ok) {
       window.location.reload();
     }

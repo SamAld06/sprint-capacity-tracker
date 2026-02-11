@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../_libs/supabaseclient";
 import bcrypt from "bcrypt";
+import { generateGroupCode } from "../../../helpers/generateGroupCode";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -24,14 +25,16 @@ export async function POST(request: Request) {
       creator,
       password
     } = await request.json();
-    if (!groupname || !creator || !password) {
-      return NextResponse.json({ error: "groupname / creator / password are missing" }, { status: 400})
+    const groupcode = generateGroupCode()
+    if (!groupname || !creator || !password || !groupcode) {
+      return NextResponse.json({ error: "groupname / creator / password /groupcode are missing" }, { status: 400})
     }
     const grouphashedpassword = await bcrypt.hash(password, saltRounds);
     const { error } = await supabase.from("groups").insert({
       groupname,
       creator,
-      grouphashedpassword
+      grouphashedpassword,
+      groupcode
     });
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
