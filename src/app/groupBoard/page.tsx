@@ -1,11 +1,36 @@
-import { useState } from "react";
+"use client"
+
+import { useEffect, useState } from "react";
 import { NavBar } from "../../components/navbar/navBar";
 import styles from './styles.module.css'
 import { group } from "../../types/group";
 import { GroupCard } from "../../components/groupCard/groupCard";
+import { groupDetailsService } from "../../services/groupDetailsService";
 
 export default function GroupsBoard() {
   const [groupData, setGroupData] = useState<group[] | null>(null)
+  const [err, setErr] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const data = await groupDetailsService.getAll();
+        if (data) {
+          setGroupData(data);
+        } else {
+          setGroupData(null);
+        }
+      } catch (err) {
+        setErr((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGroups();
+  }, []);
+
+  if (loading) return <p>Loading sprints...</p>;
+  if (err) return <p>Error: {err}</p>;
   return (
     <main className={styles.root}>
       <NavBar/>
@@ -14,7 +39,7 @@ export default function GroupsBoard() {
       </h1>
       <div className={styles.separator}/>
       <div className={styles.cards}>
-            {!groups && <h1>Error loading data</h1>}
+            {/* {!groups && <h1>Error loading data</h1>} */}
             {groupData &&
               groupData.map((groupData) => (
                 <GroupCard groupData={groupData}/>

@@ -10,6 +10,17 @@ export interface GroupCardProps {
 export const GroupCard = ({groupData}: GroupCardProps) => {
   const shortenedName = getGroupShortName(groupData.groupName)
   return (
+    <button className={styles.button} onClick={async () => {
+        const res = await fetch(
+          "http://localhost:3000/api/group/",
+          {
+            method: "POST",
+          }
+        );
+        if (res.ok) {
+          window.location.reload()
+        }
+      }}>
     <div className={styles.root}>
       <section className={styles.iconContainer} style={{ backgroundColor: getRandomColour()}}>
         <div className={styles.shortenedName}>
@@ -20,5 +31,6 @@ export const GroupCard = ({groupData}: GroupCardProps) => {
         {groupData.groupName}
       </div>
     </div>
+    </button>
   );
 };

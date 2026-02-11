@@ -1,14 +1,11 @@
 import { group } from "../types/group";
 
-
-const APIURL = "http://localhost:3001/groups"
-
-export const groupMemberDetailsService = {
-    getAll: async (): Promise<group> => {
-        const res = await fetch(APIURL)
+export const groupDetailsService = {
+    getAll: async (): Promise<group[]> => {
+        const res = await fetch("http://localhost:3000/api/group")
         if (!res.ok) {
             const err = await res.text();
-            throw new Error(`Api fetch for groups details failed with error:): ${err}`)
+            throw new Error(`Api fetch for group details failed with error:): ${err}`)
         }
         const data = await res.json()
         return data
