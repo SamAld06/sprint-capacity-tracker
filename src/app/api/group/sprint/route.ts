@@ -2,13 +2,15 @@ import { NextResponse } from "next/server";
 import { supabase } from "../../_libs/supabaseclient";
 
 export async function GET(request: Request) {
-  // const groupcode = searchParams.get("groupcode");
-  const groupcode = 't3stGr0up1'
+  const { searchParams } = new URL(request.url)
+  const groupcode = searchParams.get("groupcode");
+  if (!groupcode) {
+    return NextResponse.json({ error: "groupCode is missing" }, { status: 400})
+  }
     const { data, error } = await supabase
       .from("sprint")
       .select("*")
       .eq("groupcode", groupcode)
-      .order("groupcode", { ascending: true })
       .order("sprintid", { ascending: true });
 
     if (error) {

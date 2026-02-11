@@ -2,6 +2,17 @@ DELETE FROM sprint;
 DELETE FROM workProgress;
 DELETE FROM capacity;
 DELETE FROM groupMember;
+DELETE FROM groups;
+
+INSERT INTO groups (
+            groupCode,
+            groupName,
+            creator,
+            groupHashedPassword
+        ) VALUES
+            ('t3stGr0up1', 'Test Group 1', 'samgaldred@gmail.com', 'password1'),
+            ('t3stGr0up2', 'Test Group 2', 'samgaldred@gmail.com', 'password2'),
+            ('t3stGr0up3', 'Test Group 3', 'samgaldred@gmail.com', 'password3');
 
 INSERT INTO sprint (
             groupCode,

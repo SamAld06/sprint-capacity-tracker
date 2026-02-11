@@ -71,15 +71,22 @@ export default function Sprint() {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      setLoading(false);
+      return;
+    }
     const fetchSprint = async () => {
       try {
-        const sprintData = await sprintDetailsService.getAll();
-        const sprintProgressData = await sprintProgressDetailsService.getAll();
+        const sprintData = await sprintDetailsService.getAll(groupcode);
+        const sprintProgressData =
+          await sprintProgressDetailsService.getAll(groupcode);
         const latestSprintProgressData =
           getLatestSprintProgressData(sprintProgressData);
         const latestSprintData = getLatestSprintData(sprintData);
-        const capacityData = await capacityDetailsService.getAll();
-        const latestCapacityData = getLatestCapacityData(capacityData);
+        const capacityData = await capacityDetailsService.getAll(groupcode);
         if (sprintProgressData) {
           setSprintProgress(sprintProgressData);
         } else {
@@ -193,17 +200,21 @@ export default function Sprint() {
             />
           )}
           <div className={styles.summaryCard}>
-            {filteredProgressData && filteredSprintData && sprintData && capacityData && sprintProgress &&(
-              <SprintProgressSummaryCard
-                sprintProgressData={filteredProgressData}
-                sprintData={filteredSprintData}
-                estimatedCompletion={estimatedCompleted}
-                allSprintData={sprintData}
-                allCapacityData={capacityData}
-                allProgressData={sprintProgress}
-                currentSprint={currentSprint}
-              />
-            )}
+            {filteredProgressData &&
+              filteredSprintData &&
+              sprintData &&
+              capacityData &&
+              sprintProgress && (
+                <SprintProgressSummaryCard
+                  sprintProgressData={filteredProgressData}
+                  sprintData={filteredSprintData}
+                  estimatedCompletion={estimatedCompleted}
+                  allSprintData={sprintData}
+                  allCapacityData={capacityData}
+                  allProgressData={sprintProgress}
+                  currentSprint={currentSprint}
+                />
+              )}
           </div>
           <div className={styles.cards}>
             {!sprintProgress && <h1>Error loading data</h1>}
