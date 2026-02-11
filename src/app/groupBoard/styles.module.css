@@ -13,3 +13,41 @@
     border-style: solid;
     margin-bottom: 1rem;
 }
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.iconContainer {
+    display: flex;
+    padding: 0.25rem;
+    background-color: #e8e8e8;
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+}
+
+.shortenedName{
+    font-size: 30px;
+}
+
+.cardRoot {
+    display: flex;
+    padding: 0.5rem;
+    align-content: center;
+    flex-direction: column;
+    background-color: #f1f0f0;
+    width: 200px;
+    border-radius: 0.5rem;
+    height: 200px;
+    border: 0.1rem;
+    border-style: solid;
+    border-color: black;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

@@ -15,7 +15,6 @@ export const CapacityForm = ({
   onSubmit,
 }: CapacityFormProps) => {
   const currentGroup = "t3stGr0up1";
-  const [loading, setLoading] = useState(true);
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [currentName, setCurrentName] = useState<string | null>(null);
   const [workingDays, setWorkingDays] = useState<string>("");

@@ -1,0 +1,84 @@
+import { useEffect, useState } from "react";
+import styles from "../styles.module.css";
+import { NewGroup } from "../../../types/newGroup";
+
+export interface SprintProgressFormProps {
+  onClose: () => void;
+  onSubmit: (data: NewGroup) => void;
+}
+
+export const NewGroupForm = ({
+  onClose,
+  onSubmit,
+}: SprintProgressFormProps) => {
+  const currentGroup = "t3stGr0up1";
+  const [currentGroupName, setCurrentGroupName] = useState<string>("");
+  const [currentCreator, setCurrentName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    const payload = {
+      groupname: currentGroup,
+      creator: currentCreator,
+      password: password
+    };
+    e.preventDefault();
+    if (
+      currentGroupName == null ||
+      currentCreator == null ||
+      password == null
+    ) {
+      alert("All fields must be filled");
+      return;
+    }
+    if (confirmPassword != password) {
+        alert("Passwords must match")
+    }
+    await onSubmit(payload);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.modal}>
+        <button onClick={onClose} className={styles.closeButton}>
+          X
+        </button>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.inputs}>
+            <div className={styles.inputRow}>
+              <label>Group name</label>
+              <input
+                className={styles.inputBox}
+                type="text"
+                value={currentGroupName}
+                onChange={(e) => setCurrentGroupName(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Group password</label>
+              <input
+                className={styles.inputBox}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+            </div>
+            <div className={styles.inputRow}>
+              <label>Confirm group password</label>
+              <input
+                className={styles.inputBox}
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              ></input>
+            </div>
+          </div>
+          <button type="submit" disabled={false} className={styles.saveButton}>
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};

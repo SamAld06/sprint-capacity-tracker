@@ -1,6 +1,6 @@
 export type group = {
-    groupCode: string;
-    groupName: string;
+    groupcode: string;
+    groupname: string;
     creator: string;
-    groupHashedPassword: string
+    grouphashedpassword: string
 }

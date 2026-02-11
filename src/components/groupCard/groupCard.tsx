@@ -7,30 +7,29 @@ export interface GroupCardProps {
   groupData: group;
 }
 
-export const GroupCard = ({groupData}: GroupCardProps) => {
-  const shortenedName = getGroupShortName(groupData.groupName)
+export const GroupCard = ({ groupData }: GroupCardProps) => {
+  const shortenedName = getGroupShortName(groupData.groupname);
   return (
-    <button className={styles.button} onClick={async () => {
-        const res = await fetch(
-          "http://localhost:3000/api/group/",
-          {
-            method: "POST",
-          }
-        );
+    <button
+      className={styles.button}
+      onClick={async () => {
+        const res = await fetch("http://localhost:3000/api/groups", {
+          method: "get",
+        });
         if (res.ok) {
-          window.location.reload()
+          window.location.href= "/group/dashboard"
         }
-      }}>
-    <div className={styles.root}>
-      <section className={styles.iconContainer} style={{ backgroundColor: getRandomColour()}}>
-        <div className={styles.shortenedName}>
-            {shortenedName}
-        </div>
-      </section>
-      <div className={styles.fullName}>
-        {groupData.groupName}
+      }}
+    >
+      <div className={styles.root}>
+        <section
+          className={styles.iconContainer}
+          style={{ backgroundColor: getRandomColour() }}
+        >
+          <div className={styles.shortenedName}>{shortenedName}</div>
+        </section>
+        <div className={styles.fullName}>{groupData.groupname}</div>
       </div>
-    </div>
     </button>
   );
 };

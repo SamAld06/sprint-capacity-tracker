@@ -12,6 +12,7 @@
     border-color: black;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .iconContainer {
