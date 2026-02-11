@@ -26,21 +26,28 @@ export default function Capacity() {
   const filteredData = getAllCapacity;
 
   const handleSubmit = async (data: capacity) => {
-      const res = await fetch("http://localhost:3000/api/group/capacity", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      setIsOpen(false);
-      if (res.ok) {
-        window.location.reload()
-      }
+    const res = await fetch("http://localhost:3000/api/group/capacity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    setIsOpen(false);
+    if (res.ok) {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      setLoading(false);
+      return;
+    }
     const fetchSprint = async () => {
       try {
-        const data = await capacityDetailsService.getAll();
+        const data = await capacityDetailsService.getAll(groupcode);
         const latestData = getLatestCapacityData(data);
         if (data) {
           setCapacity(data);
