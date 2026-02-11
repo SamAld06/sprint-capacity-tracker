@@ -13,11 +13,13 @@ export const GroupCard = ({ groupData }: GroupCardProps) => {
     <button
       className={styles.button}
       onClick={async () => {
-        const res = await fetch("http://localhost:3000/api/groups", {
+        const res = await fetch(`http://localhost:3000/api/group/sprint?groupcode=${groupData.groupcode}`, {
           method: "get",
         });
         if (res.ok) {
-          window.location.href= "/group/dashboard"
+          window.location.href = `/group/dashboard?groupcode=${groupData.groupcode}`;
+          console.log(res)
+          console.log(groupData.groupcode)
         }
       }}
     >

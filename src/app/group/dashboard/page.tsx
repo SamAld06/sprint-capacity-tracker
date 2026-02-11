@@ -19,9 +19,16 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [latestSprint, setLatestSprint] = useState<sprint | null>()
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode")
+    if (!groupcode) {
+      setErr("No group code could be retrieved")
+      setLoading(false);
+      return;
+    }
     const fetchSprint = async () => {
       try {
-        const sprintData = await sprintDetailsService.getAll()
+        const sprintData = await sprintDetailsService.getAll(groupcode)
         const latestData = getLatestSprintData(sprintData)
         setLatestSprint(latestData)
         setSprint(sprintData)
