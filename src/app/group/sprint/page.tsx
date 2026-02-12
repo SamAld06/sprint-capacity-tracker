@@ -7,7 +7,6 @@ import { SprintSummaryForm } from "../../../components/details-forms/sprint-summ
 import { NavBar } from "../../../components/navbar/navBar";
 import { SprintProgressSummaryCard } from "../../../components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
 import { TabBar } from "../../../components/tabbar/tabBar";
-import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
 import { getLatestSprintProgressData } from "../../../helpers/getLatestSprintProgressData";
 import { getTeamEstimatedCompleted } from "../../../helpers/getTeamEstimatedCompleted";
