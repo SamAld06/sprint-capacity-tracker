@@ -70,7 +70,7 @@ export default function Settings() {
         </section>
         <section className={styles.settings}>
           <ChangeGroupNameButton groupcode={groupcode} userEmail={userEmail} />
-          <ChangeGroupPasswordButton />
+          <ChangeGroupPasswordButton groupcode={groupcode} userEmail={userEmail}/>
           {err && <p className={styles.error}>{err}</p>}
         </section>
       </main>

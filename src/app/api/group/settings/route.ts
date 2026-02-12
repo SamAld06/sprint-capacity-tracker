@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { supabase } from "../../_libs/supabaseclient";
 
 export async function GET(request: Request) {
