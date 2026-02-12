@@ -8,11 +8,12 @@ import styles from "./styles.module.css";
 import { groupMemberDetailsService } from "../../../services/groupMemberService";
 import { groupMember } from "../../../types/groupMember";
 import { AddUserButton } from "../../../components/membersTabButtons/addUserButton";
+import { settingsDetailsService } from "../../../services/settingsDetailsService";
 
 export default function Members() {
-  const groupName = "Example group";
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [groupName, setGroupName] = useState<string>("");
   const [groupMemberData, setGroupMemberData] = useState<groupMember[] | null>(
     null,
   );
@@ -29,6 +30,11 @@ export default function Members() {
       try {
         const groupMemberData =
           await groupMemberDetailsService.getAll(groupcode);
+        const groupData = await settingsDetailsService.getAll(groupcode);
+        if (!groupData) {
+          setErr("group data is missing");
+        }
+        setGroupName(groupData[0].groupname);
         if (groupMemberData) {
           setGroupMemberData(groupMemberData);
         } else {

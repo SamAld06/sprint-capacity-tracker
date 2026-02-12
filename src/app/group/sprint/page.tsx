@@ -12,6 +12,7 @@ import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
 import { getLatestSprintProgressData } from "../../../helpers/getLatestSprintProgressData";
 import { getTeamEstimatedCompleted } from "../../../helpers/getTeamEstimatedCompleted";
 import { capacityDetailsService } from "../../../services/capacityDetailsService";
+import { settingsDetailsService } from "../../../services/settingsDetailsService";
 import { sprintDetailsService } from "../../../services/sprintDetailsService";
 import { sprintProgressDetailsService } from "../../../services/sprintProgressDetailsService";
 import { capacity } from "../../../types/capacity";
@@ -21,7 +22,6 @@ import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 
 export default function Sprint() {
-  const groupName = "Example group";
   const [estimatedCompleted, setEstimatedCompleted] = useState<
     number | undefined
   >(undefined);
@@ -34,6 +34,7 @@ export default function Sprint() {
   const [sprintData, setSprintData] = useState<sprint[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [groupName, setGroupName] = useState<string>("");
   const [capacityData, setCapacityData] = useState<capacity[] | null>(null);
   const [summaryFormIsOpen, setSummaryFormIsOpen] = useState<boolean>(false);
   const filteredProgressData = sprintProgress?.filter(
@@ -87,7 +88,12 @@ export default function Sprint() {
         const latestSprintProgressData =
           getLatestSprintProgressData(sprintProgressData);
         const latestSprintData = getLatestSprintData(sprintData);
+        const groupData = await settingsDetailsService.getAll(groupcode);
         const capacityData = await capacityDetailsService.getAll(groupcode);
+        if (!groupData) {
+          setErr("group data is missing");
+        }
+        setGroupName(groupData[0].groupname);
         if (sprintProgressData) {
           setSprintProgress(sprintProgressData);
         } else {
@@ -181,7 +187,7 @@ export default function Sprint() {
             >
               Edit summary
             </button>
-            <NewSprintButton/>
+            <NewSprintButton />
           </div>
           {isOpen && (
             <SprintProgressForm

@@ -1,23 +1,21 @@
 "use client";
 
-import { redirect } from "next/dist/server/api-utils";
 import { InfoBox } from "../../../components/dashboard-info-box/dashboard-info-box";
 import { NavBar } from "../../../components/navbar/navBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
-import { CreateServerClient } from "../../../lib/supabase/server";
 import { sprintDetailsService } from "../../../services/sprintDetailsService";
 import { sprint } from "../../../types/sprint";
-import { supabase } from "../../api/_libs/supabaseclient";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
+import { settingsDetailsService } from "../../../services/settingsDetailsService";
 
 export default function Dashboard() {
-  const groupName = "Example group";
   const [sprint, setSprint] = useState<sprint[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [latestSprint, setLatestSprint] = useState<sprint | null>();
+  const [groupName, setGroupName] = useState<string>("");
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const groupcode = params.get("groupcode");
@@ -29,9 +27,14 @@ export default function Dashboard() {
     const fetchSprint = async () => {
       try {
         const sprintData = await sprintDetailsService.getAll(groupcode);
+        const groupData = await settingsDetailsService.getAll(groupcode);
         const latestData = getLatestSprintData(sprintData);
         setLatestSprint(latestData);
         setSprint(sprintData);
+        if (!sprintData || !groupData) {
+          setErr("Sprint data / group data is missing");
+        }
+        setGroupName(groupData[0].groupname);
       } catch (err) {
         setErr((err as Error).message);
       } finally {
