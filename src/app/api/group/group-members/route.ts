@@ -24,8 +24,13 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { groupcode, name } = await request.json();
+  const { name } = await request.json();
+  const { searchParams } = new URL(request.url);
+  const groupcode = searchParams.get("groupcode");
 
+  if (!groupcode) {
+    return NextResponse.json({ error: "No groupcode in req" }, { status: 400 });
+  }
   if (!groupcode || !name) {
     return NextResponse.json(
       { error: "groupcode and name are required" },
@@ -44,7 +49,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const { groupcode, currentName, newName } = await request.json();
+  const { searchParams } = new URL(request.url);
+  const groupcode = searchParams.get("groupcode");
+  const { currentName, newName } = await request.json();
 
   if (!groupcode || !currentName || !newName) {
     return NextResponse.json(
@@ -67,7 +74,9 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { groupcode, name } = await request.json();
+  const { searchParams } = new URL(request.url);
+  const groupcode = searchParams.get("groupcode");
+  const { name } = await request.json();
 
   if (!groupcode || !name) {
     return NextResponse.json(

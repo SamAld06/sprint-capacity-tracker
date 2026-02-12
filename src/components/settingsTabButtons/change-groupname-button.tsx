@@ -9,7 +9,6 @@ export const ChangeGroupNameButton = ({
   groupcode,
   userEmail,
 }: ChangeGroupNameButtonProps) => {
-    console.log(groupcode)
   return (
     <button
       className={styles.button}

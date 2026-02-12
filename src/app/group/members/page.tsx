@@ -48,7 +48,7 @@ export default function Members() {
     };
     fetchDetails();
   }, []);
-  if (loading) return <p>Loading settings...</p>;
+  if (loading) return <p>Loading members...</p>;
   if (err) return <p>Error: {err}</p>;
   return (
     <>

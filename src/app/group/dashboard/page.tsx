@@ -52,7 +52,6 @@ export default function Dashboard() {
   if (err) {
     return <p>Error: {err}</p>;
   }
-  console.log(sprint)
   return (
     <>
       <NavBar />

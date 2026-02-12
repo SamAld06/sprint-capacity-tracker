@@ -73,9 +73,6 @@ export default function Capacity() {
     };
     fetchSprint();
   }, []);
-  console.log('capacity', capacity)
-  console.log(latestSprint)
-  console.log('g', getAllCapacity)
   if (loading) return <p>Loading capacity...</p>;
   if (err) return <p>Error: {err}</p>;
   return (
