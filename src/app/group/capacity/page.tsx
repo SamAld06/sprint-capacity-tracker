@@ -25,7 +25,13 @@ export default function Capacity() {
     (capacity) => capacity.sprintid === currentSprint,
   ) ?? [];
   const handleSubmit = async (data: capacity) => {
-    const res = await fetch("http://localhost:3000/api/group/capacity", {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      return;
+    }
+    const res = await fetch(`http://localhost:3000/api/group/capacity?groupcode=${groupcode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
