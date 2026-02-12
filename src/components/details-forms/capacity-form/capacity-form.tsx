@@ -14,7 +14,6 @@ export const CapacityForm = ({
   data,
   onSubmit,
 }: CapacityFormProps) => {
-  const currentGroup = "t3stGr0up1";
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [currentName, setCurrentName] = useState<string | null>(null);
   const [workingDays, setWorkingDays] = useState<string>("");
@@ -22,6 +21,7 @@ export const CapacityForm = ({
   const [releases, setReleases] = useState<string>("");
   const [fridayProject, setFridayProject] = useState<string>("");
   const [maintenance, setMaintenance] = useState<string>("");
+  const [err, setErr] = useState("")
   const getTeamMemberData =
     currentName && currentSprint
       ? data?.find(
@@ -52,8 +52,14 @@ export const CapacityForm = ({
   }, [getTeamMemberData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      return;
+    }
     const payload = {
-      groupcode: currentGroup,
+      groupcode: groupcode,
       sprintid: Number(currentSprint),
       name: currentName || "",
       workingdays: Number(workingDays),

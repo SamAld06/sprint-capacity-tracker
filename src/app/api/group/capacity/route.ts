@@ -3,8 +3,7 @@ import { supabase } from "../../_libs/supabaseclient";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  // const groupcode = searchParams.get("groupcode");
-  const groupcode = 't3stGr0up1'
+  const groupcode = searchParams.get("groupcode");
     const { data, error } = await supabase
       .from("capacity")
       .select("*")
@@ -34,17 +33,17 @@ export async function POST(request: Request) {
     if (!groupcode || !sprintid || !name) {
       return NextResponse.json({ error: "groupCode / sprintId / name are missing" }, { status: 400})
     }
-    const { error } = await supabase.from("capacity").insert({
-      groupcode,
-      sprintid,
-      name,
+    const { error } = await supabase.from("capacity").update({
       workingDays: workingdays,
       outOfOffice: outofoffice,
       releases: releases,
       fridayProjects: fridayProjects,
       maintenance: maintenance,
       md: md,
-    });
+    })
+    .eq("groupcode", groupcode)
+    .eq("sprintid", sprintid)
+    .eq("name", name)
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

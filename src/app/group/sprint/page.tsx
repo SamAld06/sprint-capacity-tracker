@@ -207,11 +207,10 @@ export default function Sprint() {
           <div className={styles.summaryCard}>
             {filteredProgressData &&
               filteredSprintData &&
-              estimatedCompleted &&
               sprintData &&
               capacityData &&
               sprintProgress &&
-              currentSprint && (
+              currentSprint > 0  &&(
                 <SprintProgressSummaryCard
                   sprintProgressData={filteredProgressData}
                   sprintData={filteredSprintData}
