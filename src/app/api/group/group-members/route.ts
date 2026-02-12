@@ -3,8 +3,7 @@ import { supabase } from "../../_libs/supabaseclient";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  // const groupcode = searchParams.get("groupcode");
-  const groupcode = 't3stGr0up1'
+  const groupcode = searchParams.get("groupcode");
 
   if (!groupcode) {
     return NextResponse.json({ error: "No groupcode in req" }, { status: 400 });

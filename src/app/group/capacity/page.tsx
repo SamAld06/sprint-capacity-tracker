@@ -70,7 +70,7 @@ export default function Capacity() {
     fetchSprint();
   }, []);
 
-  if (loading) return <p>Loading sprints...</p>;
+  if (loading) return <p>Loading capacity...</p>;
   if (err) return <p>Error: {err}</p>;
   return (
     <>

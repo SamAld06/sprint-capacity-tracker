@@ -3,6 +3,8 @@ import { supabase } from "../_libs/supabaseclient";
 import bcrypt from "bcrypt";
 import { generateGroupCode } from "../../../helpers/generateGroupCode";
 
+
+//gets all created groups for a user
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const creator = 'samgaldred@gmail.com'
@@ -18,6 +20,8 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
 };
 
+
+//makes a new group
 export async function POST(request: Request) {
   const saltRounds = 10
     const {
