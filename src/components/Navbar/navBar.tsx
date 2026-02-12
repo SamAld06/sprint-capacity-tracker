@@ -12,7 +12,7 @@ export const NavBar = () => {
           <Link href="/" className={styles.navigation}>
             Home
           </Link>
-          <Link href="/groups" className={styles.navigation}>
+          <Link href="/groupBoard" className={styles.navigation}>
             Groups
           </Link>
           <Link href="/account" className={styles.navigation}>
