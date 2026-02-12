@@ -157,7 +157,7 @@ export default function Sprint() {
           <header className={styles.navigation}>
             <button
               onClick={() => setCurrentSprint(currentSprint - 1)}
-              className={currentSprint != 1 ? styles.selector : styles.hidden}
+              className={currentSprint >0 ? styles.selector : styles.hidden}
             >
               &lt;-
             </button>
@@ -207,9 +207,11 @@ export default function Sprint() {
           <div className={styles.summaryCard}>
             {filteredProgressData &&
               filteredSprintData &&
+              estimatedCompleted &&
               sprintData &&
               capacityData &&
-              sprintProgress && (
+              sprintProgress &&
+              currentSprint && (
                 <SprintProgressSummaryCard
                   sprintProgressData={filteredProgressData}
                   sprintData={filteredSprintData}

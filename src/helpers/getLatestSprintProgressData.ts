@@ -1,10 +1,10 @@
 import { workProgress } from "../types/workProgress"
 
 export function getLatestSprintProgressData(data: workProgress[]) {
-    if (!data) {
+    if (!data || data.length === 0 ) {
         return null
     }
     return data.reduce((inital, current) => {
-        return current.id > inital.id ? current : inital
+        return current.sprintid > inital.sprintid ? current : inital
     })
 }
