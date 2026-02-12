@@ -17,8 +17,8 @@ export const SprintSummaryForm = ({
   summaryData,
   onSubmit,
 }: SprintProgressFormProps) => {
-  const currentGroup = "t3stGr0up1";
   const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("")
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [workPlanned, setworkPlanned] = useState<string>("");
   const [workAdded, setWorkAdded] = useState<string>("");
@@ -65,14 +65,20 @@ export const SprintSummaryForm = ({
         (sprintProgress) => sprintProgress.sprintid === Number(currentSprint)
     );
   const handleSubmit = async (e: React.FormEvent) => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      return;
+    }
     const payload = {
-      groupCode: currentGroup,
+      groupcode: groupcode,
       sprintid: Number(currentSprint),
       planned: Number(workPlanned),
       added: Number(workAdded),
       removed: Number(workRemoved),
       totalcompleted: Number(workCompleted),
-      totalcd: Number(totalMd),
+      totalmd: Number(totalMd),
       plannedcompleteddifference: getSprintCompletionDifference(Number(workCompleted), Number(workPlanned))
     };
     e.preventDefault();
@@ -164,6 +170,7 @@ export const SprintSummaryForm = ({
           <button type="submit" disabled={false} className={styles.saveButton}>
             Save
           </button>
+          {err && <p>{err}</p>}
         </form>
       </div>
     </div>

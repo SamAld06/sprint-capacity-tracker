@@ -8,18 +8,19 @@ import { CapacitySummaryCard } from "../../../components/summary-cards/capacity-
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
 import { capacityDetailsService } from "../../../services/capacityDetailsService";
+import { settingsDetailsService } from "../../../services/settingsDetailsService";
 import { capacity } from "../../../types/capacity";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 
 export default function Capacity() {
-  const groupName = "Example group";
   const [latestSprint, setLatestSprint] = useState<number>(1);
   const [capacity, setCapacity] = useState<capacity[] | null>(null);
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [groupName, setGroupName] = useState<string>("");
   const getAllCapacity = capacity?.filter(
     (capacity) => capacity.sprintid === currentSprint,
   );
@@ -48,7 +49,12 @@ export default function Capacity() {
     const fetchSprint = async () => {
       try {
         const data = await capacityDetailsService.getAll(groupcode);
+        const groupData = await settingsDetailsService.getAll(groupcode);
         const latestData = getLatestCapacityData(data);
+        if (!groupData) {
+          setErr("group data is missing");
+        }
+        setGroupName(groupData[0].groupname);
         if (data) {
           setCapacity(data);
         } else {
@@ -70,7 +76,7 @@ export default function Capacity() {
     fetchSprint();
   }, []);
 
-  if (loading) return <p>Loading sprints...</p>;
+  if (loading) return <p>Loading capacity...</p>;
   if (err) return <p>Error: {err}</p>;
   return (
     <>

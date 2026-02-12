@@ -33,7 +33,6 @@ export default function GroupsBoard() {
     const fetchGroups = async () => {
       try {
         const data = await groupDetailsService.getAll();
-        console.log(data);
         if (data) {
           setGroupData(data);
         } else {
@@ -50,7 +49,6 @@ export default function GroupsBoard() {
 
   if (loading) return <p>Loading groups...</p>;
   if (err) return <p>Error: {err}</p>;
-  console.log(groupData);
   return (
     <main className={styles.root}>
       <NavBar />

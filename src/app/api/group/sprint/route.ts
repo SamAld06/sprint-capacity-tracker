@@ -33,16 +33,16 @@ export async function POST(request: Request) {
     if (!groupcode || !sprintid) {
       return NextResponse.json({ error: "groupCode / sprintId are missing" }, { status: 400})
     }
-    const { error } = await supabase.from("sprint").insert({
-      groupcode,
-      sprintid,
+    const { error } = await supabase.from("sprint").update({
       planned: planned,
       added: added,
       removed: removed,
       totalcompleted: totalcompleted,
       totalmd: totalmd,
       plannedcompleteddifference: plannedcompleteddifference,
-    });
+    })
+    .eq("groupcode", groupcode)
+    .eq("sprintid", sprintid)
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

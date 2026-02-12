@@ -50,7 +50,6 @@ export const NewGroupForm = ({
     if (confirmPassword != password) {
         alert("Passwords must match")
     }
-    console.log('payload here', payload)
     await onSubmit(payload);
   };
 

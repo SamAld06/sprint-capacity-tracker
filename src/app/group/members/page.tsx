@@ -5,20 +5,15 @@ import { MemberRow } from "../../../components/memberRow/memberRow";
 import { NavBar } from "../../../components/navbar/navBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import styles from "./styles.module.css";
-import { sprintProgressDetailsService } from "../../../services/sprintProgressDetailsService";
-import { getLatestSprintProgressData } from "../../../helpers/getLatestSprintProgressData";
-import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
-import { capacityDetailsService } from "../../../services/capacityDetailsService";
-import { capacity } from "../../../types/capacity";
-import { workProgress } from "../../../types/workProgress";
 import { groupMemberDetailsService } from "../../../services/groupMemberService";
 import { groupMember } from "../../../types/groupMember";
 import { AddUserButton } from "../../../components/membersTabButtons/addUserButton";
+import { settingsDetailsService } from "../../../services/settingsDetailsService";
 
 export default function Members() {
-  const groupName = "Example group";
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [groupName, setGroupName] = useState<string>("");
   const [groupMemberData, setGroupMemberData] = useState<groupMember[] | null>(
     null,
   );
@@ -31,10 +26,15 @@ export default function Members() {
       setLoading(false);
       return;
     }
-    const fetchSprint = async () => {
+    const fetchDetails = async () => {
       try {
         const groupMemberData =
           await groupMemberDetailsService.getAll(groupcode);
+        const groupData = await settingsDetailsService.getAll(groupcode);
+        if (!groupData) {
+          setErr("group data is missing");
+        }
+        setGroupName(groupData[0].groupname);
         if (groupMemberData) {
           setGroupMemberData(groupMemberData);
         } else {
@@ -46,8 +46,10 @@ export default function Members() {
         setLoading(false);
       }
     };
-    fetchSprint();
+    fetchDetails();
   }, []);
+  if (loading) return <p>Loading settings...</p>;
+  if (err) return <p>Error: {err}</p>;
   return (
     <>
       <NavBar />

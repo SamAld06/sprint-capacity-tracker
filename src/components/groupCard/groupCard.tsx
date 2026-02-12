@@ -18,8 +18,6 @@ export const GroupCard = ({ groupData }: GroupCardProps) => {
         });
         if (res.ok) {
           window.location.href = `/group/dashboard?groupcode=${groupData.groupcode}`;
-          console.log(res)
-          console.log(groupData.groupcode)
         }
       }}
     >
