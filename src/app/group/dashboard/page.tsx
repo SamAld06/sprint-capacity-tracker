@@ -28,8 +28,13 @@ export default function Dashboard() {
       try {
         const sprintData = await sprintDetailsService.getAll(groupcode);
         const groupData = await settingsDetailsService.getAll(groupcode);
-        const latestData = getLatestSprintData(sprintData);
-        setLatestSprint(latestData);
+        if (sprintData) {
+          const latestData = getLatestSprintData(sprintData);
+          setLatestSprint(latestData);
+        } else {
+          const latestData = null
+          setLatestSprint(latestData);
+        }
         setSprint(sprintData);
         if (!sprintData || !groupData) {
           setErr("Sprint data / group data is missing");
@@ -59,16 +64,19 @@ export default function Dashboard() {
             <TabBar />
           </section>
           <section className={styles.info}>
+            {sprint.length === 0  &&
+            <p className={styles.tipMessage}>Add some sprint data to get started!</p>
+            }
             {sprint
               .filter((sprint) => sprint.sprintid === latestSprint?.sprintid)
               .map((sprint) => (
                 <>
-                  <InfoBox title="Work planned:" data={sprint.planned} />
+                  <InfoBox title="Work planned:" data={sprint.planned ?? "NaN"} />
                   <div className={styles.sprintNumber}>
                     <p>Current sprint:</p>
                     <p key={sprint.sprintid}>{sprint.sprintid}</p>
                   </div>
-                  <InfoBox title="Available MDs:" data={sprint.totalmd} />
+                  <InfoBox title="Available MDs:" data={sprint.totalmd ?? "NaN"} />
                 </>
               ))}
           </section>

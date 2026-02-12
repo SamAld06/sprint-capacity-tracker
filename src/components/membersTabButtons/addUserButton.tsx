@@ -1,8 +1,19 @@
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 //Button to add a user to a group
 
 export const AddUserButton = () => {
-    const groupCode = 't3stGr0up1'
+  const [err, setErr] = useState("")
+  const [groupcode, setgroupcode] = useState("")
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const groupcode = params.get("groupcode");
+      if (!groupcode) {
+        setErr("No group code could be retrieved");
+        return;
+      }
+      setgroupcode(groupcode)
+    })
   return (
     <button
       className={styles.button}
@@ -17,10 +28,10 @@ export const AddUserButton = () => {
         )
           return;
 
-        const res = await fetch("http://localhost:3000/api/group/add-member", {
+        const res = await fetch(`http://localhost:3000/api/group/group-members?groupcode=${groupcode}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: newUser, groupCode: groupCode }),
+          body: JSON.stringify({ name: newUser }),
         });
         if (res.ok) {
           window.location.reload();

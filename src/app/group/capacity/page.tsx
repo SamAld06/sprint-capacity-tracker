@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 export default function Capacity() {
   const [latestSprint, setLatestSprint] = useState<number>(1);
-  const [capacity, setCapacity] = useState<capacity[] | null>(null);
+  const [capacity, setCapacity] = useState<capacity[]>([]);
   const [currentSprint, setCurrentSprint] = useState<number>(1);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +23,15 @@ export default function Capacity() {
   const [groupName, setGroupName] = useState<string>("");
   const getAllCapacity = capacity?.filter(
     (capacity) => capacity.sprintid === currentSprint,
-  );
-  const filteredData = getAllCapacity;
-
+  ) ?? [];
   const handleSubmit = async (data: capacity) => {
-    const res = await fetch("http://localhost:3000/api/group/capacity", {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      return;
+    }
+    const res = await fetch(`http://localhost:3000/api/group/capacity?groupcode=${groupcode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -58,7 +62,7 @@ export default function Capacity() {
         if (data) {
           setCapacity(data);
         } else {
-          setCapacity(null);
+          setCapacity([]);
         }
         if (latestData) {
           setLatestSprint(latestData?.sprintid);
@@ -75,7 +79,6 @@ export default function Capacity() {
     };
     fetchSprint();
   }, []);
-
   if (loading) return <p>Loading capacity...</p>;
   if (err) return <p>Error: {err}</p>;
   return (
@@ -92,7 +95,7 @@ export default function Capacity() {
           <header className={styles.navigation}>
             <button
               onClick={() => setCurrentSprint(currentSprint - 1)}
-              className={currentSprint != 1 ? styles.selector : styles.hidden}
+              className={currentSprint >0 ? styles.selector : styles.hidden}
             >
               &lt;-
             </button>
@@ -127,8 +130,8 @@ export default function Capacity() {
             />
           )}
           <div className={styles.summaryCard}>
-            {filteredData && (
-              <CapacitySummaryCard capacityData={filteredData} />
+            {getAllCapacity && currentSprint > 0 && (
+              <CapacitySummaryCard capacityData={getAllCapacity} />
             )}
           </div>
           <div className={styles.cards}>

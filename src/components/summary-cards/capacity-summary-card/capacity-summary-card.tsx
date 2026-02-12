@@ -7,7 +7,7 @@ export interface CapacityCardProps {
 }
 
 export const CapacitySummaryCard = ({capacityData}: CapacityCardProps) => {
-    if (!capacityData) {
+    if (!capacityData || capacityData.length === 0) {
         return null
     }
     const summaryData = getCapacitySummary(capacityData)

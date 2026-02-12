@@ -7,7 +7,6 @@ import { SprintSummaryForm } from "../../../components/details-forms/sprint-summ
 import { NavBar } from "../../../components/navbar/navBar";
 import { SprintProgressSummaryCard } from "../../../components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
 import { TabBar } from "../../../components/tabbar/tabBar";
-import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
 import { getLatestSprintProgressData } from "../../../helpers/getLatestSprintProgressData";
 import { getTeamEstimatedCompleted } from "../../../helpers/getTeamEstimatedCompleted";
@@ -158,7 +157,7 @@ export default function Sprint() {
           <header className={styles.navigation}>
             <button
               onClick={() => setCurrentSprint(currentSprint - 1)}
-              className={currentSprint != 1 ? styles.selector : styles.hidden}
+              className={currentSprint >0 ? styles.selector : styles.hidden}
             >
               &lt;-
             </button>
@@ -210,7 +209,8 @@ export default function Sprint() {
               filteredSprintData &&
               sprintData &&
               capacityData &&
-              sprintProgress && (
+              sprintProgress &&
+              currentSprint > 0  &&(
                 <SprintProgressSummaryCard
                   sprintProgressData={filteredProgressData}
                   sprintData={filteredSprintData}

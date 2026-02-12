@@ -19,7 +19,7 @@ export async function POST(request: Request, response: Response) {
     .eq("groupcode", groupcode)
     .order("sprintid", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (sprintErr) {
     console.error(sprintErr)
