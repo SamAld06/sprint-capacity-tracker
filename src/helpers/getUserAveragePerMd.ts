@@ -4,6 +4,10 @@ export function getUserAveragePerMd(
     userCompleted : number,
     userMd : number
 ) {
+    if (userMd === 0 ) {
+      const result = 0
+      return result;
+    }
     const result = userCompleted / userMd
   return result ;
 }

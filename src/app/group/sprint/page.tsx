@@ -47,11 +47,12 @@ export default function Sprint() {
   );
 
   const handleSubmit = async (data: workProgress) => {
-    const res = await fetch("http://localhost:3000/api/group/workProgress", {
+    const res = await fetch("http://localhost:3000/api/group/workprogress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+
     setIsOpen(false);
     if (res.ok) {
       window.location.reload();
@@ -155,11 +156,9 @@ export default function Sprint() {
             >
               &lt;-
             </button>
-            {/* {capacity && ( */}
             <h1 className={styles.sprintHeader}>
               Current sprint: {currentSprint}
             </h1>
-            {/* )} */}
             <button
               onClick={() => setCurrentSprint(currentSprint + 1)}
               className={
@@ -182,12 +181,13 @@ export default function Sprint() {
             >
               Edit summary
             </button>
-            <NewSprintButton />
+            <NewSprintButton/>
           </div>
           {isOpen && (
             <SprintProgressForm
               onClose={() => setIsOpen(false)}
               data={sprintProgress}
+              capacityData={capacityData}
               onSubmit={handleSubmit}
             />
           )}

@@ -1,25 +1,30 @@
 import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { workProgress } from "../../../types/workProgress";
+import { getUserAveragePerMd } from "../../../helpers/getUserAveragePerMd";
+import { capacity } from "../../../types/capacity";
 
 export interface SprintProgressFormProps {
   onClose: () => void;
   data: workProgress[] | null;
+  capacityData: capacity[] | null
   onSubmit: (data: workProgress) => void;
 }
 
 export const SprintProgressForm = ({
   onClose,
   data,
+  capacityData,
   onSubmit,
 }: SprintProgressFormProps) => {
-  const currentGroup = "t3stGr0up1";
   const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("")
   const [currentSprint, setCurrentSprint] = useState<string>("");
   const [currentName, setCurrentName] = useState<string | null>(null);
   const [workAssigned, setworkAssigned] = useState<string>("");
   const [workCompleted, setWorkCompleted] = useState<string>("");
-  const [averagePerMd, setAveragePerMd] = useState<string>("0.7")
+  const [md, setMd] = useState<string>("0")
+  const [averagePerMd, setAveragePerMd] = useState<number>(getUserAveragePerMd(Number(workCompleted), Number(md)))
   const getTeamMemberData =
     currentName && currentSprint
       ? data?.find(
@@ -29,25 +34,48 @@ export const SprintProgressForm = ({
         )
       : undefined;
 
+  const getTeamMemberCapacityData = 
+    currentName && currentSprint
+      ? capacityData?.find(
+          (user) =>
+            currentName === user.name &&
+            Number(currentSprint) === user.sprintid,
+        )
+      : undefined;
 
   useEffect(() => {
     if (!getTeamMemberData) return;
+    if (!getTeamMemberCapacityData) return;
+
     if (getTeamMemberData.workassigned !== undefined) {
       setworkAssigned(String(getTeamMemberData.workassigned));
     }
     if (getTeamMemberData.workcompleted !== undefined) {
       setWorkCompleted(String(getTeamMemberData.workcompleted));
     }
-  }, [getTeamMemberData]);
+    if (getTeamMemberCapacityData?.md !== undefined) {
+      setMd(String(getTeamMemberCapacityData.md))
+    }
+  }, [getTeamMemberData, getTeamMemberCapacityData], );
 
   const handleSubmit = async (e: React.FormEvent) => {
+    const params = new URLSearchParams(window.location.search);
+    const groupcode = params.get("groupcode");
+    if (!groupcode) {
+      setErr("No group code could be retrieved");
+      return;
+    }
+
+    const mdNum = Number(md) || 0;
+    const mdAverage = getUserAveragePerMd(Number(workCompleted), mdNum);
+
     const payload = {
-      groupCode: currentGroup,
+      groupcode: groupcode,
       sprintid: Number(currentSprint),
       name: currentName || "",
       workassigned: Number(workAssigned),
       workcompleted: Number(workCompleted),
-      averagepermd: Number(averagePerMd)
+      averagepermd: mdAverage
     };
     e.preventDefault();
     if (
@@ -62,7 +90,6 @@ export const SprintProgressForm = ({
     }
     await onSubmit(payload);
   };
-
   return (
     <div className={styles.root}>
       <div className={styles.modal}>
@@ -125,6 +152,7 @@ export const SprintProgressForm = ({
           <button type="submit" disabled={false} className={styles.saveButton}>
             Save
           </button>
+          {err && <p>{err}</p>}
         </form>
       </div>
     </div>

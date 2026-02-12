@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { supabase } from "../../_libs/supabaseclient";
 
 export async function POST(request: Request, response: Response) {
-  const groupCode = "t3stGr0up1"; // retrieve group code
-
-  if (!groupCode) {
+  const { searchParams } = new URL(request.url);
+  const groupcode = searchParams.get("groupcode");
+  if (!groupcode) {
     return NextResponse.json(
       {
         error: "No group code could be found",
@@ -15,36 +15,37 @@ export async function POST(request: Request, response: Response) {
 
   const { data: latestSprint, error: sprintErr } = await supabase
     .from("sprint")
-    .select("sprintId")
-    .eq("groupCode", groupCode)
-    .order("sprintId", { ascending: false })
+    .select("sprintid")
+    .eq("groupcode", groupcode)
+    .order("sprintid", { ascending: false })
     .limit(1)
     .single();
 
   if (sprintErr) {
+    console.error(sprintErr)
     return NextResponse.json({ error: sprintErr.message }, { status: 500});
   }
 
-  const nextSprintId = (latestSprint?.sprintId ?? 0) + 1;
+  const nextSprintId = (latestSprint?.sprintid ?? 0) + 1;
 
   const { error: insertSprintErr } = await supabase.from("sprint").insert({
-    groupCode,
-    sprintId: nextSprintId,
+    groupcode,
+    sprintid: nextSprintId,
     planned: 0,
     added: 0,
     removed: 0,
-    totalCompleted: 0,
-    totalMd: 0,
-    plannedCompletedDifference: 0,
+    totalcompleted: 0,
+    totalmd: 0,
+    plannedcompleteddifference: 0,
   });
 
   if (insertSprintErr) {
     return NextResponse.json({ error: insertSprintErr.message }, { status: 500});
   }
   const { data: members, error: membersErr } = await supabase
-    .from("groupMember")
+    .from("groupmember")
     .select("name")
-    .eq("groupCode", groupCode);
+    .eq("groupcode", groupcode);
 
   if (membersErr) {
     return NextResponse.json({ error: membersErr.message }, { status: 500});
@@ -57,13 +58,13 @@ export async function POST(request: Request, response: Response) {
   }
 
   const capacityRows = members.map((user) => ({
-    groupCode,
-    sprintId: nextSprintId,
+    groupcode,
+    sprintid: nextSprintId,
     name: user.name,
-    workingDays: 0,
-    outOfOffice: 0,
+    workingdays: 0,
+    outofoffice: 0,
     releases: 0,
-    fridayProjects: 0,
+    fridayprojects: 0,
     maintenance: 0,
     md: 0,
   }));
@@ -77,16 +78,16 @@ export async function POST(request: Request, response: Response) {
   }
 
   const workProgressRows = members.map((user) => ({
-    groupCode,
-    sprintId: nextSprintId,
+    groupcode,
+    sprintid: nextSprintId,
     name: user.name,
-    workAssigned: 0,
-    workCompleted: 0,
-    averagePerMd: 0,
+    workassigned: 0,
+    workcompleted: 0,
+    averagepermd: 0,
   }));
 
   const { error: workProgressErr } = await supabase
-    .from("workProgress")
+    .from("workprogress")
     .insert(workProgressRows);
 
   if (workProgressErr) {
@@ -95,7 +96,7 @@ export async function POST(request: Request, response: Response) {
 
   return NextResponse.json({
     success: true,
-    sprintId: nextSprintId,
+    sprintid: nextSprintId,
     capacityTableRowsCreated: capacityRows.length,
     workProgressTableRowsCreated: workProgressRows.length,
   });
