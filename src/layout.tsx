@@ -1,4 +1,4 @@
-import { NavBar } from "./components/navbar/NavBar"
+import NavBar from "./components/navbar/navBar"
 import { TabBar } from "./components/tabbar/tabBar"
 
 export default function Layout({

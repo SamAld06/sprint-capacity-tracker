@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NavBar } from "../../components/navbar/NavBar";
 import styles from "./styles.module.css";
 import { group } from "../../types/group";
 import { GroupCard } from "../../components/groupCard/groupCard";
@@ -9,6 +8,7 @@ import { groupDetailsService } from "../../services/groupDetailsService";
 import { NewGroup } from "../../types/newGroup";
 import { NewGroupForm } from "../../components/details-forms/new-group-form/new-group-form";
 import { supabase } from "../api/_libs/supabaseclient";
+import NavBar from "../../components/navbar/navBar";
 
 export default function GroupsBoard() {
   const [groupData, setGroupData] = useState<group[] | null>(null);

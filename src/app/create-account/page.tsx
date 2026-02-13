@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { NavBar } from "../../components/navbar/NavBar";
 import styles from "./styles.module.css";
 import { useState } from "react";
 import { supabase } from "../api/_libs/supabaseclient";
+import NavBar from "../../components/navbar/navBar";
 
 export default function CreateAccount() {
   const [email, setEmail] = useState("");

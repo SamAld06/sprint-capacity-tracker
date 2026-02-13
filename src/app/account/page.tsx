@@ -1,10 +1,10 @@
 "use client";
 
-import { NavBar } from "../../components/navbar/NavBar";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import { SignOutButton } from "../../components/sign-out/sign-out-button";
 import { supabase } from "../api/_libs/supabaseclient";
+import NavBar from "../../components/navbar/navBar";
 
 export default function Account() {
   const [error, setError] = useState("");

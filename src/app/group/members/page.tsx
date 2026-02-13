@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { MemberRow } from "../../../components/memberRow/memberRow";
-import { NavBar } from "../../../components/navbar/NavBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import styles from "./styles.module.css";
 import { groupMemberDetailsService } from "../../../services/groupMemberService";
 import { groupMember } from "../../../types/groupMember";
 import { AddUserButton } from "../../../components/membersTabButtons/addUserButton";
 import { settingsDetailsService } from "../../../services/settingsDetailsService";
+import NavBar from "../../../components/navbar/navBar";
 
 export default function Members() {
   const [err, setErr] = useState<string | null>(null);

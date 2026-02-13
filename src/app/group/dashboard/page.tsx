@@ -1,7 +1,6 @@
 "use client";
 
 import { InfoBox } from "../../../components/dashboard-info-box/dashboard-info-box";
-import { NavBar } from "../../../components/navbar/NavBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
 import { sprintDetailsService } from "../../../services/sprintDetailsService";
@@ -9,6 +8,7 @@ import { sprint } from "../../../types/sprint";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import { settingsDetailsService } from "../../../services/settingsDetailsService";
+import NavBar from "../../../components/navbar/navBar";
 
 export default function Dashboard() {
   const [sprint, setSprint] = useState<sprint[]>([]);
