@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import { useState } from "react";
 import { ViewGroupForm } from "../components/view-group-form/viewGroupForm";
 import Link from "next/link";
-import NavBar from "../components/navbar/navBar";
+import NavBar from "../components/nav-bar/navBar";
 
 export default function Home() {
   const [error, setError] = useState("");

@@ -3,7 +3,7 @@
 import { NewSprintButton } from "../../../components/addSprintButton/newSprintButton";
 import { CapacityCard } from "../../../components/details-cards/capacity-card/capacity-card";
 import { CapacityForm } from "../../../components/details-forms/capacity-form/capacity-form";
-import NavBar from "../../../components/navbar/navBar";
+import NavBar from "../../../components/nav-bar/navBar";
 import { CapacitySummaryCard } from "../../../components/summary-cards/capacity-summary-card/capacity-summary-card";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestCapacityData } from "../../../helpers/getLatestCapacityData";

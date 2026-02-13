@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "../api/_libs/supabaseclient";
-import NavBar from "../../components/navbar/navBar";
+import NavBar from "../../components/nav-bar/navBar";
 
 export default function Login() {
   const [email, setemail] = useState("");

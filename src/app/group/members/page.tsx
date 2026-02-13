@@ -8,7 +8,7 @@ import { groupMemberDetailsService } from "../../../services/groupMemberService"
 import { groupMember } from "../../../types/groupMember";
 import { AddUserButton } from "../../../components/membersTabButtons/addUserButton";
 import { settingsDetailsService } from "../../../services/settingsDetailsService";
-import NavBar from "../../../components/navbar/navBar";
+import NavBar from "../../../components/nav-bar/navBar";
 
 export default function Members() {
   const [err, setErr] = useState<string | null>(null);

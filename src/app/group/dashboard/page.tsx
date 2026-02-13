@@ -8,7 +8,7 @@ import { sprint } from "../../../types/sprint";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import { settingsDetailsService } from "../../../services/settingsDetailsService";
-import NavBar from "../../../components/navbar/navBar";
+import NavBar from "../../../components/nav-bar/navBar";
 
 export default function Dashboard() {
   const [sprint, setSprint] = useState<sprint[]>([]);

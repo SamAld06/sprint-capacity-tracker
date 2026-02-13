@@ -8,7 +8,7 @@ import { groupDetailsService } from "../../services/groupDetailsService";
 import { NewGroup } from "../../types/newGroup";
 import { NewGroupForm } from "../../components/details-forms/new-group-form/new-group-form";
 import { supabase } from "../api/_libs/supabaseclient";
-import NavBar from "../../components/navbar/navBar";
+import NavBar from "../../components/nav-bar/navBar";
 
 export default function GroupsBoard() {
   const [groupData, setGroupData] = useState<group[] | null>(null);
