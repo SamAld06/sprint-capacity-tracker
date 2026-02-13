@@ -1,9 +1,9 @@
 import Link from "next/link";
 import styles from "./styles.module.css"
 
+//Navbar component for groups tab
 export const NavBar = () => {
   return (
-    <>
       <div className={styles.root}>
         <Link href="/" className={styles.title}>
           Sprint capacity Tracker
@@ -20,6 +20,5 @@ export const NavBar = () => {
           </Link>
         </div>
       </div>
-    </>
   );
 };
