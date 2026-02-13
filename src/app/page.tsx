@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./styles.module.css";
-import { NavBar } from "../components/navbar/NavBar";
+import { NavBar } from "../components/navbar/navBar";
 import { useState } from "react";
 import { ViewGroupForm } from "../components/view-group-form/viewGroupForm";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 "use client";
 
 import { InfoBox } from "../../../components/dashboard-info-box/dashboard-info-box";
-import { NavBar } from "../../../components/navbar/NavBar";
+import { NavBar } from "../../../components/navbar/navBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
 import { sprintDetailsService } from "../../../services/sprintDetailsService";

@@ -1,6 +1,6 @@
 "use client";
 
-import { NavBar } from "../../../components/navbar/NavBar";
+import { NavBar } from "../../../components/navbar/navBar";
 import { ChangeGroupNameButton } from "../../../components/settingsTabButtons/change-groupname-button";
 import { ChangeGroupPasswordButton } from "../../../components/settingsTabButtons/change-password-button";
 import { TabBar } from "../../../components/tabbar/tabBar";

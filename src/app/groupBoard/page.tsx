@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NavBar } from "../../components/navbar/NavBar";
+import { NavBar } from "../../components/navbar/navBar";
 import styles from "./styles.module.css";
 import { group } from "../../types/group";
 import { GroupCard } from "../../components/groupCard/groupCard";
