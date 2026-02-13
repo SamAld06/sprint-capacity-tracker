@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./styles.module.css"
 
 //Navbar component for groups tab
-export const NavBar = () => {
+export default function NavBar () {
   return (
       <div className={styles.root}>
         <Link href="/" className={styles.title}>
