@@ -8,19 +8,22 @@ import { GroupCard } from "../../components/groupCard/groupCard";
 import { groupDetailsService } from "../../services/groupDetailsService";
 import { NewGroup } from "../../types/newGroup";
 import { NewGroupForm } from "../../components/details-forms/new-group-form/new-group-form";
+import { supabase } from "../api/_libs/supabaseclient";
 
 export default function GroupsBoard() {
   const [groupData, setGroupData] = useState<group[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [error, setError] = useState("");
+  const [userEmail, setUserEmail] = useState<string | undefined>("");
   const handleSubmit = async (data: NewGroup) => {
     const res = await fetch("http://localhost:3000/api/groups", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    const result = await res.json()
+    const result = await res.json();
     setIsOpen(false);
     if (!res.ok) {
       console.error("Server error", result);
@@ -32,11 +35,22 @@ export default function GroupsBoard() {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const data = await groupDetailsService.getAll();
-        if (data) {
-          setGroupData(data);
+        const {
+          data, error
+        } = await supabase.auth.getUser();
+        if (error) {
+          throw error
         } else {
-          setGroupData(null);
+          const email = data.user?.email
+          if (email) {
+            setUserEmail(email)
+            const data = await groupDetailsService.getAll(email);
+            if (data) {
+              setGroupData(data);
+            } else {
+              setGroupData(null);
+            }
+          }
         }
       } catch (err) {
         setErr((err as Error).message);
@@ -46,7 +60,8 @@ export default function GroupsBoard() {
     };
     fetchGroups();
   }, []);
-
+  console.log(userEmail)
+  console.log(groupData)
   if (loading) return <p>Loading groups...</p>;
   if (err) return <p>Error: {err}</p>;
   return (

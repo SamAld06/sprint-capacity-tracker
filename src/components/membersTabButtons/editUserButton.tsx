@@ -23,7 +23,7 @@ export const EditUserButton = ({member}: {member: string}) => {
         if (!newName) return;
 
         const res = await fetch(
-          `http://localhost:3000/api/group/group-members?groupcode=${groupcode}`,
+          `/api/group/group-members?groupcode=${groupcode}`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json"},

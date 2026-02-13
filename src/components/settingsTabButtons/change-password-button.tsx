@@ -20,7 +20,7 @@ export const ChangeGroupPasswordButton = ({
         if (!newPassword) return;
 
         const res = await fetch(
-          "http://localhost:3000/api/group/settings/change-group-password",
+          "/api/group/settings/change-group-password",
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json"},

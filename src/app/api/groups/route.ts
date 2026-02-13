@@ -7,7 +7,7 @@ import { generateGroupCode } from "../../../helpers/generateGroupCode";
 //gets all created groups for a user
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const creator = 'samgaldred@gmail.com'
+  const creator = searchParams.get("creator");
     const { data, error } = await supabase
       .from("groups")
       .select("*")

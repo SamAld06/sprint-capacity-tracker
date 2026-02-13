@@ -20,7 +20,7 @@ export const NewSprintButton = () => {
         if (!confirm("Are you sure you want to create a new sprint?\n\nEnsure all sprint data for the current sprint is accurate")) return;
 
         const res = await fetch(
-          `http://localhost:3000/api/group/newSprint?groupcode=${groupcode}`,
+          `/api/group/newSprint?groupcode=${groupcode}`,
           {
             method: "POST",
           }
