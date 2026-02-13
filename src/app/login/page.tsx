@@ -1,6 +1,6 @@
 "use client";
 
-import { NavBar } from "../../components/navbar/navBar";
+import { NavBar } from "../../components/navbar/NavBar";
 import styles from "./styles.module.css";
 import { useState } from "react";
 import Link from "next/link";

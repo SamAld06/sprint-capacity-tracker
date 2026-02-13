@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../_libs/supabaseclient";
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   const { searchParams } = new URL(request.url);
   const groupcode = searchParams.get("groupcode");
   if (!groupcode) {

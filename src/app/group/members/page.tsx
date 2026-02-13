@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MemberRow } from "../../../components/memberRow/memberRow";
-import { NavBar } from "../../../components/navbar/navBar";
+import { NavBar } from "../../../components/navbar/NavBar";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import styles from "./styles.module.css";
 import { groupMemberDetailsService } from "../../../services/groupMemberService";

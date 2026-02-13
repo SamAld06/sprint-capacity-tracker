@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NavBar } from "../../components/navbar/navBar";
+import { NavBar } from "../../components/navbar/NavBar";
 import styles from "./styles.module.css";
 import { group } from "../../types/group";
 import { GroupCard } from "../../components/groupCard/groupCard";
@@ -18,7 +18,7 @@ export default function GroupsBoard() {
   const [error, setError] = useState("");
   const [userEmail, setUserEmail] = useState<string | undefined>("");
   const handleSubmit = async (data: NewGroup) => {
-    const res = await fetch("http://localhost:3000/api/groups", {
+      const res = await fetch("/api/groups", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
