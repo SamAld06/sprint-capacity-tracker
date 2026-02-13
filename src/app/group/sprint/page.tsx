@@ -4,7 +4,7 @@ import { NewSprintButton } from "../../../components/addSprintButton/newSprintBu
 import { SprintProgressCard } from "../../../components/details-cards/sprint-progress-card/sprint-progress-card";
 import { SprintProgressForm } from "../../../components/details-forms/sprint-progress-form/sprint-progress-form";
 import { SprintSummaryForm } from "../../../components/details-forms/sprint-summary-form/sprint-summary-form";
-import { NavBar } from "../../../components/navbar/NavBar";
+import NavBar from "../../../components/nav-bar/navBar";
 import { SprintProgressSummaryCard } from "../../../components/summary-cards/sprint-progress-summary-card/sprint-progress-summary-card";
 import { TabBar } from "../../../components/tabbar/tabBar";
 import { getLatestSprintData } from "../../../helpers/getLatestSprintData";
