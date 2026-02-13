@@ -17,6 +17,9 @@ export const NewGroupForm = ({
   const [currentCreator, setCurrentCreator] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
   const [error, setError] = useState("");
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,13 +44,18 @@ export const NewGroupForm = ({
     if (
       currentGroupName == null ||
       currentCreator == null ||
-      password == null 
+      password == null
     ) {
       alert("All fields must be filled");
       return;
     }
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters");
+      return;
+    }
     if (confirmPassword != password) {
-        alert("Passwords must match")
+      alert("Passwords must match");
+      return;
     }
     await onSubmit(payload);
   };
@@ -73,19 +81,33 @@ export const NewGroupForm = ({
               <label>Group password</label>
               <input
                 className={styles.inputBox}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
+              <button
+                type="button"
+                className={styles.showPassword}
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
             <div className={styles.inputRow}>
               <label>Confirm group password</label>
               <input
                 className={styles.inputBox}
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               ></input>
+              <button
+                type="button"
+                className={styles.showPassword}
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+              >
+                {showConfirmPassword ? "Hide" : "Show"}
+              </button>
             </div>
           </div>
           <button type="submit" disabled={false} className={styles.saveButton}>

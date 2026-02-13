@@ -26,7 +26,7 @@ export const RemoveUserButton = ({ member }: { member: string }) => {
           return;
 
         const res = await fetch(
-          `http://localhost:3000/api/group/group-members?groupcode=${groupcode}`,
+          `/api/group/group-members?groupcode=${groupcode}`,
           {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },

@@ -28,7 +28,7 @@ export const AddUserButton = () => {
         )
           return;
 
-        const res = await fetch(`http://localhost:3000/api/group/group-members?groupcode=${groupcode}`, {
+        const res = await fetch(`/api/group/group-members?groupcode=${groupcode}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: newUser }),

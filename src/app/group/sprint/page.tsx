@@ -47,7 +47,7 @@ export default function Sprint() {
   );
 
   const handleSubmit = async (data: workProgress) => {
-    const res = await fetch("http://localhost:3000/api/group/workprogress", {
+    const res = await fetch("/api/group/workprogress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -60,7 +60,7 @@ export default function Sprint() {
   };
 
   const handleSummaryFormSubmit = async (data: sprint) => {
-    const res = await fetch("http://localhost:3000/api/group/sprint", {
+    const res = await fetch("/api/group/sprint", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

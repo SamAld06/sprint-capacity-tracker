@@ -24,7 +24,7 @@ export const ChangeGroupNameButton = ({
           return;
 
         const res = await fetch(
-          "http://localhost:3000/api/group/settings/change-group-name",
+          "/api/group/settings/change-group-name",
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
