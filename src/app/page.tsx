@@ -9,14 +9,6 @@ import Link from "next/link";
 export default function Home() {
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const handleSubmit = async (e: React.FormEvent) => {
-        const res = await fetch(`http://localhost:3000/api/group/sprint?groupcode=${groupData.groupcode}`, {
-          method: "get",
-        });
-        if (res.ok) {
-          window.location.href = `/group/dashboard?groupcode=${groupcode}`;
-        }
-      };
   return (
     <main className={styles.root}>
       <NavBar />
@@ -38,7 +30,6 @@ export default function Home() {
       {isOpen && (
         <ViewGroupForm
           onClose={() => setIsOpen(false)}
-          onSubmit={handleSubmit}
         />
       )}
     </main>

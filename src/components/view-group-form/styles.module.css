@@ -101,3 +101,19 @@
     border-radius: 0.5rem;
     padding: 0.5rem;
 }
+
+.headerWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.closeButton {
+    background-color: #bacee5;
+    border-style: solid;
+    border-width: 0.2rem;
+    border-color: black;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}

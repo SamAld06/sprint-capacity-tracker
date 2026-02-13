@@ -3,49 +3,41 @@ import styles from "./styles.module.css";
 
 export interface ViewGroupFormProps {
   onClose: () => void;
-  onSubmit: (data: sprint) => void;
 }
 
-export const ViewGroupForm = ({
-  onClose,
-  onSubmit,
-}: ViewGroupFormProps) => {
+export const ViewGroupForm = ({ onClose }: ViewGroupFormProps) => {
   const [groupcode, setgroupcode] = useState("");
   const [password, setpassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState("");
   const handleSubmit = async (e: React.FormEvent) => {
-    const payload = {
-      groupcode: groupcode,
-      sprintid: Number(currentSprint),
-      planned: Number(workPlanned),
-      added: Number(workAdded),
-      removed: Number(workRemoved),
-      totalcompleted: Number(workCompleted),
-      totalmd: Number(totalMd),
-      plannedcompleteddifference: getSprintCompletionDifference(Number(workCompleted), Number(workPlanned))
-    };
     e.preventDefault();
-    if (
-      currentSprint == null ||
-      workPlanned == null ||
-      workAdded == null ||
-      workRemoved == null ||
-      workCompleted == null ||
-      totalMd == null ||
-      completionDifference == null 
-    ) {
-      alert("All fields must be filled");
-      return;
+    const res = await fetch(
+      `/api/group/view`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({groupcode, password})
+      },
+    );
+    const data = await res.json();
+    if (res.ok) {
+      window.location.href = `/group/dashboard?groupcode=${groupcode}`;
+    } else {
+      setError(data.error || "Group code or password credentials are incorrect")
     }
-    await onSubmit(payload);
   };
-return (
+  return (
     <div className={styles.formRoot}>
-          <div className={styles.modal}>
+      <div className={styles.modal}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.headerWrapper}>
             <p className={styles.formTitle}>View group</p>
+            <button type="button" onClick={onClose} className={styles.closeButton}>
+              X
+            </button>
           </div>
           <div className={styles.inputsWrapper}>
             <input
@@ -71,10 +63,10 @@ return (
               </button>
             </div>
           </div>
-          <button className={styles.button}>Login</button>
+          <button className={styles.button}>View</button>
           {error && <p className={styles.error}>{error}</p>}
         </form>
-        </div>
-        </div>
-)
-}
+      </div>
+    </div>
+  );
+};

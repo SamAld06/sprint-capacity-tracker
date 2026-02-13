@@ -31,7 +31,7 @@ export default function Capacity() {
       setErr("No group code could be retrieved");
       return;
     }
-    const res = await fetch(`http://localhost:3000/api/group/capacity?groupcode=${groupcode}`, {
+    const res = await fetch(`/api/group/capacity?groupcode=${groupcode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
