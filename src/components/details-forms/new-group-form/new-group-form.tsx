@@ -13,7 +13,6 @@ export const NewGroupForm = ({
   onClose,
   onSubmit,
 }: SprintProgressFormProps) => {
-  const currentGroup = "t3stGr0up1";
   const [currentGroupName, setCurrentGroupName] = useState<string>("");
   const [currentCreator, setCurrentCreator] = useState<string>("");
   const [password, setPassword] = useState<string>("");

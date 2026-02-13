@@ -1,29 +1,22 @@
 "use client";
 
-import Link from "next/link";
 import styles from "./styles.module.css";
 import { NavBar } from "../components/navbar/navBar";
 import { useState } from "react";
+import { ViewGroupForm } from "../components/view-group-form/viewGroupForm";
+import Link from "next/link";
 
 export default function Home() {
-  const [groupcode, setgroupcode] = useState("");
-  const [password, setpassword] = useState("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!groupcode || !password) {
-      setError("All fields are required");
-      return;
-    }
-    if (error) {
-      setError(error.message);
-    }
-    if (!error) {
-      window.location.href = "/";
-    }
-  };
+        const res = await fetch(`http://localhost:3000/api/group/sprint?groupcode=${groupData.groupcode}`, {
+          method: "get",
+        });
+        if (res.ok) {
+          window.location.href = `/group/dashboard?groupcode=${groupcode}`;
+        }
+      };
   return (
     <main className={styles.root}>
       <NavBar />
@@ -43,41 +36,10 @@ export default function Home() {
         </button>
       </div>
       {isOpen && (
-        <div className={styles.formRoot}>
-          <div className={styles.modal}>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.headerWrapper}>
-            <p className={styles.formTitle}>View group</p>
-          </div>
-          <div className={styles.inputsWrapper}>
-            <input
-              className={styles.input}
-              placeholder="Enter a group code"
-              value={groupcode}
-              onChange={(e) => setgroupcode(e.target.value)}
-            />
-            <div className={styles.passwordWrapper}>
-              <input
-                type={showPassword ? "text" : "password"}
-                className={styles.input}
-                placeholder="Enter a password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
-              />
-              <button
-                type="button"
-                className={styles.showPassword}
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-          </div>
-          <button className={styles.button}>Login</button>
-          {error && <p className={styles.error}>{error}</p>}
-        </form>
-        </div>
-        </div>
+        <ViewGroupForm
+          onClose={() => setIsOpen(false)}
+          onSubmit={handleSubmit}
+        />
       )}
     </main>
   );
